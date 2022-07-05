@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from 'react-native';
 import AppLoading from "expo-app-loading";
-import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
+import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import * as Colors from '../constants/colors'
 
 
@@ -59,19 +59,47 @@ export const styles = StyleSheet.create({
       width: "90%",
       height: 50,
       borderRadius: 15,
-      marginBottom:120
+      marginBottom:120,
+      paddingLeft: 5,
+      borderTopLeftRadius:15,
+      borderTopRightRadius:15,
     },
 
     forgotPassword: {
       alignSelf: 'center',
       color: Colors.primaryLight,
       fontFamily: 'Poppins_600SemiBold',
-      marginBottom:200
-    }
+      marginBottom: 20
+    },
+
+    rowContainer:{
+      flexDirection: 'row', 
+      alignSelf: 'center',
+      marginBottom: 10,
+      alignContent: 'center'
+    },
+
+    socialContainer:{
+      flexDirection: 'row', 
+      alignSelf: 'center',
+      alignContent: 'center',
+      marginBottom: 100,
+      alignContent: 'center'
+    },
+
+    alreadyHaveAccount:{
+      fontFamily: 'Poppins_400Regular',
+      color: Colors.textColorGrey
+    },
+
+    login:{
+      paddingLeft: 5,
+      fontFamily: 'Poppins_600SemiBold',
+      color: Colors.primaryLight
+    },
 
     
   });
-
 
 
 

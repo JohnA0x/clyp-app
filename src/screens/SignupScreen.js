@@ -7,21 +7,25 @@ import { AppLoading } from 'expo';
 
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
+import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import { Button, TextInput } from "react-native-paper";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from '../constants/colors'
 import { TouchableOpacity } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { RoundedButton } from "../components/button";
+
 import * as Input from '../components/textinput'
+
 
 export default function Signup() {
     let [fontsLoaded, error] = useFonts({ 
       Poppins_700Bold, 
       Poppins_900Black,
       Poppins_600SemiBold,
+      Poppins_400Regular,
       })
 
       const [text, setText] = React.useState("");
@@ -54,9 +58,25 @@ export default function Signup() {
 
             <Text style = {styles.forgotPassword}>{Strings.forgotPassword}</Text>
 
-            <View style = {{flexDirection: 'row'}}>
-            <Text>{Strings.alreadyHaveAccount}</Text>
-            <Text>{Strings.login}</Text>
+            <View style = {styles.socialContainer}>
+              <TouchableWithoutFeedback>
+                <Image source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png'}}/>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback>
+                <Image style = {{marginLeft: 50}}
+                source={{width: 24, height: 24, uri: 'https://cdn-icons-png.flaticon.com/512/281/281764.png'}}/>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback>
+                <Image style = {{marginLeft: 50}}
+                source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/15/15476.png'}}/>
+              </TouchableWithoutFeedback>
+            </View>
+
+            <View style = {styles.rowContainer}>
+            <Text style = {styles.alreadyHaveAccount}>{Strings.alreadyHaveAccount}</Text>
+            <Text style = {styles.login} onPress={()=>{return <Login/>}}>{Strings.login}</Text>
             </View>
             
             
