@@ -3,9 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Signup from './src/screens/SignupScreen';
+import Onboarding from './src/screens/OnboardingScreen';
 
 export default function App() {
-  return <Signup/>;
+  return <Onboarding/>;
 }
 
 const styles = StyleSheet.create({
