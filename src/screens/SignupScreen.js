@@ -6,6 +6,8 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 import { Provider as PaperProvider } from 'react-native-paper';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import { Button, TextInput } from "react-native-paper";
@@ -14,11 +16,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from '../constants/colors'
 import { TouchableOpacity } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import LoginScreen from "./LoginScreen";
 
 import { RoundedButton } from "../components/button";
 
 import * as Input from '../components/textinput'
 
+const Stack = createNativeStackNavigator();
 
 export default function Signup() {
     let [fontsLoaded, error] = useFonts({ 
@@ -30,58 +34,77 @@ export default function Signup() {
 
       const [text, setText] = React.useState("");
 
-    return(
-        <PaperProvider>
-              <SafeAreaView style = {styles.container}>
-            <Text style = {styles.texts}>{Strings.createAccount}</Text>
+      return(
+        <NavigationContainer independent = {true}>
+          <Stack.Navigator
+           screenOptions={{
+            headerShown: false,
+           }}>
+            <Stack.Screen name='Signup' component={SignupScreen} />
+            <Stack.Screen name='Login' component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
+    
+}
 
-            <TextInput
-            value={text}
-            onChangeText={text => setText(text)}
-             style ={styles.emailinput} 
-             label = {<Text style = {{color: Colors.inputLabel}}>Email</Text>} 
-             selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="email-outline"/>} 
-             activeUnderlineColor = {Colors.backgroundColor}
-             underlineColor = {Colors.backgroundColor}/>
+function SignupScreen(){
 
-             <TextInput
-             style ={styles.passwordinput} 
-             secureTextEntry = {true}
-             label = {<Text style = {{color: Colors.inputLabel}}>Password</Text>} 
-             selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="lock-outline"/>} 
-             activeUnderlineColor = {Colors.backgroundColor}
-             underlineColor = {Colors.backgroundColor}/>
+  const navigation = useNavigation()
 
-            <TouchableOpacity style = {styles.button}>
-            <Text style = {styles.textButton}> {Strings.signup}</Text>
-            </TouchableOpacity>
+  const [text, setText] = React.useState("");
 
-            <Text style = {styles.forgotPassword}>{Strings.forgotPassword}</Text>
+  return(
+    <PaperProvider>
+        <SafeAreaView style = {styles.container}>
+        <Text style = {styles.texts}>{Strings.createAccount}</Text>
+        <TextInput
+        value={text}
+        onChangeText={text => setText(text)}
+         style ={styles.emailinput} 
+         label = {<Text style = {{color: Colors.inputLabel}}>Email</Text>} 
+         selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="email-outline"/>} 
+         activeUnderlineColor = {Colors.backgroundColor}
+         underlineColor = {Colors.backgroundColor}/>
 
-            <View style = {styles.socialContainer}>
-              <TouchableWithoutFeedback>
-                <Image source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png'}}/>
-              </TouchableWithoutFeedback>
+         <TextInput
+         style ={styles.passwordinput} 
+         secureTextEntry = {true}
+         label = {<Text style = {{color: Colors.inputLabel}}>Password</Text>} 
+         selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="lock-outline"/>} 
+         activeUnderlineColor = {Colors.backgroundColor}
+         underlineColor = {Colors.backgroundColor}/>
 
-              <TouchableWithoutFeedback>
-                <Image style = {{marginLeft: 50}}
-                source={{width: 24, height: 24, uri: 'https://cdn-icons-png.flaticon.com/512/281/281764.png'}}/>
-              </TouchableWithoutFeedback>
+        <TouchableOpacity style = {styles.button}>
+        <Text style = {styles.textButton}> {Strings.signup}</Text>
+        </TouchableOpacity>
 
-              <TouchableWithoutFeedback>
-                <Image style = {{marginLeft: 50}}
-                source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/15/15476.png'}}/>
-              </TouchableWithoutFeedback>
-            </View>
+        <Text style = {styles.forgotPassword}>{Strings.forgotPassword}</Text>
 
-            <View style = {styles.rowContainer}>
-            <Text style = {styles.alreadyHaveAccount}>{Strings.alreadyHaveAccount}</Text>
-            <Text style = {styles.login} onPress={()=>{return <Login/>}}>{Strings.login}</Text>
-            </View>
-            
-            
-        </SafeAreaView>
-        </PaperProvider>
-      
-    );
+        <View style = {styles.socialContainer}>
+          <TouchableWithoutFeedback>
+            <Image source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png'}}/>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback>
+            <Image style = {{marginLeft: 50}}
+            source={{width: 24, height: 24, uri: 'https://cdn-icons-png.flaticon.com/512/281/281764.png'}}/>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback>
+            <Image style = {{marginLeft: 50}}
+            source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/15/15476.png'}}/>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View style = {styles.rowContainer}>
+        <Text style = {styles.alreadyHaveAccount}>{Strings.alreadyHaveAccount}</Text>
+        <Text style = {styles.login} onPress={()=> navigation.navigate('Login')}>{Strings.login}</Text>
+        </View>
+        
+        
+    </SafeAreaView>
+    </PaperProvider>
+  
+);
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View } from 'react-native';
 
-// Signup
+// Registration
 export const createAccount = 'Create Your \nAccount';
+export const loginAccount = 'Login To Your \nAccount';
 export const login = 'Login';
 export const signup = 'Sign Up'
 export const passwordHint = 'Password'
@@ -10,6 +11,7 @@ export const emailHint = 'Email'
 export const forgotPassword = 'Forgot Password?'
 
 export const alreadyHaveAccount = 'Already have an account?'
+export const dontHaveAccount = "Don't have an account?"
 
 //Onboarding Screen
 export const firstScreen = 'First Screen'

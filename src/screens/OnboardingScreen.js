@@ -8,6 +8,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { styles } from '../styles/onboarding';
 import * as Colors from '../constants/colors'
 import * as Strings from '../strings/strings'
+import FirstSVG from '../drawables/vector/firstonboard 2.svg'
+import SecondSVG from '../drawables/vector/secondonboard.svg'
+import ThirdSVG from '../drawables/vector/thirdonboard.svg'
+import FourthSVG from '../drawables/vector/fourthonboard.svg'
+
 
 import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold, Poppins_400Regular } from "@expo-google-fonts/poppins";
 
@@ -52,8 +57,7 @@ function FirstScreen (){
 
   return(
     <SafeAreaView style = {styles.container}>
-      <Image>
-      </Image>
+     <FirstSVG width={300} height={300} style = {styles.svg}/>
       <Text style = {styles.title}>{Strings.firstOnboardingTitle}</Text>
       <Text style = {styles.subtitle}>{Strings.firstOnboardingSubtitle}</Text>
       <RoundedButton style={styles.nextbutton} textStyle ={styles.textButton} text = {Strings.next}
@@ -71,8 +75,7 @@ function SecondScreen (){
 
   return(
     <SafeAreaView style = {styles.container}>
-      <Image>
-      </Image>
+      <SecondSVG width={300} height={300} style = {styles.svg}/>
       <Text style = {styles.title}>{Strings.secondOnboardingTitle}</Text>
       <Text style = {styles.subtitle}>{Strings.secondOnboardingSubtitle}</Text>
       <RoundedButton style={styles.nextbutton} textStyle ={styles.textButton} text = {Strings.next}
@@ -90,8 +93,7 @@ function ThirdScreen (){
 
   return(
     <SafeAreaView style = {styles.container}>
-      <Image>
-      </Image>
+      <ThirdSVG width={300} height={300} style = {styles.svg}/>
       <Text style = {styles.title}>{Strings.thirdOnboardingTitle}</Text>
       <Text style = {styles.subtitle}>{Strings.thirdOnboardingSubtitle}</Text>
       <RoundedButton style={styles.nextbutton} textStyle ={styles.textButton} text = {Strings.next}
@@ -109,8 +111,7 @@ function ThirdScreen (){
   
     return(
       <SafeAreaView style = {styles.container}>
-        <Image>
-        </Image>
+        <FourthSVG width={300} height={300} style = {styles.svg}/>
         <Text style = {styles.title}>{Strings.fourthOnboardingTitle}</Text>
         <Text style = {styles.subtitle}>{Strings.fourthOnboardingSubtitle}</Text>
         <RoundedButton style={styles.donebutton} textStyle ={styles.textButton} text = {Strings.done}

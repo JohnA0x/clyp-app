@@ -100,18 +100,3 @@ export const styles = StyleSheet.create({
 
     
   });
-
-
-
-
-  const Authenticate = () => {
-    let [fontsLoaded, error] = useFonts({ 
-      Poppins_700Bold, 
-      Poppins_900Black,
-      Poppins_600SemiBold,
-    })
-
-    if (!fontsLoaded) { 
-      return <AppLoading /> 
-    }
-  }

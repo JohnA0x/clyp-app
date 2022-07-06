@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
-    marginTop: 400,
+    marginTop: 10,
     fontFamily: 'Poppins_700Bold',
     alignSelf: 'center',
     justifyContent: 'space-evenly',
@@ -26,12 +26,18 @@ export const styles = StyleSheet.create({
   subtitle: {
     flex: 1,
     fontSize: 13,
-    marginBottom: 100,
+    marginBottom: 80,
     fontFamily: 'Poppins_400Regular',
     alignSelf: 'center',
     textAlign:'center',
     justifyContent: 'center',
     color: Colors.textColor,
+  },
+
+  svg:{
+    alignSelf:'center',
+    marginTop: 80,
+
   },
   
   nextbutton: {
@@ -47,7 +53,7 @@ export const styles = StyleSheet.create({
 
   skipbutton: {
     alignItems: 'center',
-        justifyContent: 'center',
+    justifyContent: 'center',
         alignSelf: 'center',
         width:"85%",
         height:50,
@@ -58,13 +64,13 @@ export const styles = StyleSheet.create({
 
   donebutton: {
     alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        width:"85%",
-        height:50,
-        backgroundColor:Colors.doneButton,
-        borderRadius:30,
-        marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width:"85%",
+    height:50,
+    backgroundColor:Colors.doneButton,
+    borderRadius:30,
+    marginBottom: 10,
   },
   
   
