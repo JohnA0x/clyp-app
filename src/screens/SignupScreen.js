@@ -17,6 +17,7 @@ import * as Colors from '../constants/colors'
 import { TouchableOpacity } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LoginScreen from "./LoginScreen";
+import MenuNavigation from "../navigations/MenuNavigation";
 
 import { RoundedButton } from "../components/button";
 
@@ -42,6 +43,7 @@ export default function Signup() {
            }}>
             <Stack.Screen name='Signup' component={SignupScreen} />
             <Stack.Screen name='Login' component={LoginScreen} />
+            <Stack.Screen name='MenuNavigation' component={MenuNavigation} />
           </Stack.Navigator>
         </NavigationContainer>
       )
@@ -76,7 +78,7 @@ function SignupScreen(){
          underlineColor = {Colors.backgroundColor}/>
 
         <TouchableOpacity style = {styles.button}>
-        <Text style = {styles.textButton}> {Strings.signup}</Text>
+        <Text style = {styles.textButton} onPress = {() => navigation.navigate('MenuNavigation')}> {Strings.signup}</Text>
         </TouchableOpacity>
 
         <Text style = {styles.forgotPassword}>{Strings.forgotPassword}</Text>

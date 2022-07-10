@@ -31,3 +31,18 @@ export const next = 'Next'
 export const skip = 'Skip'
 export const back = 'Back'
 export const done = 'Done'
+
+
+// Home
+export const home = 'Home'
+export const cryptoBalance = 'Crypto Balance'
+export const fiatBalance = 'Fiat Balance'
+export const deposit = 'Deposit'
+export const withdraw = 'Withdraw'
+export const send = 'Send'
+export const receive = 'Receive'
+export const coins = 'Coins'
+
+export const info = 'Info'
+
+export const clyphub = 'Clyp Hub'
