@@ -9,6 +9,8 @@ import {ImageButton} from '../components/button'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import {Ionico, MaterialIcons} from '@expo/vector-icons'
+
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +34,7 @@ function ProfileScreen(){
         <SafeAreaView>
             <View>
                 <ImageButton image={'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'}
-                handlePress={}/>
+                />
             </View>
         </SafeAreaView>
     )
