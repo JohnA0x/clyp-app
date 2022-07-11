@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.tertiaryLight,
       borderRadius: 20,
       width:'80%',
-      height: '80%',
+      height: 200,
       alignContent: 'center',
       alignSelf: 'center',
       alignItems: 'center',
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     profileImage:{
       width:40,
       height:40,
-      marginLeft: 10,
+      marginLeft: 5,
       marginTop: 5,
       alignSelf:'flex-start',
       borderRadius:50,
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     nameText:{
       fontSize: 15,
       marginTop: 20,
-      marginLeft: 15,
+      marginLeft: 10,
       fontFamily: 'Poppins_600SemiBold',
       alignItems: 'flex-start',
       justifyContent: 'space-evenly',

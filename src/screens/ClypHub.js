@@ -3,25 +3,15 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Strings from '../strings/strings'
+import {styles} from '../styles/clyphub'
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ClypHub(){
     return(
-        <SafeAreaView>
+        <SafeAreaView style = {styles.container}>
 
-            <View>
-                <Text>{Strings.clyphub}</Text>
-            </View>
-
-            <View>
-                <TouchableOpacity>
-                    <Image >
-                        <Text>
-
-                        </Text>
-                    </Image>
-
-                </TouchableOpacity>
+            <View style={styles.container}>
+                <Text style = {styles.headerText}>{Strings.clyphub}</Text>
             </View>
         </SafeAreaView>
     )

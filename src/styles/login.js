@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
       width: "90%",
       height: 50,
       borderRadius: 15,
-      marginBottom:120,
+      marginBottom:80,
       paddingLeft: 5,
       borderTopLeftRadius:15,
       borderTopRightRadius:15,

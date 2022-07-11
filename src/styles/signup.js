@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     texts: {
         flex: 1,
         fontSize: 30,
+        height: '60%',
         marginLeft: 12,
         marginTop: 100,
         fontFamily: 'Poppins_700Bold',
@@ -59,7 +60,7 @@ export const styles = StyleSheet.create({
       width: "90%",
       height: 50,
       borderRadius: 15,
-      marginBottom:120,
+      marginBottom:80,
       paddingLeft: 5,
       borderTopLeftRadius:15,
       borderTopRightRadius:15,
