@@ -1,16 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {styles} from '../styles/home'
 import * as Colors from '../constants/colors'
 import * as Strings from '../strings/strings'
 import { ImageButton, RoundedButton, VectorButton, FlatListButton } from '../components/button';
 import Swiper from 'react-native-swiper';
+import ProfileScreen from '../screens/ProfileScreen'
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+const Stack = createNativeStackNavigator();
 
-export default function HomeScreen(){
+export default function Home(){
+    return(
+       
+          <Stack.Navigator
+           initialRouteName='Home'
+           screenOptions={{
+            headerShown: false,
+           }}>
+            <Stack.Screen name='Home' component={HomeScreen} />
+            <Stack.Screen name='Profile' component={ProfileScreen} />
+          </Stack.Navigator>
+        
+      )
+}
+
+function HomeScreen(){
+
+    const navigation = useNavigation()
+  
     return(
         <SafeAreaView style = {styles.container}>
 
@@ -18,7 +40,8 @@ export default function HomeScreen(){
                 <ImageButton 
                 style={styles.profileImage}
                 imageStyle={styles.profileImage}
-                image = 'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'/>
+                image = 'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'
+                handlePress={navigation.navigate('Profile')}/>
                 <Text style = {styles.nameText}>Welcome Ben</Text>
                 <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primaryLight}/>
                 <VectorButton style={styles.scanButton} name ='scan' size = {24} color = {Colors.primaryLight}/>

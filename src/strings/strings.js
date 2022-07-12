@@ -46,3 +46,16 @@ export const coins = 'Coins'
 export const info = 'Info'
 
 export const clyphub = 'Clyp Hub'
+
+
+//Profile
+export const Profile = 'Profile'
+export const editprofile = 'Edit Profile'
+export const security = 'Security'
+export const preferences = 'Preferences'
+export const activity = 'Activity'
+export const share = 'Share the app'
+export const help = 'Help and Support'
+export const about = 'About Us'
+export const logout = 'Logout'
+export const merchantmode = 'Merchant Mode'

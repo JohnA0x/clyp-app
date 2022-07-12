@@ -13,6 +13,8 @@ export default function ClypHub(){
             <View style={styles.container}>
                 <Text style = {styles.headerText}>{Strings.clyphub}</Text>
             </View>
+
+            
         </SafeAreaView>
     )
 }
