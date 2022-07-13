@@ -16,11 +16,21 @@ export const RoundedButton = ({text, handlePress, style, textStyle}) => {
 export const ImageButton = ({image, handlePress, style, imageStyle}) => {
 
   return(
-  <TouchableOpacity style = {style} onPress = {handlePress}>
+  <TouchableOpacity style = {style} onPres = {handlePress}>
   <Image style = {imageStyle} source={{uri: image}}/>
   </TouchableOpacity>
   )
 }
+
+export const FileImageButton = ({fileImage, handlePress, style, imageStyle}) => {
+
+  return(
+  <TouchableOpacity style = {style} onPres = {handlePress}>
+  <Image style = {imageStyle} source={fileImage}/>
+  </TouchableOpacity>
+  )
+}
+
 
 export const VectorButton = ({name, size, style, handlePress, color}) => {
 
@@ -30,6 +40,16 @@ export const VectorButton = ({name, size, style, handlePress, color}) => {
   </TouchableOpacity>
   )
 }
+
+export const FileVectorButton = ({name, size, style, handlePress, color}) => {
+
+  return(
+  <TouchableOpacity style = {style} onPress = {handlePress}>
+  
+  </TouchableOpacity>
+  )
+}
+
 
 export const FlatListButton = ({image, size, style, handlePress, imagestyle, 
   cryptonameStyle, fiatAmountStyle, cryptoAmountStyle,
