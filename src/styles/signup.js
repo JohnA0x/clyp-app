@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
       alignSelf: 'center',
       width:"85%",
       height:50,
-      backgroundColor:Colors.primaryLight,
+      backgroundColor:Colors.primary,
       borderRadius:30,
       marginBottom: 20,
     },
@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
 
     forgotPassword: {
       alignSelf: 'center',
-      color: Colors.primaryLight,
+      color: Colors.primary,
       fontFamily: 'Poppins_600SemiBold',
       marginBottom: 20
     },
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     login:{
       paddingLeft: 5,
       fontFamily: 'Poppins_600SemiBold',
-      color: Colors.primaryLight
+      color: Colors.primary
     },
 
     

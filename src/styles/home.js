@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     },
 
     cryptoContainer:{
-        backgroundColor: Colors.primaryLight,
+        backgroundColor: Colors.primary,
         borderRadius: 20,
         width:'80%',
         height: 200,
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     },
 
     fiatContainer:{
-      backgroundColor: Colors.tertiaryLight,
+      backgroundColor: Colors.tertiary,
       borderRadius: 20,
       width:'80%',
       height: 200,
@@ -62,16 +62,15 @@ export const styles = StyleSheet.create({
     notificationButton:{
       width:24,
       height:24,
-      marginLeft: 110,
+      marginLeft: '35%',
       marginTop: 17,
     },
 
     scanButton:{
       width:24,
       height:24,
-      marginLeft: 15,
+      marginLeft: '3%',
       marginTop: 17,
-     
     },
 
     nameText:{

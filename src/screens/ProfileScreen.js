@@ -17,23 +17,13 @@ import HomeScreen from '../screens/HomeScreen'
 import { useState } from "react";
 
 
-const Stack = createNativeStackNavigator();
-
-
+/* 
 export default function Profile(){
-    return(
-        <NavigationContainer independent = {true}>
-          <Stack.Navigator
-           screenOptions={{
-            headerShown: false,
-           }}>
-            <Stack.Screen name='Profile' component={ProfileScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      )
-}
+    return<ProfileScreen/>
+   
+} */
 
-function ProfileScreen(){
+export default function ProfileScreen({navigation}){
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -45,8 +35,8 @@ function ProfileScreen(){
                 <ImageButton image={'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'}
                 style = {styles.profileImage}
                 imageStyle = {styles.profileImage} />
-                <Text style = {styles.profileName}>Ben Sterling</Text>
-                <VectorButton name = 'pencil-sharp' size = {24} color = {Colors.primaryLight} style = {styles.editProfileButton}/>
+                <Text style = {styles.profileName} onPress = {()=>navigation.push('Home')}>Ben Sterling</Text>
+                <VectorButton name = 'pencil-sharp' size = {24} color = {Colors.primary} style = {styles.editProfileButton}/>
                 
             </View>
          
@@ -66,34 +56,34 @@ function ProfileScreen(){
             </View>
 
             <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='lock-closed-outline' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+                <VectorButton name='lock-closed-outline' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext}>{Strings.security}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='settings-outline' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+            <TouchableOpacity style = {styles.rowContainer} onPress={() => navigation.replace(Strings.preferences)}>
+                <VectorButton name='settings-outline' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext}>{Strings.preferences}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='timer-outline' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+                <VectorButton name='timer-outline' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext}>{Strings.activity}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='share-social' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+                <VectorButton name='share-social' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext}>{Strings.share}</Text>
             </TouchableOpacity>
 
 
             <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='help-circle-outline' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+                <VectorButton name='help-circle-outline' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext} >{Strings.help}</Text>
             </TouchableOpacity>
 
 
             <TouchableOpacity style = {styles.rowContainer}>
-                <VectorButton name='information-circle-outline' size={24} color = {Colors.primaryLight} style = {styles.preferencesimage}/>
+                <VectorButton name='information-circle-outline' size={24} color = {Colors.primary} style = {styles.preferencesimage}/>
                 <Text style = {styles.preferencestext}>{Strings.about}</Text>
             </TouchableOpacity>
 

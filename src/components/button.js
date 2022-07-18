@@ -16,7 +16,7 @@ export const RoundedButton = ({text, handlePress, style, textStyle}) => {
 export const ImageButton = ({image, handlePress, style, imageStyle}) => {
 
   return(
-  <TouchableOpacity style = {style} onPres = {handlePress}>
+  <TouchableOpacity style = {style} onPress = {handlePress}>
   <Image style = {imageStyle} source={{uri: image}}/>
   </TouchableOpacity>
   )
@@ -25,7 +25,7 @@ export const ImageButton = ({image, handlePress, style, imageStyle}) => {
 export const FileImageButton = ({fileImage, handlePress, style, imageStyle}) => {
 
   return(
-  <TouchableOpacity style = {style} onPres = {handlePress}>
+  <TouchableOpacity style = {style} onPress = {handlePress}>
   <Image style = {imageStyle} source={fileImage}/>
   </TouchableOpacity>
   )

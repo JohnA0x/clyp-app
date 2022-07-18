@@ -77,7 +77,7 @@ function SignupScreen(){
          activeUnderlineColor = {Colors.backgroundColor}
          underlineColor = {Colors.backgroundColor}/>
 
-        <TouchableOpacity style = {styles.button}>
+        <TouchableOpacity style = {styles.button} onPress = {() => navigation.navigate('MenuNavigation')}>
         <Text style = {styles.textButton} onPress = {() => navigation.navigate('MenuNavigation')}> {Strings.signup}</Text>
         </TouchableOpacity>
 
