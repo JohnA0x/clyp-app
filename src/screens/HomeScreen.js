@@ -7,32 +7,19 @@ import * as Strings from '../strings/strings'
 import { ImageButton, RoundedButton, VectorButton, FlatListButton } from '../components/button';
 import Swiper from 'react-native-swiper';
 import ProfileScreen from '../screens/ProfileScreen'
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignupScreen from '../screens/SignupScreen'
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stack = createNativeStackNavigator();
+/* export default function Home(){
 
-export default function Home(){
     return(
-       
-          <Stack.Navigator
-           initialRouteName='Home'
-           screenOptions={{
-            headerShown: false,
-           }}>
-            <Stack.Screen name='Home' component={HomeScreen} />
-            <Stack.Screen name='Profile' component={ProfileScreen} />
-          </Stack.Navigator>
+        HomeScreen()
         
       )
-}
+} */
 
-function HomeScreen(){
-
-    const navigation = useNavigation()
-  
+export default function HomeScreen ({ navigation }){
     return(
         <SafeAreaView style = {styles.container}>
 
@@ -41,13 +28,14 @@ function HomeScreen(){
                 style={styles.profileImage}
                 imageStyle={styles.profileImage}
                 image = 'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'
-                handlePress={navigation.navigate('Profile')}/>
+                handlePress={()=>{navigation.push('Profile');
+                 navigation.setOptions({tabBarVisible: true})}}/>
                 <Text style = {styles.nameText}>Welcome Ben</Text>
-                <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primaryLight}/>
-                <VectorButton style={styles.scanButton} name ='scan' size = {24} color = {Colors.primaryLight}/>
+                <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primary}/>
+                <VectorButton style={styles.scanButton} name ='scan' size = {24} color = {Colors.primary}/>
             </View>
 
-            <Swiper activeDotColor={Colors.primaryLight}>
+            <Swiper activeDotColor={Colors.primary}>
             <View style = {styles.cryptoContainer}>
                 <Text style ={styles.balanceText}>{Strings.cryptoBalance}</Text>
                 <Text style = {styles.cryptoBalanceText}>0.0001 BTC</Text>
@@ -79,4 +67,6 @@ function HomeScreen(){
         </SafeAreaView>
     )
 }
+
+//export default HomeScreen
 
