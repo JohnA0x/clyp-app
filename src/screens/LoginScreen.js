@@ -16,6 +16,7 @@ import * as Colors from '../constants/colors'
 import { TouchableOpacity } from "react-native";
 
 import SignupScreen from "./SignupScreen";
+import ForgotPassword from "./ForgotPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,14 +38,15 @@ export default function Login() {
                }}>
                 <Stack.Screen name='Login' component={LoginScreen}/>
                 <Stack.Screen name='Signup' component={SignupScreen} />
+                <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
               </Stack.Navigator>
             </NavigationContainer>
           )
 }
 
-function LoginScreen(){
+function LoginScreen({navigation}){
 
-    const navigation = useNavigation()
+    //const navigation = useNavigation()
   
     const [text, setText] = React.useState("");
   
@@ -73,7 +75,9 @@ function LoginScreen(){
           <Text style = {styles.textButton}> {Strings.login}</Text>
           </TouchableOpacity>
   
-          <Text style = {styles.forgotPassword}>{Strings.forgotPassword}</Text>
+          <Text style = {styles.forgotPassword}
+          onPress={() => navigation.replace("ForgotPassword")}
+          >{Strings.forgotPassword}</Text>
   
           <View style = {styles.socialContainer}>
             <TouchableWithoutFeedback>

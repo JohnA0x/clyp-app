@@ -39,6 +39,31 @@ export const styles = StyleSheet.create({
     borderTopRightRadius:15,
   },
 
+  passwordinput: {
+    alignSelf: 'center',
+    backgroundColor: Colors.inputLight,
+    width: "90%",
+    height: 60,
+    borderRadius: 15,
+    marginTop:40,
+    paddingLeft: 5,
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+  },
+
+  confirmpasswordinput: {
+    alignSelf: 'center',
+    backgroundColor: Colors.inputLight,
+    width: "90%",
+    height: 60,
+    borderRadius: 15,
+    marginTop:20,
+    paddingLeft: 5,
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+  },
+
+
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,6 +89,13 @@ export const styles = StyleSheet.create({
 
   otp:{
     alignSelf: 'center',
+    marginTop:30,
     
-  }
+  },
+  resendotp:{
+    fontFamily: 'Poppins_400Regular',
+    textAlign: 'center',
+    marginTop: 20,
+    color: Colors.primary
+  },
 });
