@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from 'react-native-vector-icons/AntDesign'
 //import {Ionicons, AntDesign} from 'react-native-vector-icons/Ionicons'
 
 import HomeScreen from "../screens/HomeScreen";
@@ -63,6 +64,7 @@ export default function MenuNavigation() {
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
+        let iconOtherName
         let rn = route.name;
 
         if (rn === Strings.home) {
@@ -73,13 +75,12 @@ export default function MenuNavigation() {
           iconName = focused ? "apps" : "apps-outline";
         } 
         // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
+        return <Ionicons name={iconName} size={size} color={color}/>;
       },
       headerShown: false,
       tabBarActiveTintColor: Colors.primary,
       tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0 },
       tabBarShowLabel: false,
-      
     })}
   >
     <Tab.Screen name={Strings.home} component={HomeStackScreen} />
