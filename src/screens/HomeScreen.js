@@ -29,7 +29,7 @@ export default function HomeScreen ({ navigation }){
                 imageStyle={styles.profileImage}
                 image = 'https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg'
                 handlePress={()=>{navigation.push('Profile');
-                 navigation.setOptions({tabBarVisible: true})}}/>
+                 navigation.setOptions({tabBarVisible: false})}}/>
                 <Text style = {styles.nameText}>Welcome Ben</Text>
                 <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primary}/>
                 <VectorButton style={styles.scanButton} name ='scan' size = {24} color = {Colors.primary}/>

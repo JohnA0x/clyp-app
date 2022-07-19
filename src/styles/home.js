@@ -38,9 +38,9 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       padding: 2,
       marginTop: 40,
-      shadowOffset:{width: 0, height:5},
-      shadowColor:'#00000',
-      shadowOpacity:0.9,
+      shadowOffset:{width: 0, height:3},
+      shadowColor:Colors.shadowColor,
+      shadowOpacity:0.1,
       elevation:3,
   },
 

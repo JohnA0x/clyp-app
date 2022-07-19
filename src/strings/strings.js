@@ -60,4 +60,10 @@ export const about = 'About Us'
 export const logout = 'Logout'
 export const merchantmode = 'Merchant Mode'
 
+export const changecurrency = 'Change Currency'
+export const hidebalance = 'Hide Balance'
+export const changeappearance = 'Change Appearance'
+
+export const paymentmethod = 'Payment Method'
+
 export const seeAll = 'See All'
