@@ -9,7 +9,9 @@ export const signup = 'Sign Up'
 export const passwordHint = 'Password'
 export const emailHint = 'Email'
 export const forgotPassword = 'Forgot Password?'
-
+export const reset = 'Reset'
+export const verify = 'Verify'
+export const resend = 'Resend OTP'
 export const alreadyHaveAccount = 'Already have an account?'
 export const dontHaveAccount = "Don't have an account?"
 
