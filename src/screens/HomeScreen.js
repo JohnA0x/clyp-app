@@ -31,7 +31,7 @@ export default function HomeScreen ({ navigation }){
                 handlePress={()=>{navigation.push('Profile');
                  navigation.setOptions({tabBarVisible: false})}}/>
                 <Text style = {styles.nameText}>Welcome Ben</Text>
-                <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primary}/>
+                <VectorButton style={styles.notificationButton} name ='notifications-outline' size = {24} color = {Colors.primary} handlePress = {() => navigation.push(Strings.notifications)}/>
                 <VectorButton style={styles.scanButton} name ='scan' size = {24} color = {Colors.primary}/>
             </View>
 

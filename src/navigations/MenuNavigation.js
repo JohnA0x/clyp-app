@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import * as Colors from "../constants/colors";
 import * as Strings from "../strings/strings";
 import PreferencesScreen from "../screens/PreferencesScreen";
+import NotificationScreen from "../screens/NotificationsScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.home} component={HomeScreen} />
       <HomeStack.Screen name={Strings.Profile} component={ProfileScreen} />
       <HomeStack.Screen name={Strings.preferences} component={PreferencesScreen} />
+      <HomeStack.Screen name={Strings.notifications} component={NotificationScreen} />
     </HomeStack.Navigator>
   );
 };
