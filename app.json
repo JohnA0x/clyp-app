@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "clyppay_app",
-    "slug": "clyppay_app",
+    "name": "clyppay",
+    "slug": "clyppay",
+    "owner": "gabrielclyp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
