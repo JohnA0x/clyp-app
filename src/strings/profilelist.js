@@ -1,4 +1,6 @@
 import * as Strings from "../strings/strings";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export const profileListArray = [
     {

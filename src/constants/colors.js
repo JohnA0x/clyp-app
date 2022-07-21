@@ -1,7 +1,9 @@
 // light mode
 export const primary = '#EA9924';
 export const secondary = '#EFC88F';
-export const tertiary = '#2A2A2A'
+export const tertiary = 'rgba(0, 0, 0, 0.25)'
+
+export const black = '#2A2A2A'
 
 export const fadedButton = '#E9BA77';
 export const doneButton = '#0CBA5C'

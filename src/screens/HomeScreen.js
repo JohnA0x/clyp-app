@@ -41,8 +41,9 @@ export default function HomeScreen ({ navigation }){
                 <Text style = {styles.cryptoBalanceText}>0.0001 BTC</Text>
 
                 <View style={styles.transactionOptions}>
-                    <RoundedButton style={styles.sendbutton} text = {Strings.send} textStyle = {styles.textButton}/>
-                    <RoundedButton style={styles.receivebutton} text = {Strings.receive} textStyle = {styles.textButton} />
+                    <VectorButton name = 'arrow-up' size= {20} color = {Colors.white} style={styles.sendbutton}/>
+                    <VectorButton name = 'arrow-down' size= {20} color = {Colors.white} style={styles.receivebutton} />
+                    <VectorButton name = 'swap-horizontal' size= {20} color = {Colors.white} style={styles.swapbutton} />
                 </View>
             </View>
 
@@ -51,8 +52,9 @@ export default function HomeScreen ({ navigation }){
                 <Text style = {styles.cryptoBalanceText}>N 35,000</Text>
 
                 <View style={styles.transactionOptions}>
-                    <RoundedButton style={styles.sendbutton} text = {Strings.deposit} textStyle = {styles.textButton}/>
-                    <RoundedButton style={styles.receivebutton} text = {Strings.withdraw} textStyle = {styles.textButton} />
+                    <VectorButton name = 'arrow-up' size= {20} color = {Colors.white} style={styles.sendbutton}/>
+                    <VectorButton name = 'arrow-down' size= {20} color = {Colors.white} style={styles.receivebutton} />
+                    <VectorButton name = 'swap-horizontal' size= {20} color = {Colors.white} style={styles.swapbutton} />
                 </View>
             </View>
 

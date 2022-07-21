@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     },
 
     fiatContainer:{
-      backgroundColor: Colors.tertiary,
+      backgroundColor: Colors.black,
       borderRadius: 20,
       width:'80%',
       height: 200,
@@ -88,6 +88,13 @@ export const styles = StyleSheet.create({
       padding: 2,
       alignItems: 'center',
       alignContent: 'center',
+      justifyContent:'center',
+      backgroundColor: Colors.tertiary,
+      borderRadius: 30,
+      paddingTop: 20,
+      marginTop: 10,
+      height: '30%',
+      width: '80%',
   },
 
     balanceText:{
@@ -112,10 +119,10 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      width:"40%",
-      height:30,
+      width:35,
+      height:35,
       backgroundColor:Colors.fadedButton,
-      borderRadius:30,
+      borderRadius:50,
       marginBottom: 20,
     },
 
@@ -123,13 +130,26 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      width:"40%",
-      height:30,
-      marginLeft: 10,
+      width:35,
+      height:35,
       backgroundColor:Colors.fadedButton,
-      borderRadius:30,
+      borderRadius:50,
       marginBottom: 20,
+      marginLeft: 40,
     },
+
+    swapbutton: {
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
+      width:35,
+      height:35,
+      backgroundColor:Colors.fadedButton,
+      borderRadius:50,
+      marginBottom: 20,
+      marginLeft: 40,
+    },
+
 
     textButton: {
       color: Colors.white,
