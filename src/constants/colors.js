@@ -15,6 +15,8 @@ export const textColorFaded = '#FFF1DD'
 export const textColorGrey = '#B6B6B6'
 export const inputLight = '#F3F3F3'
 
+export const qrcode = '#000'
+
 export const logoutColor = '#FF4D67'
 
 export const lineSeparator = '#EDEDED'

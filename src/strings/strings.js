@@ -64,6 +64,9 @@ export const about = 'About Us'
 export const logout = 'Logout'
 export const merchantmode = 'Merchant Mode'
 export const notifications = 'Notifications'
+export const qrcode = 'QRCode'
+
+export const scanqrcode = 'Scan QRCode'
 
 export const changecurrency = 'Change Currency'
 export const hidebalance = 'Hide Balance'

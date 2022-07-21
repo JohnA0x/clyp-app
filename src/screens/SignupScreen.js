@@ -35,8 +35,15 @@ import { RoundedButton } from "../components/button";
 
 import * as Input from "../components/textinput";
 import ForgotPassword from "./ForgotPassword";
+import * as WebBrowser from 'expo-web-browser';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as Google from 'expo-auth-session/providers/google';
+import { ResponseType } from 'expo-auth-session';
 
 const Stack = createNativeStackNavigator();
+
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Signup() {
   let [fontsLoaded, error] = useFonts({
@@ -68,6 +75,34 @@ function SignupScreen() {
   const navigation = useNavigation();
 
   const [text, setText] = React.useState("");
+
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientId: '390391096288445',
+    responseType: ResponseType.Code,
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params;
+    }
+  }, [response]);
+
+
+  const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
+    expoClientId: '322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com',
+    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+   // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+  });
+
+  React.useEffect(() => {
+    if (gresponse?.type === 'success') {
+      const { authentication } = gresponse;
+      }
+  }, [gresponse]);
+
+
+
 
   return (
     <PaperProvider>
@@ -115,7 +150,10 @@ function SignupScreen() {
         </Text>
 
         <View style={styles.socialContainer}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+           onPress={() => {
+            promptAsync();
+          }}>
             <Image
               source={{
                 width: 25,
@@ -125,7 +163,10 @@ function SignupScreen() {
             />
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+           onPress={() => {
+            googlePromptAsync();
+          }}>
             <Image
               style={{ marginLeft: 50 }}
               source={{
@@ -133,9 +174,12 @@ function SignupScreen() {
                 height: 24,
                 uri: "https://cdn-icons-png.flaticon.com/512/281/281764.png",
               }}
+              onPress={() => {
+                promptAsync();
+              }}
             />
           </TouchableWithoutFeedback>
-
+{/* 
           <TouchableWithoutFeedback>
             <Image
               style={{ marginLeft: 50 }}
@@ -145,7 +189,7 @@ function SignupScreen() {
                 uri: "https://cdn-icons-png.flaticon.com/512/15/15476.png",
               }}
             />
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> */}
         </View>
 
         <View style={styles.rowContainer}>

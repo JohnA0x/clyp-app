@@ -15,6 +15,7 @@ import * as Colors from "../constants/colors";
 import * as Strings from "../strings/strings";
 import PreferencesScreen from "../screens/PreferencesScreen";
 import NotificationScreen from "../screens/NotificationsScreen";
+import QRCodeScreen from "../screens/QRCodeScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -32,6 +33,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.Profile} component={ProfileScreen} />
       <HomeStack.Screen name={Strings.preferences} component={PreferencesScreen} />
       <HomeStack.Screen name={Strings.notifications} component={NotificationScreen} />
+      <HomeStack.Screen name={Strings.qrcode} component={QRCodeScreen} />
     </HomeStack.Navigator>
   );
 };
