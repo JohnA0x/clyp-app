@@ -84,6 +84,7 @@ function SignupScreen() {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { code } = response.params;
+      navigation.navigate("MenuNavigation")
     }
   }, [response]);
 
@@ -98,6 +99,7 @@ function SignupScreen() {
   React.useEffect(() => {
     if (gresponse?.type === 'success') {
       const { authentication } = gresponse;
+      navigation.navigate("MenuNavigation")
       }
   }, [gresponse]);
 
