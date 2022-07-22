@@ -26,24 +26,26 @@ import { profileListArray } from "../strings/profilelist";
 import { listSeparator } from "../components/listseparator";
 
 import { useState } from "react";
-  
-
 
 export default function ProfileScreen({ navigation }) {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const profileList = ({ item }) => (
-    <TouchableOpacity style={ styles.rowContainer } 
-    onPress = {() => navigation.push(item.name)} >
-       <VectorButton
-            name={item.icon}
-            size={24}
-            color={Colors.primary}
-            style={styles.preferencesimage}
-          />
-          <Text style={styles.preferencestext}>{item.name}</Text>
-    </TouchableOpacity>    
+    <View style={styles.rowContainer}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.push(item.name)}
+      >
+        <VectorButton
+          name={item.icon}
+          size={24}
+          color={Colors.primary}
+          style={styles.preferencesimage}
+        />
+        <Text style={styles.preferencestext}>{item.name}</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -74,18 +76,19 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.merchantText}>{Strings.merchantmode}</Text>
         <Switch
           style={styles.merchantSwitch}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
+          trackColor={{ false: Colors.black, true: Colors.primary }}
+          thumbColor={isEnabled ? Colors.secondary : Colors.grey}
+          ios_backgroundColor={Colors.black}
           onValueChange={toggleSwitch}
           value={isEnabled}
         />
       </View>
 
       <FlatList
-      data = { profileListArray }
-      renderItem={profileList}        
-      ItemSeparatorComponent={ listSeparator }/>
+        contentContainerStyle={styles.flatlist}
+        data={profileListArray}
+        renderItem={profileList}
+      />
     </SafeAreaView>
   );
 }

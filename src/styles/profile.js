@@ -15,12 +15,29 @@ export const styles = StyleSheet.create({
 
     rowContainer:{
       flex: 1,
-      flexDirection: 'row',
+      padding: 5,
+    },
+
+    button: {
       padding: 2,
       paddingLeft: 10,
-      paddingVertical: 20,
-      alignItems: 'center',
-      color: Colors.backgroundColor,
+      flexDirection: "row",
+      backgroundColor: Colors.rowColor,
+      borderRadius: 40,
+      width: "95%",
+      height: 70,
+      shadowOffset: { width: 0, height: 3 },
+      shadowColor: Colors.shadowColor,
+      shadowOpacity: 0.1,
+      elevation: 3,
+      alignItems: "center",
+      alignSelf: "center",
+    },
+
+
+    flatlist: {
+      display: "flex",
+      paddingVertical: 10,
     },
 
     profileContainer:{
@@ -96,11 +113,10 @@ export const styles = StyleSheet.create({
 
     preferencesimage:{
       marginLeft: 10,
-   
     },
 
     preferencestext:{
-      marginLeft: 15,
+      marginLeft: 20,
       fontSize: 15,
       fontFamily: 'Poppins_500Medium',
       color: Colors.textColor,

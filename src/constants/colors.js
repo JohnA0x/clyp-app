@@ -4,6 +4,9 @@ export const secondary = '#EFC88F';
 export const tertiary = 'rgba(0, 0, 0, 0.25)'
 
 export const black = '#2A2A2A'
+export const grey = '#C9C9C9'
+
+export const rowColor = '#fff'
 
 export const fadedButton = '#E9BA77';
 export const doneButton = '#0CBA5C'
@@ -24,7 +27,7 @@ export const logoutColor = '#FF4D67'
 export const lineSeparator = '#EDEDED'
 
 export const inputLabel = '#B6B6B6'
-export const backgroundColor = '#fff'
+export const backgroundColor = '#F8F8F8'
 
 
 

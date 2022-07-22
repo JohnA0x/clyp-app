@@ -9,15 +9,30 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundColor,
   },
 
-  rowContainer: {
+  rowContainer:{
     flex: 1,
-    flexDirection: "row",
+    padding: 5,
+  },
+
+  button: {
     padding: 2,
     paddingLeft: 10,
-    paddingVertical: 20,
-    width: "100%",
-    alignItems: 'center',
-  
+    flexDirection: "row",
+    backgroundColor: Colors.rowColor,
+    borderRadius: 40,
+    width: "95%",
+    height: 70,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+  },
+
+  flatlist: {
+    display: "flex",
+    paddingVertical: 10,
   },
 
   preferencesHeader: {
@@ -30,7 +45,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Poppins_700Bold",
     textAlign: "center",
     fontSize: 20,
-
   },
 
   preferencesimage: {
@@ -38,21 +52,51 @@ export const styles = StyleSheet.create({
   },
 
   preferencestext: {
-    marginLeft: 15,
+    marginLeft: 20,
     fontSize: 15,
     fontFamily: "Poppins_500Medium",
     color: Colors.textColor,
   },
 
-  separator: {
-    height: 1,
-    width: '95%',
-    alignSelf: 'center',
-    backgroundColor: '#CCC',
+  darkmodeSwitch: {
+    marginLeft: "48%",
   },
 
-  backButton:{
+  separator: {
+    height: 1,
+    width: "95%",
+    alignSelf: "center",
+    backgroundColor: "#CCC",
+  },
+
+  optionsContainer: {
+    flexDirection: "row",
+    padding: 2,
+    paddingLeft: 10,
+    backgroundColor: Colors.rowColor,
+    borderRadius: 40,
+    marginTop: 20,
+    width: "90%",
+    height: "12%",
+    alignItems: "center",
+    alignSelf: "center",
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+  },
+
+  backButton: {
     marginLeft: 10,
-    position: 'absolute', left:0, zIndex:1,
+    position: "absolute",
+    left: 0,
+    zIndex: 1,
+  },
+
+  switch: {
+    marginRight: 30,
+    position: "absolute",
+    right: 0,
+    zIndex: 1,
   },
 });

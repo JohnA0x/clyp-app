@@ -85,7 +85,7 @@ export default function MenuNavigation() {
       },
       headerShown: false,
       tabBarActiveTintColor: Colors.primary,
-      tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0 },
+      tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0, backgroundColor: Colors.backgroundColor },
       tabBarShowLabel: false,
     })}
   >
