@@ -1,6 +1,6 @@
 import React from "react";
 import * as Strings from '../strings/strings'
-import {styles} from '../styles/login'
+import { styles } from '../styles/login'
 
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -23,126 +23,150 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
 import { ResponseType } from 'expo-auth-session';
 
+import axios from '../components/axios'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Stack = createNativeStackNavigator();
 
 WebBrowser.maybeCompleteAuthSession();
 
 
 export default function Login() {
-    let [fontsLoaded, error] = useFonts({ 
-        Poppins_700Bold, 
-        Poppins_900Black,
-        Poppins_600SemiBold,
-        Poppins_400Regular,
-        })
+  let [fontsLoaded, error] = useFonts({
+    Poppins_700Bold,
+    Poppins_900Black,
+    Poppins_600SemiBold,
+    Poppins_400Regular,
+  })
 
-        return(
-            <NavigationContainer independent = {true}>
-              <Stack.Navigator
-               screenOptions={{
-                headerShown: false,
-               }}>
-                <Stack.Screen name='Login' component={LoginScreen}/>
-                <Stack.Screen name='Signup' component={SignupScreen} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          )
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name='Login' component={LoginScreen} />
+        <Stack.Screen name='Signup' component={SignupScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
-function LoginScreen({navigation}){
+function LoginScreen({ navigation }) {
 
-    //const navigation = useNavigation()
-  
-    const [text, setText] = React.useState("");
+  //const navigation = useNavigation()
+
+  const [text, setText] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
 
-    const [request, response, promptAsync] = Facebook.useAuthRequest({
-      clientId: '390391096288445',
-      responseType: ResponseType.Code,
-    });
-  
-    React.useEffect(() => {
-      if (response?.type === 'success') {
-        const { code } = response.params;
-      }
-    }, [response]);
-  
-  
-    const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
-      expoClientId: '322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com',
-      //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-      //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-     // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    });
-  
-    React.useEffect(() => {
-      if (gresponse?.type === 'success') {
-        const { authentication } = gresponse;
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientId: '390391096288445',
+    responseType: ResponseType.Code,
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params;
+    }
+  }, [response]);
+
+
+  const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
+    expoClientId: '322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com',
+    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+  });
+
+  React.useEffect(() => {
+    if (gresponse?.type === 'success') {
+      const { authentication } = gresponse;
+    }
+  }, [gresponse]);
+
+  // Login API
+  const login = () => {
+
+    let data = {
+      email: text,
+      password: password
+    }
+
+    axios.post('/login', data)
+      .then(data => {
+        if (data.data.message == "success") {
+          AsyncStorage.setItem('token', data.data.token, (err) => {
+            navigation.navigate("MenuNavigation")
+          })
+        } else {
+          return false
         }
-    }, [gresponse]);
+      })
+  }
 
-    
-  
-    return(
-      <PaperProvider>
-          <SafeAreaView style = {styles.container}>
-          <Text style = {styles.texts}>{Strings.loginAccount}</Text>
-          <TextInput
+  return (
+    <PaperProvider>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.texts}>{Strings.loginAccount}</Text>
+        <TextInput
           value={text}
           onChangeText={text => setText(text)}
-           style ={styles.emailinput} 
-           label = {<Text style = {{color: Colors.inputLabel}}>Email</Text>} 
-           selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="email-outline"/>} 
-           activeUnderlineColor = {Colors.backgroundColor}
-           underlineColor = {Colors.backgroundColor}/>
-  
-           <TextInput
-           style ={styles.passwordinput} 
-           secureTextEntry = {true}
-           label = {<Text style = {{color: Colors.inputLabel}}>Password</Text>} 
-           selectionColor = {Colors.primaryLight} left ={<TextInput.Icon name="lock-outline"/>} 
-           activeUnderlineColor = {Colors.backgroundColor}
-           underlineColor = {Colors.backgroundColor}/>
-  
-          <TouchableOpacity style = {styles.button}>
-          <Text style = {styles.textButton}> {Strings.login}</Text>
-          </TouchableOpacity>
-  
-          <Text style = {styles.forgotPassword}
+          style={styles.emailinput}
+          label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
+          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="email-outline" />}
+          activeUnderlineColor={Colors.backgroundColor}
+          underlineColor={Colors.backgroundColor} />
+
+        <TextInput
+          style={styles.passwordinput}
+          value={password}
+          onChangeText={(val) => setPassword(val)}
+          secureTextEntry={true}
+          label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
+          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="lock-outline" />}
+          activeUnderlineColor={Colors.backgroundColor}
+          underlineColor={Colors.backgroundColor} />
+
+        <TouchableOpacity style={styles.button} onPress={login}>
+          <Text style={styles.textButton}> {Strings.login}</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.forgotPassword}
           onPress={() => navigation.replace("ForgotPassword")}
-          >{Strings.forgotPassword}</Text>
-  
-          <View style = {styles.socialContainer}>
-            <TouchableWithoutFeedback
-             onPress={() => {
+        >{Strings.forgotPassword}</Text>
+
+        <View style={styles.socialContainer}>
+          <TouchableWithoutFeedback
+            onPress={() => {
               promptAsync();
             }}>
-              <Image source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png'}}/>
-            </TouchableWithoutFeedback>
-  
-            <TouchableWithoutFeedback
-             onPress={() => {
+            <Image source={{ width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png' }} />
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() => {
               googlePromptAsync();
             }}>
-              <Image style = {{marginLeft: 50}}
-              source={{width: 24, height: 24, uri: 'https://cdn-icons-png.flaticon.com/512/281/281764.png'}}/>
-            </TouchableWithoutFeedback>
-  
-{/*             <TouchableWithoutFeedback>
+            <Image style={{ marginLeft: 50 }}
+              source={{ width: 24, height: 24, uri: 'https://cdn-icons-png.flaticon.com/512/281/281764.png' }} />
+          </TouchableWithoutFeedback>
+
+          {/*             <TouchableWithoutFeedback>
               <Image style = {{marginLeft: 50}}
               source={{width: 25, height: 25, uri: 'https://cdn-icons-png.flaticon.com/512/15/15476.png'}}/>
             </TouchableWithoutFeedback> */}
-          </View>
-  
-          <View style = {styles.rowContainer}>
-          <Text style = {styles.dontHaveAccount}>{Strings.dontHaveAccount}</Text>
-          <Text style = {styles.signup} onPress={()=>navigation.navigate('Signup')}>{Strings.signup}</Text>
-          </View>
-          
-          
+        </View>
+
+        <View style={styles.rowContainer}>
+          <Text style={styles.dontHaveAccount}>{Strings.dontHaveAccount}</Text>
+          <Text style={styles.signup} onPress={() => navigation.navigate('Signup')}>{Strings.signup}</Text>
+        </View>
+
+
       </SafeAreaView>
-      </PaperProvider>
-    
+    </PaperProvider>
+
   );
-  }
+}
