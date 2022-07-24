@@ -45,6 +45,10 @@ export const deposit = 'Deposit'
 export const withdraw = 'Withdraw'
 export const send = 'Send'
 export const receive = 'Receive'
+
+export const sendCrypto = 'Send Crypto'
+export const receiveCrypto = 'Receive Crypto'
+
 export const coins = 'Coins'
 
 export const info = 'Info'

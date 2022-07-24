@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         marginTop: 40,
         shadowOffset:{width: 0, height:5},
         shadowColor:'#00000',
-        shadowOpacity:0.9,
+        shadowOpacity:0.1,
         elevation:3,
     },
 

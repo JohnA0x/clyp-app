@@ -41,8 +41,10 @@ export default function HomeScreen ({ navigation }){
                 <Text style = {styles.cryptoBalanceText}>0.0001 BTC</Text>
 
                 <View style={styles.transactionOptions}>
-                    <VectorButton name = 'arrow-up' size= {20} color = {Colors.white} style={styles.sendbutton}/>
-                    <VectorButton name = 'arrow-down' size= {20} color = {Colors.white} style={styles.receivebutton} />
+                    <VectorButton name = 'arrow-up' size= {20} color = {Colors.white} 
+                    style={styles.sendbutton} handlePress = {() => navigation.push(Strings.sendCrypto)}/>
+                    <VectorButton name = 'arrow-down' size= {20} color = {Colors.white} 
+                    style={styles.receivebutton} handlePress = {() => navigation.push(Strings.receiveCrypto)}/>
                     <VectorButton name = 'swap-horizontal' size= {20} color = {Colors.white} style={styles.swapbutton} />
                 </View>
             </View>

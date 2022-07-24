@@ -17,6 +17,8 @@ import PreferencesScreen from "../screens/PreferencesScreen";
 import NotificationScreen from "../screens/NotificationsScreen";
 import QRCodeScreen from "../screens/QRCodeScreen";
 import ShareScreen from "../screens/ShareScreen";
+import SendCryptoScreen from "../screens/SendCryptoScreen";
+import ReceiveCryptoScreen from "../screens/ReceiveCryptoScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -36,6 +38,8 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.notifications} component={NotificationScreen} />
       <HomeStack.Screen name={Strings.qrcode} component={QRCodeScreen} />
       <HomeStack.Screen name={Strings.share} component={ShareScreen} />
+      <HomeStack.Screen name={Strings.sendCrypto} component={SendCryptoScreen} />
+      <HomeStack.Screen name={Strings.receiveCrypto} component={ReceiveCryptoScreen} />
     </HomeStack.Navigator>
   );
 };
