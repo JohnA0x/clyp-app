@@ -20,6 +20,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DropDownPicker from "react-native-dropdown-picker";
+import { CustomModal } from "../components/modal";
 
 export default function SendCryptoScreen({ navigation }) {
   // States
@@ -93,6 +94,11 @@ export default function SendCryptoScreen({ navigation }) {
       {label: 'Apple', value: 'apple'},
       {label: 'Banana', value: 'banana'}
     ]);
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+    };
 
     return (
       <SafeAreaView style={styles.container}>
@@ -131,7 +137,9 @@ export default function SendCryptoScreen({ navigation }) {
             keyboardType='numeric'
           />
 
-          <RoundedButton text = {'Send ' + walletOptions.abb} textStyle = {styles.textButton} style = {styles.button}/>
+          <CustomModal isVisible = {isModalVisible}/>
+          <RoundedButton text = {'Send ' + walletOptions.abb} textStyle = {styles.textButton} 
+          style = {styles.button} handlePress = {toggleModal}/>
        
       {/*     <DropDownPicker
           style={styles.dropdown}

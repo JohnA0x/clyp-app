@@ -50,6 +50,8 @@ export const sendCrypto = 'Send Crypto'
 export const receiveCrypto = 'Receive Crypto'
 
 export const coins = 'Coins'
+export const holdings = 'Holdings'
+export const favourite = 'Favourites'
 
 export const info = 'Info'
 
