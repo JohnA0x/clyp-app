@@ -35,6 +35,8 @@ export const next = 'Next'
 export const skip = 'Skip'
 export const back = 'Back'
 export const done = 'Done'
+export const mobileNumber = 'Use Mobile Number Instead'
+export const email = 'Use Email Instead'
 
 
 // Home

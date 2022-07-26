@@ -35,7 +35,7 @@ import favouriteListArray from "../strings/favouritelist";
 
 export default function HomeScreen({ navigation }) {
   const favouriteList = ({ item }) => (
-    <View style={styles.favouriteContainer}>
+    <View style={styles.favouriteBaseContainer}>
       <TouchableOpacity
         style={styles.favouriteButton}
         onPress={() => navigation.push(item.name)}
@@ -46,6 +46,20 @@ export default function HomeScreen({ navigation }) {
       </TouchableOpacity>
     </View>
   );
+
+  const holdingsList = ({ item }) => (
+    <View style={styles.historyBaseContainer}>
+      <TouchableOpacity
+        style={styles.holdingButton}
+        onPress={() => navigation.push(item.name)}
+      >
+        <ImageButton image={item.icon} style={styles.cryptoimage} 
+        imageStyle={styles.cryptoimage}/>
+        <Text style={styles.textButton}>{item.name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,7 +90,7 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      <Swiper activeDotColor={Colors.primary}>
+      <Swiper activeDotColor={Colors.fadedButton}>
         <View style={styles.cryptoContainer}>
           <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
           <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
@@ -139,10 +153,11 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <View style={styles.coinContainer}>
-        <Text style={styles.coinText}>{Strings.holdings}</Text>
+        <Text style={styles.holdingText}>{Strings.holdings}</Text>
         <FlatList
+        contentContainerStyle={styles.flatlist}
           data={favouriteListArray}
-          renderItem={favouriteList}
+          renderItem={holdingsList}
           //numColumns={2}
           keyExtractor={(item, id) => id}
         />
