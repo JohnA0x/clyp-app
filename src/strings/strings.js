@@ -79,3 +79,22 @@ export const changeappearance = 'Change Appearance'
 export const paymentmethod = 'Payment Method'
 
 export const seeAll = 'See All'
+
+
+// Cryptocurrencies
+export const bitcoin = 'Bitcoin'
+export const ethereum = 'Ethereum'
+export const binancecoin = 'Binance Coin'
+export const litecoin = 'Litecoin'
+export const usdtether = 'USD Tether'
+
+export const btc = 'BTC'
+export const eth = 'ETH'
+export const bnb = 'BNB'
+export const ltc = 'LTC'
+export const usdt = 'USDT'
+
+export const walletAddress = 'Wallet Address'
+export const walletName = 'Wallet Name'
+export const selectNetwork = 'Select Network'
+export const enterAmount = 'Enter Amount'

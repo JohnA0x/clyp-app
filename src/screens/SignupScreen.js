@@ -125,7 +125,7 @@ function SignupScreen() {
           style={styles.passwordinput}
           secureTextEntry={true}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
-          selectionColor={Colors.primaryLight}
+          selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}

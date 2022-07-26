@@ -115,7 +115,7 @@ function LoginScreen({ navigation }) {
           onChangeText={text => setText(text)}
           style={styles.emailinput}
           label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
-          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="email-outline" />}
+          selectionColor={Colors.primary} left={<TextInput.Icon name="email-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor} />
 
@@ -125,7 +125,7 @@ function LoginScreen({ navigation }) {
           onChangeText={(val) => setPassword(val)}
           secureTextEntry={true}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
-          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="lock-outline" />}
+          selectionColor={Colors.primary} left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor} />
 
