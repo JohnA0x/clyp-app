@@ -25,6 +25,8 @@ import { ResponseType } from 'expo-auth-session';
 
 import axios from '../components/axios'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import MenuNavigation from "../navigations/MenuNavigation";
+import { CustomAlert } from "../components/alert";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,7 @@ export default function Login() {
         }}>
         <Stack.Screen name='Login' component={LoginScreen} />
         <Stack.Screen name='Signup' component={SignupScreen} />
+        <Stack.Screen name="MenuNavigation" component={MenuNavigation} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -93,16 +96,26 @@ function LoginScreen({ navigation }) {
       email: text,
       password: password
     }
-
-    axios.post('/login', data)
+    
+    if(data.email === "" || data.password === ""){
+      CustomAlert({title: "All fields Required", subtitle: "Please provide your email and password", handlePress: () => {}})
+      return false
+    }
+    axios.post('/user-gateway/login', data)
       .then(data => {
+        
         if (data.data.message == "success") {
           AsyncStorage.setItem('token', data.data.token, (err) => {
             navigation.navigate("MenuNavigation")
           })
         } else {
+          CustomAlert({title: "Login Error", subtitle: data.data.details, handlePress: () => {}})
           return false
         }
+      })
+      .catch(err => {
+        CustomAlert({title: "Login Error", subtitle: "Error making request, please try again...", handlePress: () => {}})
+        console.log({err})
       })
   }
 
@@ -129,7 +142,7 @@ function LoginScreen({ navigation }) {
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor} />
 
-        <TouchableOpacity style={styles.button} onPress={login}>
+        <TouchableOpacity style={styles.button} onPress={() => login()}>
           <Text style={styles.textButton}> {Strings.login}</Text>
         </TouchableOpacity>
 

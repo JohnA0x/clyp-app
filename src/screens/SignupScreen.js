@@ -39,6 +39,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
 import { ResponseType } from 'expo-auth-session';
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
@@ -84,7 +85,8 @@ function SignupScreen() {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { code } = response.params;
-      navigation.navigate("MenuNavigation")
+      console.log(response)
+      // navigation.navigate("MenuNavigation")
     }
   }, [response]);
 
@@ -99,11 +101,47 @@ function SignupScreen() {
   React.useEffect(() => {
     if (gresponse?.type === 'success') {
       const { authentication } = gresponse;
-      navigation.navigate("MenuNavigation")
+      console.log(gresponse)
+      // navigation.navigate("MenuNavigation")
       }
   }, [gresponse]);
 
+  const register = () => {
+    let data = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
+      password: password,
+      country: country,
+      sos: sos,
+      f_id: f_id,
+      token: token
+    }
 
+    if(data.email === ""){
+      CustomAlert({title: "Sign up error", subtitle: "Please provide your sign up details completely", handlePress: () => {}})
+      return false
+    }
+
+    axios.post('/user-gateway/register', data)
+    .then((data) => {
+
+      if (data.data.message == "success") {
+        AsyncStorage.setItem('token', data.data.token, (err) => {
+          navigation.navigate("MenuNavigation")
+        })
+      } else {
+        CustomAlert({title: "Sign up Error", subtitle: data.data.details, handlePress: () => {}})
+        return false
+      }
+
+    })
+    .catch(err => {
+      CustomAlert({title: "Sign up Error", subtitle: "Error making request, please try again...", handlePress: () => {}})
+      console.log({err})
+    })
+  }
 
 
   return (
@@ -133,11 +171,11 @@ function SignupScreen() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("MenuNavigation")}
+          onPress={() => register()}
         >
           <Text
             style={styles.textButton}
-            onPress={() => navigation.navigate("MenuNavigation")}
+            onPress={() => register()}
           >
             {" "}
             {Strings.signup}
