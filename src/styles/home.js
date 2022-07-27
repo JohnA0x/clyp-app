@@ -22,13 +22,16 @@ export const styles = StyleSheet.create({
       flex:1,
       padding: 10,
     },
-    
+
+    swiperContainer:{
+      height: '50%'
+    },
 
     cryptoContainer:{
         backgroundColor: Colors.primary,
         borderRadius: 20,
         width:'80%',
-        height: '85%',
+        height: '40%',
         alignContent: 'center',
         alignSelf: 'center',
         alignItems: 'center',
@@ -44,7 +47,7 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.black,
       borderRadius: 20,
       width:'80%',
-      height: '85%',
+      height: '40%',
       alignContent: 'center',
       alignSelf: 'center',
       alignItems: 'center',
@@ -206,7 +209,7 @@ export const styles = StyleSheet.create({
     coinContainer:{
       flex: 1,
       padding: 10,
-      marginBottom:-150,
+      marginTop:10,
       backgroundColor: Colors.backgroundColor,
     },
 

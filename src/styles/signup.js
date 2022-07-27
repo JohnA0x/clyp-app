@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
   texts: {
     flex: 1,
     fontSize: 30,
-    height: "60%",
     marginLeft: 12,
     marginTop: 100,
     fontFamily: "Poppins_700Bold",
@@ -101,7 +100,7 @@ export const styles = StyleSheet.create({
   alreadyHaveAccount: {
     fontFamily: "Poppins_400Regular",
     color: Colors.textColorGrey,
-    marginBottom: '5%'
+    marginBottom: '2%'
   },
 
   login: {
@@ -175,7 +174,7 @@ export const nameStyles = StyleSheet.create({
   alreadyHaveAccount: {
     fontFamily: "Poppins_400Regular",
     color: Colors.textColorGrey,
-    marginBottom: '30%'
+    marginBottom: '10%'
   },
 
 

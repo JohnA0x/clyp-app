@@ -63,6 +63,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View style={styles.topBar}>
         <ImageButton
           style={styles.profileImage}
@@ -90,7 +91,7 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      <Swiper activeDotColor={Colors.fadedButton}>
+      <Swiper height={'400%'} style = {styles.swiperContainer} activeDotColor={Colors.fadedButton}>
         <View style={styles.cryptoContainer}>
           <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
           <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
@@ -162,6 +163,8 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item, id) => id}
         />
       </View>
+      </ScrollView>
+      
     </SafeAreaView>
   );
 }
