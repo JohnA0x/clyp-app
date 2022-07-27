@@ -105,9 +105,19 @@ function LoginScreen({ navigation }) {
       .then(data => {
         
         if (data.data.message == "success") {
+          console.log({token: data.data.token})
+          console.log({id: data.data.user.id})
           AsyncStorage.setItem('token', data.data.token, (err) => {
-            navigation.navigate("MenuNavigation")
+            console.log({err})
+            if(err) {
+              console.log(err)
+              return
+            }
+            AsyncStorage.setItem("user_id", data.data.user.id, (err) => {
+              navigation.navigate("MenuNavigation")
+            })
           })
+          
         } else {
           CustomAlert({title: "Login Error", subtitle: data.data.details, handlePress: () => {}})
           return false
@@ -128,7 +138,7 @@ function LoginScreen({ navigation }) {
           onChangeText={text => setText(text)}
           style={styles.emailinput}
           label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
-          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="email-outline" />}
+          selectionColor={Colors.primary} left={<TextInput.Icon name="email-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor} />
 
@@ -138,7 +148,7 @@ function LoginScreen({ navigation }) {
           onChangeText={(val) => setPassword(val)}
           secureTextEntry={true}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
-          selectionColor={Colors.primaryLight} left={<TextInput.Icon name="lock-outline" />}
+          selectionColor={Colors.primary} left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor} />
 

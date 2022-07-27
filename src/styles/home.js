@@ -12,11 +12,23 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.backgroundColor,
     },
 
+    favouriteBaseContainer:{
+      flex:1,
+      flexDirection: 'row',
+      padding: 10,
+    },
+
+    historyBaseContainer:{
+      flex:1,
+      padding: 10,
+    },
+    
+
     cryptoContainer:{
         backgroundColor: Colors.primary,
         borderRadius: 20,
         width:'80%',
-        height: 200,
+        height: '85%',
         alignContent: 'center',
         alignSelf: 'center',
         alignItems: 'center',
@@ -32,7 +44,7 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.black,
       borderRadius: 20,
       width:'80%',
-      height: 200,
+      height: '85%',
       alignContent: 'center',
       alignSelf: 'center',
       alignItems: 'center',
@@ -42,6 +54,10 @@ export const styles = StyleSheet.create({
       shadowColor:Colors.shadowColor,
       shadowOpacity:0.1,
       elevation:3,
+  },
+
+  flatlist: {
+    display: "flex",
   },
 
 
@@ -95,6 +111,21 @@ export const styles = StyleSheet.create({
       marginTop: 10,
       height: '30%',
       width: '80%',
+  },
+
+  favouriteButton: {
+    backgroundColor: Colors.rowColor,
+    borderRadius: 40,
+    width: 150,
+    height: 60,
+    paddingVertical: 10,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    justifyContent: 'center',
+    flexDirection: 'row'
   },
 
     balanceText:{
@@ -152,23 +183,69 @@ export const styles = StyleSheet.create({
 
 
     textButton: {
-      color: Colors.white,
+      color: Colors.black,
       fontFamily: 'Poppins_600SemiBold',
     },
 
     coinContainer:{
       flex: 1,
       padding: 10,
-      marginTop:10,
+      marginBottom:-150,
       backgroundColor: Colors.backgroundColor,
     },
 
     coinText: {
       color: Colors.textColor,
       fontFamily: 'Poppins_600SemiBold',
-      fontSize:14,
+      fontSize:17,
       alignSelf: 'flex-start',
       marginLeft: 15,
       
+    },
+
+    coinContainer:{
+      flex: 1,
+      padding: 10,
+      marginBottom:-150,
+      backgroundColor: Colors.backgroundColor,
+    },
+
+    coinText: {
+      color: Colors.textColor,
+      fontFamily: 'Poppins_600SemiBold',
+      fontSize:17,
+      alignSelf: 'flex-start',
+      marginLeft: 15,
+      
+    },
+
+    holdingText: {
+      color: Colors.textColor,
+      fontFamily: 'Poppins_600SemiBold',
+      fontSize:17,
+      alignSelf: 'flex-start',
+      marginLeft: 15
+      
+    },
+
+    cryptoimage: {
+      marginRight: 10,
+      width: 20,
+      height: 20,
+    },
+
+    holdingButton: {
+      backgroundColor: Colors.rowColor,
+      borderRadius: 40,
+      width: '100%',
+      height: 60,
+      paddingVertical: 10,
+      shadowOffset: { width: 0, height: 3 },
+      shadowColor: Colors.shadowColor,
+      shadowOpacity: 0.1,
+      elevation: 3,
+      alignItems: "center",
+      justifyContent: 'center',
+      flexDirection: 'row'
     },
 })
