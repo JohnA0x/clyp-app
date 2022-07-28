@@ -26,14 +26,13 @@ import { CustomModal } from "../components/modal";
 
 import QRCode from "react-native-qrcode-svg";
 
-
-
 export default function ReceiveCryptoScreen({ navigation }) {
   const [query, setQuery] = useState("");
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
-  const [walletOptions, setWalletOptions] = useState([{address: "hh", 
-  abb: "hh"}]);
+  const [walletOptions, setWalletOptions] = useState([
+    { address: "hh", abb: "hh" },
+  ]);
   const [data, setData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const ReceiveStack = createNativeStackNavigator();
@@ -44,7 +43,10 @@ export default function ReceiveCryptoScreen({ navigation }) {
         headerShown: false,
       }}
     >
-      <ReceiveStack.Screen name={Strings.receiveCrypto} component={ReceiveCryptoList} />
+      <ReceiveStack.Screen
+        name={Strings.receiveCrypto}
+        component={ReceiveCryptoList}
+      />
       <ReceiveStack.Screen name="receiveoptions" component={ReceiveOptions} />
     </ReceiveStack.Navigator>
   );
@@ -96,8 +98,8 @@ export default function ReceiveCryptoScreen({ navigation }) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
-      {label: 'Apple', value: 'apple'},
-      {label: 'Banana', value: 'banana'}
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" },
     ]);
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -112,7 +114,7 @@ export default function ReceiveCryptoScreen({ navigation }) {
           size={24}
           color={Colors.textColor}
           style={styles.optionsbackButton}
-          handlePress={() => navigation.navigate(Strings.sendCrypto)}
+          handlePress={() => navigation.navigate(Strings.receiveCrypto)}
         />
         <Text style={styles.optionHeaderText}>Receive {cryptoName}</Text>
         <Text style={styles.optionSubtitleText}>
@@ -120,22 +122,37 @@ export default function ReceiveCryptoScreen({ navigation }) {
         </Text>
         <Image style={styles.optionsimage} source={{ uri: cryptoIcon }} />
 
-        <QRCode
-          value="ClypPay"
-          color={Colors.qrcode}
-          backgroundColor={Colors.backgroundColor}
-          size={Dimensions.get("window").width / 2.5}
-          //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
-          // logoMargin={2}
-          // logoSize={20}
-          //logoBorderRadius={10}
-          //logoBackgroundColor={'transparent'}
+        <View style={styles.qrcode}>
+          <QRCode
+            value="ClypPay"
+            color={Colors.qrcode}
+            backgroundColor={Colors.backgroundColor}
+            size={Dimensions.get("window").width / 2.3}
+            //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
+            // logoMargin={2}
+            // logoSize={20}
+            //logoBorderRadius={10}
+            //logoBackgroundColor={'transparent'}
+          />
+        </View>
+
+        <View style={styles.detailsScreen}>
+          <Text style={styles.networkText}>{Strings.network}</Text>
+          <Text style={styles.addressText}>{Strings.address}</Text>
+          <Text style={styles.networkValueText}>ERC-20</Text>
+          <Text style={styles.addressValueText} numberOfLines={1}>
+            {Strings.dummyAddress}
+          </Text>
+        </View>
+
+        <CustomModal isVisible={isModalVisible} />
+        <RoundedButton
+          text="Copy Address"
+          textStyle={styles.textButton}
+          style={styles.button}
+          handlePress={toggleModal}
         />
-          <CustomModal isVisible = {isModalVisible}/>
-          <RoundedButton text = {'Copy Address'} textStyle = {styles.textButton} 
-          style = {styles.button} handlePress = {toggleModal}/>
-       
-      {/*     <DropDownPicker
+        {/*     <DropDownPicker
           style={styles.dropdown}
             open={open}
             value={value}
@@ -161,8 +178,7 @@ export default function ReceiveCryptoScreen({ navigation }) {
             navigation.push("receiveoptions");
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
-            setWalletOptions({abb: item.abb})
-           
+            setWalletOptions({ abb: item.abb });
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
@@ -171,7 +187,6 @@ export default function ReceiveCryptoScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     );
-
 
     // This renders some components and the flatlist together
     return (
@@ -192,11 +207,9 @@ export default function ReceiveCryptoScreen({ navigation }) {
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
             renderItem={receiveCryptoList}
-            
           />
         </View>
       </SafeAreaView>
     );
   }
 }
-

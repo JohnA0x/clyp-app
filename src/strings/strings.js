@@ -47,6 +47,9 @@ export const deposit = 'Deposit'
 export const withdraw = 'Withdraw'
 export const send = 'Send'
 export const receive = 'Receive'
+export const buy = 'Buy'
+export const sell = 'Sell'
+export const swap = 'Swap'
 
 export const sendCrypto = 'Send Crypto'
 export const receiveCrypto = 'Receive Crypto'
@@ -58,6 +61,8 @@ export const favourite = 'Favourites'
 export const info = 'Info'
 
 export const clyphub = 'Clyp Hub'
+
+export const fund = 'Fund Your Wallet'
 
 
 //Profile
@@ -79,6 +84,9 @@ export const scanqrcode = 'Scan QRCode'
 export const changecurrency = 'Change Currency'
 export const hidebalance = 'Hide Balance'
 export const changeappearance = 'Change Appearance'
+export const depositviaCrypto = 'Deposit Via Crypto'
+export const depositviaP2P = 'Deposit Via P2P'
+export const depositviaDebit = 'Deposit via Debit Card'
 
 export const paymentmethod = 'Payment Method'
 
@@ -98,12 +106,17 @@ export const bnb = 'BNB'
 export const ltc = 'LTC'
 export const usdt = 'USDT'
 
+export const dummyAddress = '0x5E7f1CD19BB760b30C3d0054A7ed03A03962bb26'
+
 export const walletAddress = 'Wallet Address'
 export const walletName = 'Wallet Name'
 export const selectNetwork = 'Select Network'
 export const enterAmount = 'Enter Amount'
 
+// About
 export const versionNumber = 'V1.0.0'
 export const aboutContent = 'Clyppay is a Nigerian online crypto  agency banking platform headquartered in Lagos State. The company was founded by, Akitoye Adeyemi  in 2022.\nClyppay offers a marketplace allowing for assets to be sold directly at a fixed price, , based on the Ethereum ERC-721 standard, the layer-2 scaling solution for Ethereum Polygon, the KIP-7 standard for Klaytn, and the SPL standard for Solana...'
 export const privacyPolicy = 'Privacy Policy'
 export const showPrivacyPolicy = 'Show Privacy Policy'
+export const network = 'Network'
+export const address = 'Address'
