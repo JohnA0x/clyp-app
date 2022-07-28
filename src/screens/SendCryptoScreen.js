@@ -111,7 +111,7 @@ export default function SendCryptoScreen({ navigation }) {
         />
         <Text style={styles.optionHeaderText}>Send {cryptoName}</Text>
         <Text style={styles.optionSubtitleText}>
-          Add Crypto to your Clyp Wallet
+          Transfer Crypto from your Clyp Wallet
         </Text>
         <Image style={styles.optionsimage} source={{ uri: cryptoIcon }} />
 

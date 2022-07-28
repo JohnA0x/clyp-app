@@ -20,6 +20,8 @@ import ShareScreen from "../screens/ShareScreen";
 import SendCryptoScreen from "../screens/SendCryptoScreen";
 import ReceiveCryptoScreen from "../screens/ReceiveCryptoScreen";
 import AboutUs from "../screens/AboutUs";
+import DepositScreen from "../screens/DepositScreen";
+import LogOutScreen from "../screens/LogOutScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -42,6 +44,8 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.sendCrypto} component={SendCryptoScreen} />
       <HomeStack.Screen name={Strings.receiveCrypto} component={ReceiveCryptoScreen} />
       <HomeStack.Screen name={Strings.about} component={AboutUs} />
+      <HomeStack.Screen name={Strings.deposit} component={DepositScreen} />
+      <HomeStack.Screen name={Strings.logout} component={LogOutScreen} />
     </HomeStack.Navigator>
   );
 };

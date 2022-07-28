@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     cryptoContainer:{
         backgroundColor: Colors.primary,
         borderRadius: 20,
-        width:'80%',
+        width:'90%',
         height: 200,
         alignContent: 'center',
         alignSelf: 'center',
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     fiatContainer:{
       backgroundColor: Colors.black,
       borderRadius: 20,
-      width:'80%',
+      width:'90%',
       height: 200,
       alignContent: 'center',
       alignSelf: 'center',
@@ -81,14 +81,16 @@ export const styles = StyleSheet.create({
     notificationButton:{
       width:24,
       height:24,
-      marginLeft: '35%',
+      position:'absolute',
+      right: '20%',
       marginTop: 17,
     },
 
     scanButton:{
       width:24,
       height:24,
-      marginLeft: '3%',
+      position:'absolute',
+      right: '10%',
       marginTop: 17,
     },
 
@@ -109,11 +111,11 @@ export const styles = StyleSheet.create({
       alignContent: 'center',
       justifyContent:'center',
       backgroundColor: Colors.tertiary,
-      borderRadius: 30,
+      borderRadius: 20,
       paddingTop: 20,
       marginTop: 5,
       height: '30%',
-      width: '80%',
+      width: '90%',
   },
 
   favouriteButton: {
@@ -153,8 +155,8 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      width:35,
-      height:35,
+      width:30,
+      height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
       marginBottom: 20,
@@ -164,8 +166,8 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      width:35,
-      height:35,
+      width:30,
+      height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
       marginBottom: 20,
@@ -176,8 +178,8 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      width:35,
-      height:35,
+      width:30,
+      height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
       marginBottom: 20,
@@ -237,6 +239,27 @@ export const styles = StyleSheet.create({
       height: 20,
     },
 
+    holdingsCryptoimage: {
+      marginLeft: 20,
+      marginRight: 10,
+      width: 20,
+      height: 20,
+    },
+
+    holdingsTextButton: {
+      left: 20,
+      color: Colors.black,
+      fontFamily: 'Poppins_600SemiBold',
+    },
+
+    holdingsValueButton: {
+      position: 'absolute',
+      right: 30,
+      alignSelf: 'center',
+      color: Colors.black,
+      fontFamily: 'Poppins_600SemiBold',
+    },
+
     holdingButton: {
       backgroundColor: Colors.rowColor,
       borderRadius: 40,
@@ -248,7 +271,6 @@ export const styles = StyleSheet.create({
       shadowOpacity: 0.1,
       elevation: 3,
       alignItems: "center",
-      justifyContent: 'center',
       flexDirection: 'row'
     },
 })

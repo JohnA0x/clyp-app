@@ -56,8 +56,11 @@ export default function HomeScreen({ navigation }) {
         style={styles.favouriteButton}
         onPress={() => navigation.push(item.name)}
       >
-        <ImageButton image={item.icon} style={styles.cryptoimage}
-          imageStyle={styles.cryptoimage} />
+        <ImageButton
+          image={item.icon}
+          style={styles.cryptoimage}
+          imageStyle={styles.cryptoimage}
+        />
         <Text style={styles.textButton}>{item.name}</Text>
       </TouchableOpacity>
     </View>
@@ -69,9 +72,13 @@ export default function HomeScreen({ navigation }) {
         style={styles.holdingButton}
         onPress={() => navigation.push(item.name)}
       >
-        <ImageButton image={item.icon} style={styles.cryptoimage}
-          imageStyle={styles.cryptoimage} />
-        <Text style={styles.textButton}>{item.name}</Text>
+        <ImageButton
+          image={item.icon}
+          style={styles.holdingsCryptoimage}
+          imageStyle={styles.holdingsCryptoimage}
+        />
+        <Text style={styles.holdingsTextButton}>{item.name}</Text>
+        <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -129,68 +136,85 @@ export default function HomeScreen({ navigation }) {
           handlePress={() => navigation.navigate(Strings.qrcode, {token})}
         />
       </View>
+      
+        <Swiper
+          height={"400%"}
+          style={styles.swiperContainer}
+          activeDotColor={Colors.fadedButton}
+        >
+          <View style={styles.cryptoContainer}>
+            <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
+            <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
 
-      <Swiper height={'400%'} style = {styles.swiperContainer} activeDotColor={Colors.fadedButton}>
-        <View style={styles.cryptoContainer}>
-          <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
-          <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
-
-          <View style={styles.transactionOptions}>
-            <VectorButton
-              name="arrow-up"
-              size={20}
-              color={Colors.white}
-              style={styles.sendbutton}
-              handlePress={() => navigation.push(Strings.sendCrypto)}
-            />
-            <VectorButton
-              name="arrow-down"
-              size={20}
-              color={Colors.white}
-              style={styles.receivebutton}
-              handlePress={() => navigation.push(Strings.receiveCrypto)}
-            />
-            <VectorButton
-              name="swap-horizontal"
-              size={20}
-              color={Colors.white}
-              style={styles.swapbutton}
-            />
+            <View style={styles.transactionOptions}>
+              <VectorButton
+                name="arrow-up"
+                size={18}
+                color={Colors.white}
+                style={styles.sendbutton}
+                handlePress={() => navigation.push(Strings.sendCrypto)}
+              />
+              <VectorButton
+                name="arrow-down"
+                size={18}
+                color={Colors.white}
+                style={styles.receivebutton}
+                handlePress={() => navigation.push(Strings.receiveCrypto)}
+              />
+              <VectorButton
+                name="pricetag-outline"
+                size={18}
+                color={Colors.white}
+                style={styles.swapbutton}
+                handlePress={() => navigation.push(Strings.deposit)}
+              />
+              <VectorButton
+                name="cash-outline"
+                size={18}
+                color={Colors.white}
+                style={styles.swapbutton}
+              />
+              <VectorButton
+                name="swap-horizontal"
+                size={18}
+                color={Colors.white}
+                style={styles.swapbutton}
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.fiatContainer}>
-          <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-          <Text style={styles.cryptoBalanceText}>N 35,000</Text>
+          <View style={styles.fiatContainer}>
+            <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
+            <Text style={styles.cryptoBalanceText}>N 35,000</Text>
 
-          <View style={styles.transactionOptions}>
-            <VectorButton
-              name="arrow-up"
-              size={20}
-              color={Colors.white}
-              style={styles.sendbutton}
-            />
-            <VectorButton
-              name="arrow-down"
-              size={20}
-              color={Colors.white}
-              style={styles.receivebutton}
-            />
+            <View style={styles.transactionOptions}>
+              <VectorButton
+                name="arrow-up"
+                size={20}
+                color={Colors.white}
+                style={styles.sendbutton}
+              />
+              <VectorButton
+                name="arrow-down"
+                size={20}
+                color={Colors.white}
+                style={styles.receivebutton}
+              />
+            </View>
           </View>
-        </View>
-      </Swiper>
+        </Swiper>
 
-      <View style={styles.coinContainer}>
-        <Text style={styles.coinText}>{Strings.favourite}</Text>
-        <FlatList
-          contentContainerStyle={styles.flatlist}
-          data={favouriteListArray}
-          renderItem={favouriteList}
-          //numColumns={2}
-          horizontal={true}
-          keyExtractor={(item, id) => id}
-        />
-      </View>
+        <View style={styles.coinContainer}>
+          <Text style={styles.coinText}>{Strings.favourite}</Text>
+          <FlatList
+            contentContainerStyle={styles.flatlist}
+            data={favouriteListArray}
+            renderItem={favouriteList}
+            //numColumns={2}
+            horizontal={true}
+            keyExtractor={(item, id) => id}
+          />
+        </View>
 
       <View style={styles.coinContainer}>
         <Text style={styles.holdingText}>{Strings.holdings}</Text>
@@ -203,7 +227,6 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
       </ScrollView>
-      
     </SafeAreaView>
   );
 }

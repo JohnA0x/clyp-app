@@ -30,8 +30,8 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.primary,
       borderRadius: 40,
       width: "80%",
-      height: 60,
-      marginTop: 40,
+      height: 50,
+      marginTop: '10%',
       shadowOffset: { width: 0, height: 3 },
       shadowColor: Colors.shadowColor,
       shadowOpacity: 0.1,
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
       color: Colors.textColor,
       fontFamily: "Poppins_700Bold",
       textAlign: "left",
-      marginLeft: "5%",
+      marginLeft: "18%",
       marginTop: "20%",
       fontSize: 20,
     },
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
       color: Colors.textColor,
       fontFamily: "Poppins_400Regular",
       textAlign: "left",
-      marginLeft: "5%",
+      marginLeft: "18%",
       fontSize: 12,
     },
   
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
       width: 50,
       height: 50,
       position: "absolute",
-      right: 30,
+      left: 20,
       marginTop: 100,
     },
   
@@ -175,33 +175,10 @@ export const styles = StyleSheet.create({
       left: 5,
       zIndex: 1,
     },
-    switch: {
-      marginRight: 30,
-      position: "absolute",
-      right: 0,
-      zIndex: 1,
-    },
 
-    walletAddressInput: {
-      height: "8%",
-      margin: "5%",
-      marginTop: 40,
-      borderWidth: 1,
-      borderRadius: 40,
-      borderColor: Colors.primary,
-      backgroundColor: 10,
-      padding: 20,
-    },
-  
-    otherTextInputs: {
-      height: "8%",
-      margin: "5%",
-      marginTop: 10,
-      borderWidth: 1,
-      borderRadius: 40,
-      borderColor: Colors.primary,
-      backgroundColor: 10,
-      padding: 20,
+    qrcode:{
+      marginTop: '15%',
+      alignSelf: 'center',
     },
   
     dropdown: {
@@ -213,6 +190,49 @@ export const styles = StyleSheet.create({
       borderColor: Colors.primary,
       backgroundColor: 10,
       padding: 20,
+    },
+
+    detailsScreen:{
+      backgroundColor: Colors.listHolder,
+      width: '80%', 
+      height: '20%',
+      padding: 20,
+      borderRadius: 20,
+      marginTop: 30,
+      alignSelf: 'center',
+    },
+
+    networkText:{
+      color: Colors.black,
+      fontSize: 12,
+      fontFamily: 'Poppins_400Regular',
+      marginTop: 20,
+    },
+
+    networkValueText:{
+      color: Colors.black,
+      fontSize: 12,
+      fontFamily: 'Poppins_400Regular',
+      marginTop: 40,
+      position: 'absolute',
+      right: 20
+    },
+
+    addressText:{
+      color: Colors.black,
+      fontSize: 12,
+      fontFamily: 'Poppins_400Regular',
+      marginTop: 20
+    },
+
+    addressValueText:{
+      color: Colors.black,
+      fontSize: 12,
+      fontFamily: 'Poppins_400Regular',
+      marginTop: 75,
+      position: 'absolute',
+      right: 20,
+      width: 50,
     },
   });
   
