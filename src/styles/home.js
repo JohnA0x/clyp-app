@@ -239,6 +239,27 @@ export const styles = StyleSheet.create({
       height: 20,
     },
 
+    holdingsCryptoimage: {
+      marginLeft: 20,
+      marginRight: 10,
+      width: 20,
+      height: 20,
+    },
+
+    holdingsTextButton: {
+      left: 20,
+      color: Colors.black,
+      fontFamily: 'Poppins_600SemiBold',
+    },
+
+    holdingsValueButton: {
+      position: 'absolute',
+      right: 30,
+      alignSelf: 'center',
+      color: Colors.black,
+      fontFamily: 'Poppins_600SemiBold',
+    },
+
     holdingButton: {
       backgroundColor: Colors.rowColor,
       borderRadius: 40,
@@ -250,7 +271,6 @@ export const styles = StyleSheet.create({
       shadowOpacity: 0.1,
       elevation: 3,
       alignItems: "center",
-      justifyContent: 'center',
       flexDirection: 'row'
     },
 })

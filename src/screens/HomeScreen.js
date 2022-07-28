@@ -58,10 +58,11 @@ export default function HomeScreen({ navigation }) {
       >
         <ImageButton
           image={item.icon}
-          style={styles.cryptoimage}
-          imageStyle={styles.cryptoimage}
+          style={styles.holdingsCryptoimage}
+          imageStyle={styles.holdingsCryptoimage}
         />
-        <Text style={styles.textButton}>{item.name}</Text>
+        <Text style={styles.holdingsTextButton}>{item.name}</Text>
+        <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
       </TouchableOpacity>
     </View>
   );
