@@ -21,20 +21,23 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 
 const Stack = createNativeStackNavigator();
 
-export default function QRCodeScreen() {
+export default function QRCodeScreen({ route }) {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Code" component={Code} />
+      <Stack.Screen name="Code" initialParams={route.params} component={Code} />
       <Stack.Screen name="Scan" component={Scan} />
     </Stack.Navigator>
   );
 }
 
-const Code = ({ navigation }) => {
+const Code = ({ navigation, route }) => {
+  // React.useEffect(()=> {
+  //   console.log(route)
+  // },[])
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.qrcodeHeader}>
@@ -50,7 +53,7 @@ const Code = ({ navigation }) => {
 
       <View style={styles.qrcode}>
         <QRCode
-          value="ClypPay"
+          value={route.params.token}
           color={Colors.qrcode}
           backgroundColor={Colors.backgroundColor}
           size={Dimensions.get("window").width / 2.5}

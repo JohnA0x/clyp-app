@@ -27,20 +27,25 @@ export const styles = StyleSheet.create({
     },
   
     button: {
-      padding: 2,
-      paddingLeft: 10,
-      flexDirection: "row",
-      backgroundColor: Colors.rowColor,
+      backgroundColor: Colors.primary,
       borderRadius: 40,
-      width: "95%",
-      height: 70,
+      width: "80%",
+      height: 60,
+      marginTop: 40,
       shadowOffset: { width: 0, height: 3 },
       shadowColor: Colors.shadowColor,
       shadowOpacity: 0.1,
       elevation: 3,
       alignItems: "center",
       alignSelf: "center",
+      justifyContent: 'center'
     },
+
+    textButton: {
+      color: Colors.white,
+      fontFamily: "Poppins_600SemiBold",
+    },
+  
   
     flatlist: {
       display: "flex",
@@ -64,6 +69,39 @@ export const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 20,
     },
+
+    optionHeaderText: {
+      color: Colors.textColor,
+      fontFamily: "Poppins_700Bold",
+      textAlign: "left",
+      marginLeft: "5%",
+      marginTop: "20%",
+      fontSize: 20,
+    },
+  
+    optionSubtitleText: {
+      color: Colors.textColor,
+      fontFamily: "Poppins_400Regular",
+      textAlign: "left",
+      marginLeft: "5%",
+      fontSize: 12,
+    },
+  
+    image: {
+      marginLeft: 0,
+      width: 30,
+      height: 30,
+    },
+  
+    optionsimage: {
+      marginLeft: 0,
+      width: 50,
+      height: 50,
+      position: "absolute",
+      right: 30,
+      marginTop: 100,
+    },
+  
   
     image: {
       marginLeft: 0,
@@ -130,11 +168,51 @@ export const styles = StyleSheet.create({
       zIndex: 1,
     },
   
+    optionsbackButton: {
+      marginLeft: 10,
+      position: "absolute",
+      marginTop: "12%",
+      left: 5,
+      zIndex: 1,
+    },
     switch: {
       marginRight: 30,
       position: "absolute",
       right: 0,
       zIndex: 1,
+    },
+
+    walletAddressInput: {
+      height: "8%",
+      margin: "5%",
+      marginTop: 40,
+      borderWidth: 1,
+      borderRadius: 40,
+      borderColor: Colors.primary,
+      backgroundColor: 10,
+      padding: 20,
+    },
+  
+    otherTextInputs: {
+      height: "8%",
+      margin: "5%",
+      marginTop: 10,
+      borderWidth: 1,
+      borderRadius: 40,
+      borderColor: Colors.primary,
+      backgroundColor: 10,
+      padding: 20,
+    },
+  
+    dropdown: {
+      height: "10%",
+      margin: "5%",
+      marginTop: 10,
+      borderWidth: 1,
+      borderRadius: 40,
+      borderColor: Colors.primary,
+      backgroundColor: 10,
+      padding: 20,
     },
   });
   

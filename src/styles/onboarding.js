@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    flex: 1,
     fontSize: 20,
     marginTop: 10,
     fontFamily: 'Poppins_700Bold',
@@ -24,8 +23,8 @@ export const styles = StyleSheet.create({
   },
 
   subtitle: {
-    flex: 1,
     fontSize: 13,
+    top: 15,
     marginBottom: 80,
     fontFamily: 'Poppins_400Regular',
     alignSelf: 'center',

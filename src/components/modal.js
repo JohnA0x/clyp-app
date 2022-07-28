@@ -17,7 +17,7 @@ export const CustomModal = ({ isVisible, handlePress, style, textStyle }) => {
     <ReactNativeModal isVisible={isVisible}>
       <View style={style}>
         <Text>I am the modal content!</Text>
-        <Button></Button>
+        <Button title=""/>
       </View>
     </ReactNativeModal>
   );

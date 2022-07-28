@@ -22,18 +22,21 @@ export const styles = StyleSheet.create({
       flex:1,
       padding: 10,
     },
-    
+
+    swiperContainer:{
+      height: 270
+    },
 
     cryptoContainer:{
         backgroundColor: Colors.primary,
         borderRadius: 20,
         width:'80%',
-        height: '85%',
+        height: 200,
         alignContent: 'center',
         alignSelf: 'center',
         alignItems: 'center',
         padding: 2,
-        marginTop: 40,
+        marginTop: 20,
         shadowOffset:{width: 0, height:5},
         shadowColor:'#00000',
         shadowOpacity:0.1,
@@ -44,12 +47,12 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.black,
       borderRadius: 20,
       width:'80%',
-      height: '85%',
+      height: 200,
       alignContent: 'center',
       alignSelf: 'center',
       alignItems: 'center',
       padding: 2,
-      marginTop: 40,
+      marginTop: 20,
       shadowOffset:{width: 0, height:3},
       shadowColor:Colors.shadowColor,
       shadowOpacity:0.1,
@@ -108,7 +111,7 @@ export const styles = StyleSheet.create({
       backgroundColor: Colors.tertiary,
       borderRadius: 30,
       paddingTop: 20,
-      marginTop: 10,
+      marginTop: 5,
       height: '30%',
       width: '80%',
   },
@@ -206,7 +209,7 @@ export const styles = StyleSheet.create({
     coinContainer:{
       flex: 1,
       padding: 10,
-      marginBottom:-150,
+      marginTop:10,
       backgroundColor: Colors.backgroundColor,
     },
 

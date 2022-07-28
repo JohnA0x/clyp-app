@@ -102,18 +102,17 @@ function LoginScreen({ navigation }) {
       return false
     }
     axios.post('/user-gateway/login', data)
-      .then(data => {
+      .then(async (data) => {
         
         if (data.data.message == "success") {
-          console.log({token: data.data.token})
-          console.log({id: data.data.user.id})
-          AsyncStorage.setItem('token', data.data.token, (err) => {
+          
+          await AsyncStorage.setItem('token', data.data.token, async (err) => {
             console.log({err})
             if(err) {
               console.log(err)
               return
             }
-            AsyncStorage.setItem("user_id", data.data.user.id, (err) => {
+            await AsyncStorage.setItem("user_id", data.data.user.id, (err) => {
               navigation.navigate("MenuNavigation")
             })
           })

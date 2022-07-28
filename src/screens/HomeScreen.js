@@ -39,7 +39,16 @@ import { CustomAlert } from "../components/alert";
 
 export default function HomeScreen({ navigation }) {
 
+  const [id, setID] = React.useState("")
   const [firstName, setFirstName] = React.useState("")
+  const [lastName, setLastName] = React.useState("")
+  const [preferences, setPrefrences]  = React.useState("")
+  const [user, setUser] = React.useState({})
+  const [token, setToken] = React.useState("")
+  // const [lastName, setLastName] = React.useState("")
+  // const [lastName, setLastName] = React.useState("")
+  // const [lastName, setLastName] = React.useState("")
+  // const [lastName, setLastName] = React.useState("")
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
@@ -67,38 +76,40 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
 
-    // async function fetchData() {
+    async function fetchData() {
       let id = await AsyncStorage.getItem("user_id").then(value => value)
-
       let token = await AsyncStorage.getItem("token").then(value => value)
 
-      // console.log(token) ${token}
-      axios.defaults.headers.common = {'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiIsImlhdCI6MTY1ODg5Mzk2MX0.zulb3Di4DawQVzKBlj5GJKg6L8DtpBWe34quxV45KFE`}
-
-      axios.get('/user-gateway/get-user', { user_id: "75893e5c-e5bb-4a9c-962f-e4e91274e330" }, {headers: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiIsImlhdCI6MTY1ODg5Mzk2MX0.zulb3Di4DawQVzKBlj5GJKg6L8DtpBWe34quxV45KFE"} )
+      setToken(token)
+      axios.post('/user-gateway/get-full-user', { user_id: id } )
         .then(data => {
-          console.log(data.data)
+          // console.log(data.data)
+          setID(data.data.user.id)
           setFirstName(data.data.user.first_name)
+          setLastName(data.data.user.last_name)
+          setPrefrences(data.data.user.prefrence[0])
+          setUser(data.data.user)
         })
         .catch(err => {
           CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
           console.log({ err })
         })
-    // }
-    // fetchData()
+    }
+    fetchData()
   }, [])
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View style={styles.topBar}>
         <ImageButton
           style={styles.profileImage}
           imageStyle={styles.profileImage}
           image="https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
           handlePress={() => {
-            navigation.push("Profile");
+            navigation.navigate("Profile", {id, firstName, lastName, preferences, user});
             navigation.setOptions({ tabBarVisible: false });
           }}
         />
@@ -115,11 +126,11 @@ export default function HomeScreen({ navigation }) {
           name="scan"
           size={24}
           color={Colors.primary}
-          handlePress={() => navigation.push(Strings.qrcode)}
+          handlePress={() => navigation.navigate(Strings.qrcode, {token})}
         />
       </View>
 
-      <Swiper activeDotColor={Colors.fadedButton}>
+      <Swiper height={'400%'} style = {styles.swiperContainer} activeDotColor={Colors.fadedButton}>
         <View style={styles.cryptoContainer}>
           <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
           <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
@@ -191,6 +202,8 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item, id) => id}
         />
       </View>
+      </ScrollView>
+      
     </SafeAreaView>
   );
 }

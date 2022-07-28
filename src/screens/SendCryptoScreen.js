@@ -154,7 +154,7 @@ export default function SendCryptoScreen({ navigation }) {
     );
   }
 
-  // Screen for crypto list, the first screen shown when you click on the
+  // Screen for crypto list, the first screen is shown when you click on the
   // send button
   function SendCryptoList() {
     const navigation = useNavigation();

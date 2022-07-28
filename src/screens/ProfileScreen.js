@@ -26,16 +26,46 @@ import { profileListArray } from "../strings/profilelist";
 import { listSeparator } from "../components/listseparator";
 
 import { useState } from "react";
+import axios from "../components/axios";
+import { CustomAlert } from "../components/alert";
 
-export default function ProfileScreen({ navigation }) {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+export default function ProfileScreen({ navigation, route }) {
+  const [isEnabled, setIsEnabled] = useState(route.params.preferences.merchant_mode);
+  const toggleSwitch = () => {
+    let data = {
+      user_id: route.params.id,
+      merchant_mode: isEnabled ? false : true
+    }
+
+    axios.post('/user-gateway/update-prefrences', data)
+    .then(res => {
+      if(res.data.message == "success"){
+        setIsEnabled((previousState) => !previousState);
+        // setMode(isEnabled ? "Dark" : "Light")
+        route.params.preferences.merchant_mode = isEnabled ? false : true
+        route.params.user.prefrence[0].merchant_mode = isEnabled ? false : true
+      } else {
+        CustomAlert({ title: "Error", subtitle: "Error updating private mode, please try again...", handlePress: () => { } })
+      }
+    })
+    .catch(err => {
+      CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
+      console.log({ err })
+    })
+    
+  }
 
   const profileList = ({ item }) => (
     <View style={styles.rowContainer}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.push(item.name)}
+        onPress={() => navigation.navigate(item.name, {
+          id: route.params.id,
+          preferences: route.params.preferences,
+          firstName: route.params.firstName,
+          lastName: route.params.lastName,
+          user: route.params.user
+        } )}
       >
         <VectorButton
           name={item.icon}
@@ -62,7 +92,7 @@ export default function ProfileScreen({ navigation }) {
           style={styles.profileName}
           onPress={() => navigation.push("Home")}
         >
-          Ben Sterling
+          {route.params.user.first_name} {route.params.user.last_name}
         </Text>
         <VectorButton
           name="pencil-sharp"

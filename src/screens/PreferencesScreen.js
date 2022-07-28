@@ -25,27 +25,32 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { useState } from "react";
+import axios from "../components/axios";
+import { CustomAlert } from "../components/alert";
 
 const Stack = createNativeStackNavigator();
 
-export default function PreferencesScreen({ navigation }) {
+export default function PreferencesScreen({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name={Strings.preferences} component={Preferences} />
+      <Stack.Screen name={Strings.preferences} initialParams={route} component={Preferences} />
+
       <Stack.Screen
         name={Strings.changeappearance}
         component={ChangeAppearance}
+        initialParams={route}
       />
-      <Stack.Screen name={Strings.hidebalance} component={HideBalance} />
+
+      <Stack.Screen name={Strings.hidebalance} initialParams={route} component={HideBalance} />
     </Stack.Navigator>
   );
 }
 
-const Preferences = ({ navigation }) => {
+const Preferences = ({ navigation, route }) => {
   const preferencesList = ({ item }) => (
     <View style={styles.rowContainer}>
       <TouchableOpacity
@@ -71,7 +76,13 @@ const Preferences = ({ navigation }) => {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.Profile)}
+          handlePress={() => navigation.navigate(Strings.Profile, {
+            id: route.params.params.id, 
+            firstName: route.params.params.firstName, 
+            lastName: route.params.params.lastName, 
+            preferences: route.params.params.preferences,
+            user: route.params.params.user
+          })}
         />
         <Text style={styles.preferencesHeaderText}>{Strings.preferences}</Text>
       </View>
@@ -86,9 +97,36 @@ const Preferences = ({ navigation }) => {
   );
 };
 
-export const ChangeAppearance = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+export const ChangeAppearance = ({ navigation, route }) => {
+  const [isEnabled, setIsEnabled] = useState(route.params.params.preferences.mode.indexOf("ight") != -1 ? true : false);
+  const [mode, setMode] = useState(route.params.params.preferences.mode)
+
+  const toggleSwitch = () => {
+    let data = {
+      user_id: route.params.params.id,
+      mode: isEnabled ? "Dark" : "Light"
+    }
+
+    axios.post('/user-gateway/update-prefrences', data)
+    .then(res => {
+      if(res.data.message == "success"){
+        setIsEnabled((previousState) => !previousState);
+        setMode(isEnabled ? "Dark" : "Light")
+        route.params.params.preferences.mode = isEnabled ? "Dark" : "Light"
+        route.params.params.user.prefrence[0].mode = isEnabled ? "Dark" : "Light"
+      } else {
+        CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
+      }
+    })
+    .catch(err => {
+      CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
+      console.log({ err })
+    })
+    
+  }
+  // React.useEffect(()=>{
+  //   console.log(route)
+  // }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -112,7 +150,7 @@ export const ChangeAppearance = ({ navigation }) => {
           color={Colors.primary}
           style={styles.preferencesimage}
         />
-        <Text style={styles.preferencestext}>Dark Mode</Text>
+        <Text style={styles.preferencestext}>{mode} Mode</Text>
 
         <Switch
           style={styles.switch}
@@ -128,9 +166,33 @@ export const ChangeAppearance = ({ navigation }) => {
   );
 };
 
-export const HideBalance = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+export const HideBalance = ({ navigation, route }) => {
+  const [isEnabled, setIsEnabled] = useState(route.params.params.preferences.private_mode);
+  const [mode, setMode] = useState(route.params.params.preferences.private_mode)
+
+  const toggleSwitch = () => {
+    let data = {
+      user_id: route.params.params.id,
+      private_mode: isEnabled ? false : true
+    }
+
+    axios.post('/user-gateway/update-prefrences', data)
+    .then(res => {
+      if(res.data.message == "success"){
+        setIsEnabled((previousState) => !previousState);
+        setMode(isEnabled ? "Dark" : "Light")
+        route.params.params.preferences.private_mode = isEnabled ? false : true
+        route.params.params.user.prefrence[0].private_mode = isEnabled ? false : true
+      } else {
+        CustomAlert({ title: "Error", subtitle: "Error updating private mode, please try again...", handlePress: () => { } })
+      }
+    })
+    .catch(err => {
+      CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
+      console.log({ err })
+    })
+    
+  }
 
   return (
     <SafeAreaView style={styles.container}>

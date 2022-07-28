@@ -102,3 +102,8 @@ export const walletAddress = 'Wallet Address'
 export const walletName = 'Wallet Name'
 export const selectNetwork = 'Select Network'
 export const enterAmount = 'Enter Amount'
+
+export const versionNumber = 'V1.0.0'
+export const aboutContent = 'Clyppay is a Nigerian online crypto  agency banking platform headquartered in Lagos State. The company was founded by, Akitoye Adeyemi  in 2022.\nClyppay offers a marketplace allowing for assets to be sold directly at a fixed price, , based on the Ethereum ERC-721 standard, the layer-2 scaling solution for Ethereum Polygon, the KIP-7 standard for Klaytn, and the SPL standard for Solana...'
+export const privacyPolicy = 'Privacy Policy'
+export const showPrivacyPolicy = 'Show Privacy Policy'

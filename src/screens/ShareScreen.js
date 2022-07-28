@@ -1,7 +1,7 @@
 import React from 'react';
 import { Share, View, Button } from 'react-native';
 
-const ShareScreen = ({navigation}) => {
+const ShareScreen = ({navigation, route}) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -10,14 +10,32 @@ const ShareScreen = ({navigation}) => {
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           // shared with activity type of result.activityType
-          navigation.push('Profile')
+          navigation.navigate('Profile', {
+            id: route.params.id, 
+            firstName: route.params.firstName, 
+            lastName: route.params.lastName, 
+            preferences: route.params.preferences,
+            user: route.params.user
+          })
         } else {
           // shared
-          navigation.push('Profile')
+          navigation.navigate('Profile', {
+            id: route.params.id, 
+            firstName: route.params.firstName, 
+            lastName: route.params.lastName, 
+            preferences: route.params.preferences,
+            user: route.params.user
+          })
         }
       } else if (result.action === Share.dismissedAction) {
         // dismissed
-        navigation.push('Profile')
+        navigation.navigate('Profile', {
+            id: route.params.id, 
+            firstName: route.params.firstName, 
+            lastName: route.params.lastName, 
+            preferences: route.params.preferences,
+            user: route.params.user
+          })
       }
     } catch (error) {
       alert(error.message);
