@@ -134,7 +134,7 @@ function LoginScreen({ navigation }) {
         <Text style={styles.texts}>{Strings.loginAccount}</Text>
         <TextInput
           value={text}
-          onChangeText={text => setText(text)}
+          onChangeText={text => setText(text.toLowerCase())}
           style={styles.emailinput}
           label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
           selectionColor={Colors.primary} left={<TextInput.Icon name="email-outline" />}

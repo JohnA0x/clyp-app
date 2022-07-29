@@ -163,7 +163,7 @@ function InputNameScreen() {
         <TouchableOpacity
           style={nameStyles.button}
           onPress={() =>
-            navigation.navigate("CompleteEmailSignup", { firstName, lastName })
+            navigation.navigate("CompleteEmailSignup", { firstName, password })
           }
         >
           <Text
