@@ -135,6 +135,18 @@ export const nameStyles = StyleSheet.create({
     borderTopRightRadius: 15,
   },
 
+  lastNameInput: {
+    alignSelf: "center",
+    backgroundColor: Colors.inputLight,
+    width: "90%",
+    height: 55,
+    borderRadius: 15,
+    marginTop: 20,
+    paddingLeft: 5,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+
   button: {
     alignItems: "center",
     justifyContent: "center",
