@@ -7,9 +7,10 @@ import { styles } from '../styles/logout';
 import * as Colors from '../constants/colors'
 import * as Strings from '../strings/strings'
 import { RoundedButton } from '../components/button';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const LogOutScreen = ({navigation}) => {
+const LogOutScreen = ({navigation, route}) => {
   // ref
   const bottomSheetRef = useRef()
 
@@ -35,10 +36,19 @@ const LogOutScreen = ({navigation}) => {
 
           <View style={styles.rowContainer}>
           <RoundedButton text={'Yes'} textStyle={styles.yesText}
-          //handlePress={() => } Remove comment and put logOut function here
+            handlePress={() => {
+              AsyncStorage.clear()
+              navigation.replace("Login")
+            }} 
           />
           <RoundedButton text={'No'} textStyle={styles.noText}
-          handlePress={() => navigation.replace(Strings.Profile)}/>
+          handlePress={() => navigation.navigate(Strings.Profile, {
+            id: route.params.id, 
+            firstName: route.params.firstName, 
+            lastName: route.params.lastName, 
+            preferences: route.params.preferences,
+            user: route.params.user
+          })}/>
           </View>
       
         </View>
