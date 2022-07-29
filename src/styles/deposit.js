@@ -177,6 +177,12 @@ export const styles = StyleSheet.create({
       color: Colors.primary,
       marginLeft: '20%',
     },
+    receiveAmount:{
+      fontSize: 15,
+      fontFamily: "Poppins_400Regular",
+      color: Colors.textColor,
+      marginLeft: '20%',
+    },
 
   });
 

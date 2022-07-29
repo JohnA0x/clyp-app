@@ -65,6 +65,14 @@ export const clyphub = 'Clyp Hub'
 export const fund = 'Fund Your Wallet'
 
 
+// Info
+export const name = 'Name'
+export const change = 'Change (24h)'
+export const price = 'Price'
+export const marketCap = 'Market Cap'
+
+
+
 //Profile
 export const Profile = 'Profile'
 export const editprofile = 'Edit Profile'

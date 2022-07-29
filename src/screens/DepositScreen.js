@@ -156,6 +156,7 @@ export default function DepositScreen({ navigation, route }) {
           >0</TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
+        <Text style={styles.receiveAmount}>You will receive N20,000 in Naira</Text>
       </SafeAreaView>
     );
   }
