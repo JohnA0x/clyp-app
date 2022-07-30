@@ -193,12 +193,14 @@ export default function HomeScreen({ navigation }) {
                 size={20}
                 color={Colors.white}
                 style={styles.sendbutton}
+                
               />
               <VectorButton
                 name="arrow-down"
                 size={20}
                 color={Colors.white}
                 style={styles.receivebutton}
+                handlePress={() => navigation.push(Strings.deposit)}
               />
             </View>
           </View>

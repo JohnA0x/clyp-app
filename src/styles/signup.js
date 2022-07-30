@@ -130,7 +130,6 @@ export const nameStyles = StyleSheet.create({
     height: 55,
     borderRadius: 15,
     marginTop: 20,
-    marginBottom: "10%",
     paddingLeft: 5,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,

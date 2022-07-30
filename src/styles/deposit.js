@@ -15,6 +15,17 @@ export const styles = StyleSheet.create({
       flex: 1,
       padding: 5,
     },
+
+    list:{
+      padding: 2,
+      paddingLeft: 10,
+      flexDirection: "row",
+      borderRadius: 40,
+      width: "95%",
+      height: 70,
+      alignItems: "center",
+      alignSelf: "center",
+    },
   
     button: {
       padding: 2,
@@ -35,7 +46,14 @@ export const styles = StyleSheet.create({
     flatlist: {
       display: "flex",
       paddingVertical: 10,
+      backgroundColor: Colors.listHolder,
+      margin: 10,
+      marginTop: 30,
+      height: '100%',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
     },
+    
   
     header: {
       color: Colors.textColor,
@@ -112,6 +130,54 @@ export const styles = StyleSheet.create({
       right: 0,
       zIndex: 1,
     },
+
+    image: {
+      marginLeft: 0,
+      width: 30,
+      height: 30,
+    },
+
+    text: {
+      marginLeft: 20,
+      fontSize: 15,
+      fontFamily: "Poppins_500Medium",
+      color: Colors.textColor,
+    },
+
+    valueText:{
+      marginRight: 10,
+      position: "absolute",
+      fontFamily: "Poppins_500Medium",
+      color: Colors.textColor,
+      right: 0,
+      zIndex: 1,
+    },
+
+    // Transaction Options style
+    transactionAmountContainer:{
+      flexDirection: 'row',
+      padding: 10,
+      marginTop: '50%',
+      alignItems: 'center'
+    },
+
+    amountText:{
+      fontFamily: "Poppins_500Medium",
+      marginLeft: 20,
+    },
+
+    amountValueText:{
+      fontSize: 40,
+      fontFamily: "Poppins_500Medium",
+      marginLeft: 20,
+    },
+    amountMaxValue:{
+      fontSize: 15,
+      fontFamily: "Poppins_500Medium",
+      color: Colors.primary,
+      marginLeft: '20%',
+    },
+
   });
 
   

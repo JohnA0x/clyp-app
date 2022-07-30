@@ -35,11 +35,11 @@ import { RoundedButton } from "../components/button";
 
 import * as Input from "../components/textinput";
 import ForgotPassword from "./ForgotPassword";
-import * as WebBrowser from 'expo-web-browser';
-import * as Facebook from 'expo-auth-session/providers/facebook';
-import * as Google from 'expo-auth-session/providers/google';
-import { ResponseType } from 'expo-auth-session';
-import axios from "axios";
+import * as WebBrowser from "expo-web-browser";
+import * as Facebook from "expo-auth-session/providers/facebook";
+import * as Google from "expo-auth-session/providers/google";
+import { ResponseType } from "expo-auth-session";
+import axios from '../components/axios'
 import { CustomAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -83,7 +83,8 @@ export default function Signup() {
 
 function InputNameScreen() {
   const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientId: "390391096288445",
@@ -93,13 +94,46 @@ function InputNameScreen() {
   React.useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      console.log(response)
+      console.log(response);
+
+      axios.post('/user-gateway/facebook', {code: response.params.code})
+      .then(async (data) => {
+
+        console.log({
+          facebook_data: data.data
+        })
+
+        // if (data.data.message == "success") {
+          
+        //   await AsyncStorage.setItem('token', data.data.token, async (err) => {
+        //     console.log({err})
+        //     if(err) {
+        //       console.log(err)
+        //       return
+        //     }
+        //     await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
+        //       await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
+        //         navigation.navigate("MenuNavigation")
+        //       })
+              
+        //     })
+        //   })
+          
+        // } else {
+        //   CustomAlert({title: "Signup Error", subtitle: data.data.details, handlePress: () => {}})
+        //   return false
+        // }
+
+      })
+
       // navigation.navigate("MenuNavigation")
       // navigation.navigate("MenuNavigation");
     }
+    // console.log("resp: ",response)
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
+    responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
     //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
@@ -110,11 +144,39 @@ function InputNameScreen() {
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
-      console.log(gresponse)
+      console.log(gresponse);
+      axios.post('/user-gateway/google', {token: gresponse.params.id_token})
+      .then(async (data) => {
+
+        console.log({
+          google_data: data.data
+        })
+
+        if (data.data.message == "success") {
+          
+          await AsyncStorage.setItem('token', data.data.token, async (err) => {
+            console.log({err})
+            if(err) {
+              console.log(err)
+              return
+            }
+            await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
+              await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
+                navigation.navigate("MenuNavigation")
+              })
+              
+            })
+          })
+          
+        } else {
+          CustomAlert({title: "Signup Error", subtitle: data.data.details, handlePress: () => {}})
+          return false
+        }
+
+      })
       // navigation.navigate("MenuNavigation")
     }
   }, [gresponse]);
-
 
   const navigation = useNavigation();
 
@@ -126,17 +188,35 @@ function InputNameScreen() {
           value={firstName}
           onChangeText={(firstName) => setFirstName(firstName)}
           style={nameStyles.firstNameInput}
-          label={<Text style={{ color: Colors.inputLabel }}>First Name</Text>}
+          label={<Text style={{ color: Colors.inputLabel }}>Username</Text>}
           selectionColor={Colors.primary}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
         />
 
         <TextInput
-          value={lastName}
-          onChangeText={(lastName) => setLastName(lastName)}
+          value={password}
+          onChangeText={(password) => setPassword(password)}
           style={nameStyles.lastNameInput}
-          label={<Text style={{ color: Colors.inputLabel }}>Last Name</Text>}
+          label={
+            <Text style={{ color: Colors.inputLabel }}>
+              {Strings.passwordHint}
+            </Text>
+          }
+          selectionColor={Colors.primary}
+          activeUnderlineColor={Colors.backgroundColor}
+          underlineColor={Colors.backgroundColor}
+        />
+
+        <TextInput
+          value={password}
+          onChangeText={(password) => setPassword(password)}
+          style={nameStyles.lastNameInput}
+          label={
+            <Text style={{ color: Colors.inputLabel }}>
+              Confirm Password
+            </Text>
+          }
           selectionColor={Colors.primary}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
@@ -144,11 +224,18 @@ function InputNameScreen() {
 
         <TouchableOpacity
           style={nameStyles.button}
-          onPress={() => navigation.navigate("CompleteEmailSignup", { firstName, lastName })}
+          onPress={() =>
+            navigation.navigate("CompleteEmailSignup", { firstName, password })
+          }
         >
           <Text
             style={nameStyles.textButton}
-            onPress={() => navigation.navigate("CompleteEmailSignup", { firstName, lastName })}
+            onPress={() =>
+              navigation.navigate("CompleteEmailSignup", {
+                firstName,
+                lastName,
+              })
+            }
           >
             {" "}
             {Strings.next}
@@ -223,7 +310,7 @@ function InputNameScreen() {
 }
 
 // Email Signup
-function EmailSignupScreen({route}) {
+function EmailSignupScreen({ route }) {
   const navigation = useNavigation();
 
   const [text, setText] = React.useState("");
@@ -237,7 +324,7 @@ function EmailSignupScreen({route}) {
   React.useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      console.log(response)
+      console.log(response);
       // navigation.navigate("MenuNavigation")
       // navigation.navigate("MenuNavigation");
     }
@@ -254,7 +341,7 @@ function EmailSignupScreen({route}) {
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
-      console.log(gresponse)
+      console.log(gresponse);
       // navigation.navigate("MenuNavigation")
     }
   }, [gresponse]);
@@ -289,11 +376,25 @@ function EmailSignupScreen({route}) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("CompletePhoneSignup", { firstName: route.params.firstName, lastName: route.params.lastName, email: text, phone })}
+          onPress={() =>
+            navigation.navigate("CompletePhoneSignup", {
+              firstName: route.params.firstName,
+              lastName: route.params.lastName,
+              email: text,
+              phone,
+            })
+          }
         >
           <Text
             style={styles.textButton}
-            onPress={() => navigation.navigate("CompletePhoneSignup", { firstName: route.params.firstName, lastName: route.params.lastName, email: text, phone })}
+            onPress={() =>
+              navigation.navigate("CompletePhoneSignup", {
+                firstName: route.params.firstName,
+                lastName: route.params.lastName,
+                email: text,
+                phone,
+              })
+            }
           >
             {" "}
             {Strings.next}
@@ -389,7 +490,7 @@ function PhoneSignupScreen({ route }) {
   React.useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      console.log(response)
+      console.log(response);
       // navigation.navigate("MenuNavigation");
     }
   }, [response]);
@@ -405,7 +506,7 @@ function PhoneSignupScreen({ route }) {
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
-      console.log(gresponse)
+      console.log(gresponse);
       // navigation.navigate("MenuNavigation");
     }
   }, [gresponse]);
@@ -421,42 +522,67 @@ function PhoneSignupScreen({ route }) {
       // sos: sos,
       // f_id: f_id,
       // token: token
-    }
-    console.log(data)
+    };
+    console.log(data);
 
-    if (data.email === "" || data.first_name === "" || data.last_name === "" || data.phone === "" || data.password == "") {
-      CustomAlert({ title: "Sign up error", subtitle: "Please provide your sign up details completely", handlePress: () => { } })
-      return false
+    if (
+      data.email === "" ||
+      data.first_name === "" ||
+      data.last_name === "" ||
+      data.phone === "" ||
+      data.password == ""
+    ) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Please provide your sign up details completely",
+        handlePress: () => {},
+      });
+      return false;
     }
-    if(data.password.length < 8){
-      CustomAlert({ title: "Sign up error", subtitle: "Password is too short", handlePress: () => { } })
-      return false
+    if (data.password.length < 8) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Password is too short",
+        handlePress: () => {},
+      });
+      return false;
     }
-    if(data.password !== confirmPassword){
-      CustomAlert({ title: "Sign up error", subtitle: "Passwords does not match", handlePress: () => { } })
-      return false
+    if (data.password !== confirmPassword) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Passwords does not match",
+        handlePress: () => {},
+      });
+      return false;
     }
 
-    axios.post('/user-gateway/register', data)
+    axios
+      .post("/user-gateway/register", data)
       .then((data) => {
-
         if (data.data.message == "success") {
-          AsyncStorage.setItem('token', data.data.token, (err) => {
+          AsyncStorage.setItem("token", data.data.token, (err) => {
             AsyncStorage.setItem("user_id", data.data.user_data.id, (err) => {
-              navigation.navigate("MenuNavigation")
-            })
-          })
+              navigation.navigate("MenuNavigation");
+            });
+          });
         } else {
-          CustomAlert({ title: "Sign up Error", subtitle: data.data.details, handlePress: () => { } })
-          return false
+          CustomAlert({
+            title: "Sign up Error",
+            subtitle: data.data.details,
+            handlePress: () => {},
+          });
+          return false;
         }
-
       })
-      .catch(err => {
-        CustomAlert({ title: "Sign up Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
-        console.log({ err })
-      })
-  }
+      .catch((err) => {
+        CustomAlert({
+          title: "Sign up Error",
+          subtitle: "Error making request, please try again...",
+          handlePress: () => {},
+        });
+        console.log({ err });
+      });
+  };
 
   return (
     <PaperProvider>
@@ -478,21 +604,17 @@ function PhoneSignupScreen({ route }) {
           style={styles.passwordinput}
           onChangeText={(val) => setConfirmPassword(val)}
           secureTextEntry={true}
-          label={<Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>}
+          label={
+            <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>
+          }
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
         />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => register()}
-        >
-          <Text
-            style={styles.textButton}
-            onPress={() => register()}
-          >
+        <TouchableOpacity style={styles.button} onPress={() => register()}>
+          <Text style={styles.textButton} onPress={() => register()}>
             {" "}
             {Strings.signup}
           </Text>
