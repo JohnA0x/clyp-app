@@ -55,18 +55,21 @@ export default function InfoScreen() {
 
 function Cryptocurrencies() {
   const cryptocurrenciesList = ({ item }) => {
-    <View style={styles.rowContainer}>
-      <TouchableOpacity
-       style={styles.button}>
-      <VectorButton
-          name={item.icon}
-          size={10}
-          color={Colors.primary}
-          style={styles.cryptoImage}
-        />
-        <Text style={styles.cryptoText}>{item.name}</Text>
-      </TouchableOpacity>
-    </View>;
+    return (
+      <View style={styles.rowContainer}>
+        <TouchableOpacity style={styles.button}>
+          <ImageButton image={item.icon} imageStyle={styles.cryptoImage} />
+          <Text style={styles.cryptoText}>{item.name}</Text>
+          <Text style={styles.cryptoChangeText}>100%</Text>
+          <Text style={styles.cryptoPriceText} numberOfLines={1}>
+            1000000
+          </Text>
+          <Text style={styles.cryptoMarketCapText} numberOfLines={1}>
+            $2.4 million
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
@@ -78,10 +81,12 @@ function Cryptocurrencies() {
         <Text style={styles.infoOptions}>{Strings.marketCap}</Text>
       </View>
       <FlatList
-       contentContainerStyle={styles.flatlist}
-       //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-       data={cryptoListArray}
-       renderItem={cryptocurrenciesList}/>
+        contentContainerStyle={styles.flatlist}
+        //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+        data={cryptoListArray}
+        renderItem={cryptocurrenciesList}
+        keyExtractor={(item) => item.id}
+      />
     </SafeAreaView>
   );
 }

@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 3 },
       shadowColor: Colors.shadowColor,
       shadowOpacity: 0.1,
-      elevation: 3,
+      elevation: 2,
       alignItems: "center",
       flexDirection: 'row'
     },
