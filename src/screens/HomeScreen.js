@@ -200,6 +200,7 @@ export default function HomeScreen({ navigation }) {
                 size={20}
                 color={Colors.white}
                 style={styles.receivebutton}
+                handlePress={() => navigation.push(Strings.withdraw)}
               />
             </View>
           </View>

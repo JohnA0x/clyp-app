@@ -34,10 +34,12 @@ const Stack = createNativeStackNavigator();
 export default function DepositScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
+  const [priceChange, setPriceChange] = useState("");
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
-
+  
+  const priceChangeColor = priceChange > 0 ? '#009E06' : ''
   return (
     <Stack.Navigator
       screenOptions={{
@@ -156,14 +158,15 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.depositviaCrypto)}
           />
           <Text style={styles.headerText}>{Strings.fund}</Text>
         </View>
 
         <View style={styles.transactionCryptoContainer}>
-          <Image/>
-          <Text>{cryptoName}</Text>
+          <Image style={styles.cryptoImage}
+          source={{uri: cryptoIcon}}/>
+          <Text style = {styles.cryptoText}>{cryptoName}</Text>
         </View>
 
         <View style={styles.transactionAmountContainer}>

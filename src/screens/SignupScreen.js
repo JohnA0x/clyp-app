@@ -404,7 +404,7 @@ function EmailSignupScreen({ route }) {
           </Text>
           <Text
             style={styles.login}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("MenuNavigation")}
           >
             {Strings.login}
           </Text>

@@ -156,19 +156,35 @@ export const styles = StyleSheet.create({
     // Transaction Options style
     transactionCryptoContainer:{
       backgroundColor: Colors.listHolder,
+      flexDirection: 'row',
       width: '90%',
       height: 50,
       borderRadius: 40,
       marginTop: '15%',
-      alignSelf: 'center'
+      alignSelf: 'center',
+      alignItems: 'center',
     },
 
     transactionAmountContainer:{
       flexDirection: 'row',
       padding: 10,
       marginTop: '15%',
-      alignItems: 'center'
+      alignItems: 'center',
     },
+
+    cryptoText:{
+      marginLeft: 10,
+      fontSize: 15,
+      fontFamily: "Poppins_600SemiBold",
+      color: Colors.textColor,
+    },
+
+    cryptoImage:{
+      marginLeft: 20,
+      width: 28,
+      height: 28,
+    },
+  
 
     amountText:{
       fontFamily: "Poppins_500Medium",
