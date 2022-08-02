@@ -1,5 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
+  FileImageButton,
+  ImageButton,
+  VectorButton,
+} from "../components/button";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,6 +20,7 @@ import { styles } from "../styles/info";
 
 import * as Colors from "../constants/colors";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import cryptoListArray from "../strings/cryptolist";
 
 const Tab = createMaterialTopTabNavigator();
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -41,13 +54,43 @@ export default function InfoScreen() {
 }
 
 function Cryptocurrencies() {
-  return <SafeAreaView style={styles.container}>
-    <Text>Cryptocurrenices</Text>
-  </SafeAreaView>;
+  const cryptocurrenciesList = ({ item }) => {
+    <View style={styles.rowContainer}>
+      <TouchableOpacity
+       style={styles.button}>
+      <VectorButton
+          name={item.icon}
+          size={10}
+          color={Colors.primary}
+          style={styles.cryptoImage}
+        />
+        <Text style={styles.cryptoText}>{item.name}</Text>
+      </TouchableOpacity>
+    </View>;
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.infoContainer}>
+        <Text style={styles.nameinfoOptions}>{Strings.name}</Text>
+        <Text style={styles.infoOptions}>{Strings.change}</Text>
+        <Text style={styles.infoOptions}>{Strings.price}</Text>
+        <Text style={styles.infoOptions}>{Strings.marketCap}</Text>
+      </View>
+      <FlatList
+       contentContainerStyle={styles.flatlist}
+       //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+       data={cryptoListArray}
+       renderItem={cryptocurrenciesList}/>
+    </SafeAreaView>
+  );
 }
 
 function Favourites() {
-  return <SafeAreaView style={styles.container}>
-    <Text>Favourites</Text>
-  </SafeAreaView>;
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text>Favourites</Text>
+      <FlatList />
+    </SafeAreaView>
+  );
 }

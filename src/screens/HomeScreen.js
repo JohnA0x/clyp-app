@@ -114,7 +114,7 @@ export default function HomeScreen({ navigation }) {
         <ImageButton
           style={styles.profileImage}
           imageStyle={styles.profileImage}
-          image="https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+          image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
           handlePress={() => {
             navigation.navigate("Profile", {id, firstName, lastName, preferences, user});
             navigation.setOptions({ tabBarVisible: false });

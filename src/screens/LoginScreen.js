@@ -79,9 +79,62 @@ function LoginScreen({ navigation }) {
   });
 
   React.useEffect(() => {
-    if (response?.type === 'success') {
+    if (response?.type === "success") {
       const { code } = response.params;
+      console.log(response);
+
+      const fetchData = async () => {
+
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json"
+          }
+        };
+
+
+        console.log(request)
+        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`
+
+        const response = await fetch(link, requestOptions);
+        const body = await response.json();
+        axios.post('/user-gateway/facebook', { access_token: body.access_token })
+          .then(async (data) => {
+            console.log({
+              facebook_data: data.data
+            })
+
+            if (data.data.message == "success") {
+
+              await AsyncStorage.setItem('token', data.data.token, async (err) => {
+                console.log({ err })
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
+                  await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
+                    navigation.navigate("MenuNavigation")
+                  })
+
+                })
+              })
+
+            } else {
+              CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
+              return false
+            }
+
+          })
+          .catch(err => {
+            CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
+          })
+        console.log("fetchData response: => ", body);
+      }
+      fetchData()
+
     }
+    
   }, [response]);
 
 
