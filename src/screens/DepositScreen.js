@@ -15,12 +15,15 @@ import * as Values from "../constants/values";
 import {
   FileImageButton,
   ImageButton,
+  RoundedButton,
   VectorButton,
 } from "../components/button";
 import { listSeparator } from "../components/listseparator";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { Dropdown } from "react-native-element-dropdown";
 
 import { useState } from "react";
 import depositListArray from "../strings/depositlist";
@@ -31,10 +34,12 @@ const Stack = createNativeStackNavigator();
 export default function DepositScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
+  const [priceChange, setPriceChange] = useState("");
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
-
+  
+  const priceChangeColor = priceChange > 0 ? '#009E06' : ''
   return (
     <Stack.Navigator
       screenOptions={{
@@ -81,7 +86,7 @@ export default function DepositScreen({ navigation, route }) {
     );
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -146,17 +151,47 @@ export default function DepositScreen({ navigation, route }) {
 
   function TransactionsOptions() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate(Strings.depositviaCrypto)}
+          />
+          <Text style={styles.headerText}>{Strings.fund}</Text>
+        </View>
+
+        <View style={styles.transactionCryptoContainer}>
+          <Image style={styles.cryptoImage}
+          source={{uri: cryptoIcon}}/>
+          <Text style = {styles.cryptoText}>{cryptoName}</Text>
+        </View>
+
         <View style={styles.transactionAmountContainer}>
           <Text style={styles.amountText}>Amount:</Text>
-          <TextInput style={styles.amountValueText}
-          keyboardType='numeric'
-          maxLength={12}
-          selectionColor={Colors.primary}
-          >0</TextInput>
+          <TextInput
+            style={styles.amountValueText}
+            keyboardType="numeric"
+            numberOfLines={1}
+            maxLength={12}
+            placeholder="Amount"
+            selectionColor={Colors.primary}
+          ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
-        <Text style={styles.receiveAmount}>You will receive N20,000 in Naira</Text>
+
+        <View style={styles.lineCrosser} />
+        <Text style={styles.receiveAmount}>
+          You will receive N20,000 in Naira
+        </Text>
+        <Text style={styles.conversionAmount}>1 BTC = $23,000</Text>
+        <RoundedButton
+          style={styles.depositButton}
+          text={Strings.deposit}
+          textStyle={styles.depositText}
+        />
       </SafeAreaView>
     );
   }

@@ -64,13 +64,15 @@ export const clyphub = 'Clyp Hub'
 
 export const fund = 'Fund Your Wallet'
 
+export const inputAmount = 'Input Amount'
+
 
 // Info
 export const name = 'Name'
 export const change = 'Change (24h)'
 export const price = 'Price'
 export const marketCap = 'Market Cap'
-
+export const coinStats = 'Coins Statistics'
 
 
 //Profile

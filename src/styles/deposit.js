@@ -154,12 +154,37 @@ export const styles = StyleSheet.create({
     },
 
     // Transaction Options style
+    transactionCryptoContainer:{
+      backgroundColor: Colors.listHolder,
+      flexDirection: 'row',
+      width: '90%',
+      height: 50,
+      borderRadius: 40,
+      marginTop: '15%',
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+
     transactionAmountContainer:{
       flexDirection: 'row',
       padding: 10,
-      marginTop: '50%',
-      alignItems: 'center'
+      marginTop: '15%',
+      alignItems: 'center',
     },
+
+    cryptoText:{
+      marginLeft: 10,
+      fontSize: 15,
+      fontFamily: "Poppins_600SemiBold",
+      color: Colors.textColor,
+    },
+
+    cryptoImage:{
+      marginLeft: 20,
+      width: 28,
+      height: 28,
+    },
+  
 
     amountText:{
       fontFamily: "Poppins_500Medium",
@@ -167,21 +192,55 @@ export const styles = StyleSheet.create({
     },
 
     amountValueText:{
+      width: '50%',
       fontSize: 40,
       fontFamily: "Poppins_500Medium",
       marginLeft: 20,
     },
     amountMaxValue:{
       fontSize: 15,
+      position: 'absolute',
       fontFamily: "Poppins_500Medium",
       color: Colors.primary,
-      marginLeft: '20%',
+      marginLeft: '85%',
     },
+
+    lineCrosser:{
+      width: '100%', 
+      height: 1, 
+      backgroundColor: Colors.primary
+    },
+
     receiveAmount:{
       fontSize: 15,
       fontFamily: "Poppins_400Regular",
       color: Colors.textColor,
-      marginLeft: '20%',
+      alignSelf: 'center',
+      marginTop: 20,
+    },
+
+    conversionAmount:{
+      marginTop: 20,
+      fontSize: 15,
+      fontFamily: "Poppins_400Regular",
+      color: Colors.textColor,
+      alignSelf: 'center',
+    },
+    
+    depositButton:{
+      width: '90%',
+      height: 50,
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.primary,
+      borderRadius: 50,
+      marginTop: '40%',
+    },
+
+    depositText:{
+      fontFamily: "Poppins_600SemiBold",
+      color: Colors.white,
     },
 
   });

@@ -32,12 +32,15 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     shadowOffset: { width: 0, height: 2 },
     shadowColor: Colors.shadowColor,
-    shadowOpacity: 0.1,
-    elevation: 3,
+    shadowOpacity: 0.2,
+    elevation: 2,
   },
 
   tabBar: {
+    width: '100%',
     marginTop: 10,
+    shadowOpacity:0, 
+    elevation: 1,
   },
 
   marketCapText: {
@@ -109,27 +112,53 @@ export const styles = StyleSheet.create({
   },
 
   cryptoImage: {
-    marginLeft: 10,
+    width: 15,
+    height: 15,
+    marginLeft: 5,
   },
 
   cryptoText: {
-    marginLeft: 20,
-    fontSize: 12,
+    marginLeft: 10,
+    fontSize: 11,
     fontFamily: "Poppins_500Medium",
     color: Colors.textColor,
   },
+
+  cryptoChangeText: {
+    width: 15,
+    marginLeft: '17%',
+    position: 'absolute',
+    fontSize: 11,
+    fontFamily: "Poppins_500Medium",
+    textAlign:'right',
+    color: Colors.textColor,
+  },
+
+  cryptoPriceText: {
+    width: 15,
+    marginLeft: '30%',
+    position: 'absolute',
+    fontSize: 11,
+    fontFamily: "Poppins_500Medium",
+    textAlign:'right',
+    color: Colors.textColor,
+  },
+
+  cryptoMarketCapText: {
+    width: 15,
+    marginLeft: '58%',
+    position: 'absolute',
+    fontSize: 11,
+    fontFamily: "Poppins_500Medium",
+    textAlign:'right',
+    color: Colors.textColor,
+  },
+
   button: {
-    padding: 2,
-    paddingLeft: 10,
     flexDirection: "row",
-    backgroundColor: Colors.rowColor,
     borderRadius: 40,
-    width: "95%",
-    height: 70,
-    shadowOffset: { width: 0, height: 3 },
-    shadowColor: Colors.shadowColor,
-    shadowOpacity: 0.1,
-    elevation: 3,
+    width: "100%",
+    height: 50,
     alignItems: "center",
     alignSelf: "center",
   },

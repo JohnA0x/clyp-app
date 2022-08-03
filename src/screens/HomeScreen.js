@@ -193,6 +193,7 @@ export default function HomeScreen({ navigation }) {
                 size={20}
                 color={Colors.white}
                 style={styles.sendbutton}
+                handlePress={() => navigation.push(Strings.withdraw)}
                 
               />
               <VectorButton
