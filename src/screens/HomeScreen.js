@@ -152,27 +152,28 @@ export default function HomeScreen({ navigation }) {
                 size={18}
                 color={Colors.white}
                 style={styles.sendbutton}
-                handlePress={() => navigation.push(Strings.sendCrypto)}
+                handlePress={() => navigation.navigate(Strings.sendCrypto)}
               />
               <VectorButton
                 name="arrow-down"
                 size={18}
                 color={Colors.white}
                 style={styles.receivebutton}
-                handlePress={() => navigation.push(Strings.receiveCrypto)}
+                handlePress={() => navigation.navigate(Strings.receiveCrypto)}
               />
               <VectorButton
                 name="pricetag-outline"
                 size={18}
                 color={Colors.white}
                 style={styles.swapbutton}
-                handlePress={() => navigation.push(Strings.deposit)}
+                handlePress={() => navigation.navigate(Strings.buy)}
               />
               <VectorButton
                 name="cash-outline"
                 size={18}
                 color={Colors.white}
                 style={styles.swapbutton}
+                handlePress={() => navigation.navigate(Strings.sell)}
               />
               <VectorButton
                 name="swap-horizontal"
