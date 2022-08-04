@@ -130,3 +130,11 @@ export const privacyPolicy = 'Privacy Policy'
 export const showPrivacyPolicy = 'Show Privacy Policy'
 export const network = 'Network'
 export const address = 'Address'
+
+
+// Buy
+export const buywithwalletTitle = 'Buy With Your Wallet Balance'
+export const buywithwalletsubtitle = 'Buy crypto with your balance in your clyppay wallet'
+export const buywithdebitcardTitle = 'Buy With Your Debit Cards'
+export const buywithdebitcardSubtitle = 'Deposit cash via a trusted or saved debit card'
+

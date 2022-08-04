@@ -154,6 +154,14 @@ export const styles = StyleSheet.create({
     color: Colors.textColor,
   },
 
+  bottomModal:{
+    shadowOffset: { width: 0, height: -4 },
+    shadowColor: Colors.shadowColor,
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+    elevation: 5,
+  },
+
   button: {
     flexDirection: "row",
     borderRadius: 40,
@@ -161,5 +169,35 @@ export const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     alignSelf: "center",
+  },
+
+  cryptoStatsContainer:{
+    padding: 10,
+  },
+
+  statsCryptoName:{
+    color: Colors.textColor,
+    fontFamily: "Poppins_700Bold",
+    fontSize: 18,
+    marginTop: 20,
+    marginLeft: 20,
+  },
+
+  header: {
+    marginTop: 20,
+  },
+
+  headerText: {
+    color: Colors.textColor,
+    fontFamily: "Poppins_700Bold",
+    textAlign: "center",
+    fontSize: 20,
+  },
+
+  backButton: {
+    marginLeft: 10,
+    position: "absolute",
+    left: 0,
+    zIndex: 1,
   },
 });

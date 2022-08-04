@@ -82,7 +82,7 @@ export default function Signup() {
 }
 
 function InputNameScreen() {
-  const [firstName, setFirstName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
@@ -202,16 +202,81 @@ function InputNameScreen() {
 
   const navigation = useNavigation();
 
+  const register = () => {
+    let data = {
+      email: email,
+      password: password
+    };
+    console.log(data);
+
+    if (
+      data.email === "" ||
+      data.password == ""
+    ) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Please provide your sign up details completely",
+        handlePress: () => { },
+      });
+      return false;
+    }
+    if (data.password.length < 8) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Password is too short",
+        handlePress: () => { },
+      });
+      return false;
+    }
+    if (data.password !== confirmPassword) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Passwords does not match",
+        handlePress: () => { },
+      });
+      return false;
+    }
+
+    axios
+      .post("/user-gateway/register", data)
+      .then((data) => {
+        if (data.data.message == "success") {
+          AsyncStorage.setItem("token", data.data.token, (err) => {
+            AsyncStorage.setItem("user_id", data.data.user_data.id, (err) => {
+              navigation.navigate("MenuNavigation");
+            });
+          });
+        } else {
+          CustomAlert({
+            title: "Sign up Error",
+            subtitle: data.data.details,
+            handlePress: () => { },
+          });
+          return false;
+        }
+      })
+      .catch((err) => {
+        CustomAlert({
+          title: "Sign up Error",
+          subtitle: "Error making request, please try again...",
+          handlePress: () => { },
+        });
+        console.log({ err });
+      });
+  };
+
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <Text style={styles.texts}>{Strings.createAccount}</Text>
+
         <TextInput
-          value={firstName}
-          onChangeText={(firstName) => setFirstName(firstName)}
-          style={nameStyles.firstNameInput}
-          label={<Text style={{ color: Colors.inputLabel }}>Username</Text>}
+          value={email}
+          onChangeText={(email) => setEmail(email)}
+          style={styles.emailinput}
+          label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
           selectionColor={Colors.primary}
+          left={<TextInput.Icon name="email-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
         />
@@ -219,50 +284,52 @@ function InputNameScreen() {
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
-          style={nameStyles.lastNameInput}
+          style={styles.emailinput}
           label={
             <Text style={{ color: Colors.inputLabel }}>
               {Strings.passwordHint}
             </Text>
           }
+          left={<TextInput.Icon name="lock-outline" />}
           selectionColor={Colors.primary}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
         />
 
         <TextInput
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-          style={nameStyles.lastNameInput}
+          value={confirmPassword}
+          onChangeText={(password) => setConfirmPassword(password)}
+          style={styles.emailinput}
           label={
             <Text style={{ color: Colors.inputLabel }}>
               Confirm Password
             </Text>
           }
+          left={<TextInput.Icon name="lock-outline" />}
           selectionColor={Colors.primary}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
         />
 
         <TouchableOpacity
-          style={nameStyles.button}
+          style={styles.button}
           onPress={() =>
-            navigation.navigate("CompleteEmailSignup", { firstName, password })
+            register()
           }
         >
           <Text
             style={nameStyles.textButton}
             onPress={() =>
-              navigation.navigate("CompleteEmailSignup", {
-                firstName,
-                lastName,
-              })
+              register()
             }
           >
             {" "}
-            {Strings.next}
+            {Strings.signup}
           </Text>
         </TouchableOpacity>
+
+        <Text style={styles.usemobileNumber} onPress={() => navigation.navigate("CompletePhoneSignup")}>{Strings.mobileNumber}</Text>
+
         <Text
           style={nameStyles.forgotPassword}
           onPress={() => navigation.replace("ForgotPassword")}
@@ -585,6 +652,7 @@ function EmailSignupScreen({ route }) {
 function PhoneSignupScreen({ route }) {
   const navigation = useNavigation();
 
+  const [phone, setPhone] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
@@ -703,22 +771,12 @@ function PhoneSignupScreen({ route }) {
 
   const register = () => {
     let data = {
-      first_name: route.params.firstName,
-      last_name: route.params.lastName,
-      email: route.params.email,
-      phone: route.params.phone,
-      password: password,
-      // country: country,
-      // sos: sos,
-      // f_id: f_id,
-      // token: token
+      phone: phone,
+      password: password
     };
     console.log(data);
 
     if (
-      data.email === "" ||
-      data.first_name === "" ||
-      data.last_name === "" ||
       data.phone === "" ||
       data.password == ""
     ) {
@@ -778,6 +836,20 @@ function PhoneSignupScreen({ route }) {
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <Text style={styles.texts}>{Strings.createAccount}</Text>
+
+        <TextInput
+          value={phone}
+          onChangeText={(phone) => setPhone(phone)}
+          style={styles.emailinput}
+          secureTextEntry={false}
+          label={<Text style={{ color: Colors.inputLabel }}>Phone</Text>}
+          selectionColor={Colors.primary}
+          left={<TextInput.Icon name="phone-outline" />}
+          activeUnderlineColor={Colors.backgroundColor}
+          underlineColor={Colors.backgroundColor}
+          keyboardType="number-pad"
+        />
+
         <TextInput
           value={password}
           onChangeText={(text) => setPassword(text)}
@@ -791,7 +863,7 @@ function PhoneSignupScreen({ route }) {
         />
 
         <TextInput
-          style={styles.passwordinput}
+          style={styles.emailinput}
           onChangeText={(val) => setConfirmPassword(val)}
           secureTextEntry={true}
           label={
@@ -816,15 +888,16 @@ function PhoneSignupScreen({ route }) {
         >
           {Strings.email}
         </Text> */}
+        <Text style={styles.usemobileNumber} onPress={() => navigation.navigate("Signup")}>{Strings.email}</Text>
 
         <Text
-          style={styles.forgotPassword}
+          style={nameStyles.forgotPassword}
           onPress={() => navigation.replace("ForgotPassword")}
         >
           {Strings.forgotPassword}
         </Text>
 
-        <View style={styles.socialContainer}>
+        <View style={nameStyles.socialContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               promptAsync();
@@ -869,7 +942,7 @@ function PhoneSignupScreen({ route }) {
           </TouchableWithoutFeedback> */}
         </View>
 
-        <View style={styles.rowContainer}>
+        <View style={nameStyles.rowContainer}>
           <Text style={styles.alreadyHaveAccount}>
             {Strings.alreadyHaveAccount}
           </Text>

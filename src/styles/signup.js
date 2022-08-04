@@ -53,6 +53,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
+    marginBottom: 10,
   },
 
   passwordinput: {
@@ -79,7 +80,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     color: Colors.textColorGrey,
     fontFamily: "Poppins_500Medium",
-    marginBottom: 30,
+    marginBottom: 10,
   },
 
   rowContainer: {

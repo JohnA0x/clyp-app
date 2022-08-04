@@ -23,6 +23,8 @@ import AboutUs from "../screens/AboutUs";
 import DepositScreen from "../screens/DepositScreen";
 import LogOutScreen from "../screens/LogOutScreen";
 import WithdrawScreen from "../screens/WithdrawScreen";
+import BuyCryptoScreen from "../screens/BuyCryptoScreen";
+import SellCryptoScreen from "../screens/SellCryptoScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -48,6 +50,8 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.deposit} component={DepositScreen} />
       <HomeStack.Screen name={Strings.withdraw} component={WithdrawScreen} />
       <HomeStack.Screen name={Strings.logout} component={LogOutScreen} />
+      <HomeStack.Screen name={Strings.buy} component={BuyCryptoScreen} />
+      <HomeStack.Screen name={Strings.sell} component={SellCryptoScreen} />
     </HomeStack.Navigator>
   );
 };
