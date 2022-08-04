@@ -138,7 +138,6 @@ export default function HomeScreen({ navigation }) {
       </View>
       
         <Swiper
-          height={"400%"}
           style={styles.swiperContainer}
           activeDotColor={Colors.fadedButton}
         >
@@ -180,6 +179,7 @@ export default function HomeScreen({ navigation }) {
                 size={18}
                 color={Colors.white}
                 style={styles.swapbutton}
+                handlePress={() => navigation.navigate(Strings.swap)}
               />
             </View>
           </View>

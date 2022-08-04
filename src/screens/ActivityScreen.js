@@ -25,6 +25,7 @@ import * as Colors from "../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import activityListArray from "../strings/activitylist";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -36,7 +37,7 @@ export default function ActivityScreen() {
         style: styles.tabBar,
         labelStyle: { fontSize: 12 },
         //   activeTintColor:Colors.primary,
-        tabStyle: {backgroundColor: Colors.backgroundColor },
+        // tabStyle: {backgroundColor: Colors.backgroundColor },
         indicatorStyle: { backgroundColor: Colors.primary },
       }}
     >
@@ -47,15 +48,32 @@ export default function ActivityScreen() {
 
   function History() {
     return (
-      <SafeAreaView>
-        <FlatList/>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={activityListArray}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item.country}</Text>
+              <FlatList
+                data={item.artists}
+                renderItem={({ item2 }) => (
+                  <View>
+                    <Text>{item2.artist_name}</Text>
+                  </View>
+                )}
+                keyExtractor={(item2, index) => index}
+              />
+            </View>
+          )}
+          keyExtractor={(item, index) => index}
+        />
       </SafeAreaView>
     );
   }
 
   function Range() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.fromText}>FROM:</Text>
         <TextInput
           style={styles.fromInput}

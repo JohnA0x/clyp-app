@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
 
   fromInput: {
-    height: "14%",
+    height: "10%",
     margin: "5%",
     marginTop: 20,
     borderWidth: 1,
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
 
 
   toInput: {
-    height: "14%",
+    height: "10%",
     margin: "5%",
     marginTop: 40,
     borderWidth: 1,
