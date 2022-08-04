@@ -90,7 +90,7 @@ export default function ProfileScreen({ navigation, route }) {
         />
         <Text
           style={styles.profileName}
-          onPress={() => navigation.push("Home")}
+          onPress={() => navigation.navigate("Home")}
         >
           {route.params.user.first_name} {route.params.user.last_name}
         </Text>
