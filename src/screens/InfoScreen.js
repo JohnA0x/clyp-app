@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
   Image,
-  RefreshControl
+  RefreshControl,
+  TextInput
 } from "react-native";
 import {
   FileImageButton,
@@ -85,6 +86,9 @@ export default function InfoScreen({ navigation }) {
   function TabNavigator() {
     return (
       <SafeAreaView style={styles.container}>
+         <View>
+        <Text style={styles.headerText}>{Strings.coinStats}</Text>
+      </View>
         <View style={styles.summaryContainer}>
           <Text style={styles.marketCapText}>Market Cap</Text>
           <Text style={styles.marketCapValueText}>$1,063,703,175,775</Text>
