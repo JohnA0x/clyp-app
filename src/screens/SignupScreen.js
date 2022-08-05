@@ -148,7 +148,7 @@ function InputNameScreen() {
       fetchData()
 
     }
-    
+
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
@@ -203,6 +203,7 @@ function InputNameScreen() {
   const navigation = useNavigation();
 
   const register = () => {
+
     let data = {
       email: email,
       password: password
@@ -223,7 +224,7 @@ function InputNameScreen() {
     if (data.password.length < 8) {
       CustomAlert({
         title: "Sign up error",
-        subtitle: "Password is too short",
+        subtitle: "Password is too short (Minmum of 8 characters)",
         handlePress: () => { },
       });
       return false;
@@ -239,11 +240,13 @@ function InputNameScreen() {
 
     axios
       .post("/user-gateway/register", data)
-      .then((data) => {
+      .then(async (data) => {
         if (data.data.message == "success") {
-          AsyncStorage.setItem("token", data.data.token, (err) => {
-            AsyncStorage.setItem("user_id", data.data.user_data.id, (err) => {
-              navigation.navigate("MenuNavigation");
+          await AsyncStorage.setItem("token", data.data.token, async (err) => {
+            await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
+              await AsyncStorage.setItem("email", data.data.user_data.email, async (err) => {
+                navigation.navigate("MenuNavigation");
+              });
             });
           });
         } else {
@@ -467,7 +470,7 @@ function EmailSignupScreen({ route }) {
       fetchData()
 
     }
-    
+
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
@@ -718,7 +721,7 @@ function PhoneSignupScreen({ route }) {
       fetchData()
 
     }
-    
+
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
@@ -770,11 +773,11 @@ function PhoneSignupScreen({ route }) {
   }, [gresponse]);
 
   const register = () => {
+
     let data = {
       phone: phone,
       password: password
     };
-    console.log(data);
 
     if (
       data.phone === "" ||
@@ -790,7 +793,7 @@ function PhoneSignupScreen({ route }) {
     if (data.password.length < 8) {
       CustomAlert({
         title: "Sign up error",
-        subtitle: "Password is too short",
+        subtitle: "Password is too short (Minmum of 8 characters)",
         handlePress: () => { },
       });
       return false;
@@ -806,11 +809,13 @@ function PhoneSignupScreen({ route }) {
 
     axios
       .post("/user-gateway/register", data)
-      .then((data) => {
+      .then(async (data) => {
         if (data.data.message == "success") {
-          AsyncStorage.setItem("token", data.data.token, (err) => {
-            AsyncStorage.setItem("user_id", data.data.user_data.id, (err) => {
-              navigation.navigate("MenuNavigation");
+          await AsyncStorage.setItem("token", data.data.token, async (err) => {
+            await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
+              await AsyncStorage.setItem("email", data.data.user_data.email, async (err) => {
+                navigation.navigate("MenuNavigation");
+              });
             });
           });
         } else {

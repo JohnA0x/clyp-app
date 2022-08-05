@@ -10,6 +10,8 @@ import * as Colors from "../constants/colors";
 import { RoundedButton } from "../components/button";
 import { KeycodeInput } from "react-native-keycode";
 import { CustomAlert } from "../components/alert";
+import axios from "../components/axios";
+import { RotateInUpLeft } from "react-native-reanimated";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,13 +31,25 @@ const Forgot = ({ navigation }) => {
   const [text, setText] = React.useState("");
 
   const alertOTPSent = () =>{
-    Alert.alert(
-      "OTP Sent",
-      "Check your email for OTP",
-      [
-        { text: "OK", onPress: () => navigation.replace('VerifyOTP')}
-      ]
-    );
+    axios.post('/user-gateway/retrive-password-email', { email: text })
+    .then(data => {
+      data.data.message === "success" ? (Alert.alert(
+        "OTP Sent",
+        "Check your email for OTP",
+        [
+          { text: "OK", onPress: () => navigation.navigate('VerifyOTP', {email: text})}
+        ]
+      )) : (Alert.alert(
+        "Failed to send OTP",
+        data.data.details
+      ))
+    })
+    .catch(err => {
+      Alert.alert(
+        "Error",
+        err
+      );
+    })
     
    /*  <CustomAlert title='Success' subtitle='Password Changed Successfully'
     handlePress={() => navigation.replace('Login')}/> */
@@ -67,7 +81,33 @@ const Forgot = ({ navigation }) => {
   );
 };
 
-const VerifyOTP = ({ navigation }) => {
+const VerifyOTP = ({ navigation, route }) => {
+  const [code, setCode] = React.useState("")
+
+  const verifyCode = () => {
+
+    axios.post('/user-gateway/confirm-pin', { pin: code, email: route.params.email })
+    .then(data => {
+      data.data.message === "success" ? (Alert.alert(
+        "Code Confirmed",
+        data.data.details,
+        [
+          { text: "Proceed", onPress: () => navigation.replace("NewPassword", {email: route.params.email})}
+        ]
+      )) : (Alert.alert(
+        "Confirmation failed",
+        data.data.details
+      ))
+    })
+    .catch(err => {
+      Alert.alert(
+        "Error",
+        err
+      )
+    })
+
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.textotp}>Code has been sent to your email!</Text>
@@ -76,34 +116,73 @@ const VerifyOTP = ({ navigation }) => {
         textColor={Colors.textColor}
         style={styles.otp}
         onComplete={(value) => {
-          alert(value);
+          setCode(value);
         }}
       />
-      <Text style={styles.resendotp} onPress={() => alert("Success")}>
+      <Text style={styles.resendotp} onPress={() => alert("OTP sent")}>
         {Strings.resend}
       </Text>
       <RoundedButton
         style={styles.button}
         textStyle={styles.textButton}
         text={Strings.verify}
-        handlePress={() => navigation.replace("NewPassword")}
+        handlePress={() => verifyCode()}
       />
     </SafeAreaView>
   );
 };
 
-const CreateNewPassword = ({navigation}) => {
+const CreateNewPassword = ({navigation, route}) => {
+
   const [newPassword, setNewPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
-  const alertSuccess = () =>{
-    Alert.alert(
-      "Success",
-      "Password Changed Sucessfully",
-      [
-        { text: "OK", onPress: () => navigation.replace('Login')}
-      ]
-    );
+  const changePassword = () => {
+
+    if (newPassword.length < 8) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Password is too short (Minmum of 8 characters)",
+        handlePress: () => { },
+      });
+      return false;
+    }
+
+    if (newPassword !== confirmPassword) {
+      CustomAlert({
+        title: "Sign up error",
+        subtitle: "Passwords does not match",
+        handlePress: () => { },
+      });
+      return false;
+    }
+
+    axios.post('/user-gateway/reset-password', {email: route.params.email, password: newPassword})
+    .then(data => {
+
+      const store = async () => {
+        await AsyncStorage.setItem("email", route.params.email, (err) => {
+          navigation.replace('Login')
+        })
+      }
+
+      data.data.message === "success" ? (Alert.alert(
+        "Success",
+        "Password Changed Sucessfully",
+        [
+          { text: "OK", onPress: () => store()}
+        ]
+      )) : (Alert.alert(
+        "Failed",
+        "Please re-submit passwords"
+      ))
+    })
+    .catch(err => {
+      Alert.alert(
+        "Error",
+        err
+      );
+    })
     
    /*  <CustomAlert title='Success' subtitle='Password Changed Successfully'
     handlePress={() => navigation.replace('Login')}/> */
@@ -140,7 +219,7 @@ const CreateNewPassword = ({navigation}) => {
         style={styles.button}
         textStyle={styles.textButton}
         text={Strings.confirmPassword}
-        handlePress={alertSuccess}
+        handlePress={() => changePassword()}
       />
     </SafeAreaView>
   );
