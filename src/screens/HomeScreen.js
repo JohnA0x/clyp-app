@@ -164,14 +164,14 @@ export default function HomeScreen({ navigation }) {
                 name="pricetag-outline"
                 size={18}
                 color={Colors.white}
-                style={styles.swapbutton}
+                style={styles.buybutton}
                 handlePress={() => navigation.navigate(Strings.buy)}
               />
               <VectorButton
                 name="cash-outline"
                 size={18}
                 color={Colors.white}
-                style={styles.swapbutton}
+                style={styles.sellbutton}
                 handlePress={() => navigation.navigate(Strings.sell)}
               />
               <VectorButton
