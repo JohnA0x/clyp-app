@@ -184,7 +184,7 @@ export const styles = StyleSheet.create({
 
 
   swiperContainer:{
-    height: 270
+    height: '100%'
   },
 
   // Instant and Limit
@@ -304,6 +304,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: 50,
     marginTop: '20%',
+    zIndex: 0,
   },
 
   swapText:{

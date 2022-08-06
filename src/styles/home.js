@@ -174,6 +174,30 @@ export const styles = StyleSheet.create({
       marginLeft: 40,
     },
 
+    buybutton: {
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
+      width:30,
+      height:30,
+      backgroundColor:Colors.fadedButton,
+      borderRadius:50,
+      marginBottom: 20,
+      marginLeft: 40,
+    },
+
+    sellbutton: {
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
+      width:30,
+      height:30,
+      backgroundColor:Colors.fadedButton,
+      borderRadius:50,
+      marginBottom: 20,
+      marginLeft: 40,
+    },
+
     swapbutton: {
       justifyContent: 'center',
       alignContent: 'center',
