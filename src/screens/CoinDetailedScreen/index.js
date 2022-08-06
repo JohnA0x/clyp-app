@@ -112,14 +112,14 @@ const CoinDetailedScreen = () => {
     "worklet";
     if (value === "") {
       if (current_price.usd < 1) {
-        return `$${current_price.usd}`;
+        return `$${current_price.usd.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
       }
-      return `$${current_price.usd.toFixed(2)}`;
+      return `$${current_price.usd.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
     }
     if (current_price.usd < 1) {
-      return `$${parseFloat(value)}`;
+      return `$${parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
     }
-    return `$${parseFloat(value).toFixed(2)}`;
+    return `$${parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
   };
 
   const changeCoinValue = (value) => {
@@ -266,7 +266,7 @@ const CoinDetailedScreen = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={coinValue}
+              value={coinValue.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               keyboardType="numeric"
               onChangeText={changeCoinValue}
             />
@@ -276,7 +276,7 @@ const CoinDetailedScreen = () => {
             <Text style={{ color: "black", alignSelf: "center" }}>USD</Text>
             <TextInput
               style={styles.input}
-              value={usdValue}
+              value={usdValue.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               keyboardType="numeric"
               onChangeText={changeUsdValue}
             />

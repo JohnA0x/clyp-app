@@ -211,6 +211,34 @@ export default function InfoScreen({ navigation }) {
   }
 
   function Favourites() {
+
+    const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchCoins = async (pageNumber) => {
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      const coinsData = await getMarketData(pageNumber);
+      setCoins((existingCoins) => [...existingCoins, ...coinsData]);
+      setLoading(false);
+    };
+
+    const refetchCoins = async () => {
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      const coinsData = await getMarketData();
+      setCoins(coinsData);
+      setLoading(false);
+    };
+
+    useEffect(() => {
+      fetchCoins();
+    }, []);
+    
     const cryptocurrenciesList = ({ item }) => {
       return (
         <View style={styles.rowContainer}>
@@ -245,12 +273,17 @@ export default function InfoScreen({ navigation }) {
       <SafeAreaView style={styles.container}>
         <Text>Favourites</Text>
         <FlatList
-          contentContainerStyle={styles.flatlist}
-          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={cryptoListArray}
-          renderItem={cryptocurrenciesList}
-          keyExtractor={(item) => item.id}
-        />
+            data={coins}
+            renderItem={({ item }) => <CoinItem marketCoin={item} />}
+            onEndReached={() => fetchCoins(coins.length / 50 + 1)}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                tintColor="white"
+                onRefresh={refetchCoins}
+              />
+            }
+          />
       </SafeAreaView>
     );
   }
