@@ -114,7 +114,7 @@ export default function HomeScreen({ navigation }) {
         <ImageButton
           style={styles.profileImage}
           imageStyle={styles.profileImage}
-          image="https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+          image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
           handlePress={() => {
             navigation.navigate("Profile", {id, firstName, lastName, preferences, user});
             navigation.setOptions({ tabBarVisible: false });
@@ -194,14 +194,15 @@ export default function HomeScreen({ navigation }) {
                 size={20}
                 color={Colors.white}
                 style={styles.sendbutton}
-                handlePress={() => navigation.push(Strings.deposit)}
+                handlePress={() => navigation.push(Strings.withdraw)}
+                
               />
               <VectorButton
                 name="arrow-down"
                 size={20}
                 color={Colors.white}
                 style={styles.receivebutton}
-                handlePress={() => navigation.push(Strings.withdraw)}
+                handlePress={() => navigation.push(Strings.deposit)}
               />
             </View>
           </View>

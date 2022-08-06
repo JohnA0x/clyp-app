@@ -1,4 +1,4 @@
-import { React, useState, useCallback, useMemo, useRef } from "react";
+import { React, useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   FlatList,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  RefreshControl,
   TextInput
 } from "react-native";
 import {
@@ -34,6 +35,9 @@ import {
 } from "@gorhom/bottom-sheet";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //import { ChartDot, ChartPath, ChartPathProvider, monotoneCubicInterpolation } from "@rainbow-me/animated-charts";
+import CoinItem from "../components/CoinItem/index";
+import { getMarketData } from "../services/requests";
+import CoinDetailedScreen from "./CoinDetailedScreen/index";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,7 +78,7 @@ export default function InfoScreen({ navigation }) {
         }}
       >
         <Stack.Screen name="Tabs" component={TabNavigator} />
-        <Stack.Screen name="Stats" component={CryptoStats} />
+        <Stack.Screen name="Stats" component={CoinDetailedScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -111,12 +115,41 @@ export default function InfoScreen({ navigation }) {
   }
 
   function Cryptocurrencies({ navigation }) {
+
+    const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchCoins = async (pageNumber) => {
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      const coinsData = await getMarketData(pageNumber);
+      setCoins((existingCoins) => [...existingCoins, ...coinsData]);
+      setLoading(false);
+    };
+
+    const refetchCoins = async () => {
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      const coinsData = await getMarketData();
+      setCoins(coinsData);
+      setLoading(false);
+    };
+
+    useEffect(() => {
+      fetchCoins();
+    }, []);
+
+
     const cryptocurrenciesList = ({ item }) => {
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Stats")}
+          // onPress={() => navigation.navigate()}
           >
             <Ionicons
               name={isFavouritedIcon}
@@ -151,13 +184,27 @@ export default function InfoScreen({ navigation }) {
             <Text style={styles.infoOptions}>{Strings.price}</Text>
             <Text style={styles.infoOptions}>{Strings.marketCap}</Text>
           </View>
-          <FlatList
+          {/* <FlatList
             contentContainerStyle={styles.flatlist}
             //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
             data={cryptoListArray}
             renderItem={cryptocurrenciesList}
             keyExtractor={(item) => item.id}
+          /> */}
+
+          <FlatList
+            data={coins}
+            renderItem={({ item }) => <CoinItem marketCoin={item} />}
+            onEndReached={() => fetchCoins(coins.length / 50 + 1)}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                tintColor="white"
+                onRefresh={refetchCoins}
+              />
+            }
           />
+
         </SafeAreaView>
       </BottomSheetModalProvider>
     );
@@ -169,7 +216,7 @@ export default function InfoScreen({ navigation }) {
         <View style={styles.rowContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate()}
+          // onPress={() => navigation.navigate()}
           >
             <Ionicons
               name={isFavouritedIcon}
@@ -222,9 +269,10 @@ export default function InfoScreen({ navigation }) {
           />
           <Text style={styles.headerText}>{Strings.coinStats}</Text>
         </View>
-        <Image />
-        <Text style = {styles.statsCryptoName}>Bitcoin</Text>
-        <Text style = {styles.statsCryptoName}>$24, 000</Text>
+        <CoinDetailedScreen/>
+        {/* <Image />
+        <Text style={styles.statsCryptoName}>Bitcoin</Text>
+        <Text style={styles.statsCryptoName}>$24, 000</Text> */}
       </SafeAreaView>
     );
   }
