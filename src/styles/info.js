@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
   },
 
   cryptoText: {
-    marginLeft: 10,
+    marginLeft: 1,
     fontSize: 11,
     fontFamily: "Poppins_500Medium",
     color: Colors.textColor,
@@ -126,7 +126,7 @@ export const styles = StyleSheet.create({
 
   cryptoChangeText: {
     width: 15,
-    marginLeft: '17%',
+    left: '30%',
     position: 'absolute',
     fontSize: 11,
     fontFamily: "Poppins_500Medium",

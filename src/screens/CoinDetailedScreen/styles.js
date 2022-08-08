@@ -1,15 +1,18 @@
 import { StyleSheet } from "react-native";
 import { color } from "react-native-reanimated";
+import * as Colors from "../../constants/colors";
 
 const styles = StyleSheet.create({
   currentPrice: {
     color: "black",
     fontSize: 30,
-    fontWeight: "600",
+    fontFamily: 'Poppins_600SemiBold',
+    color: Colors.textColor,
     letterSpacing: 1,
   },
   name: {
     color: "black",
+    color: Colors.textColor,
     fontSize: 15,
   },
   priceContainer: {
@@ -23,12 +26,21 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "500",
   },
+
+  currencytext:{
+    color: "black", 
+    alignSelf: "center",
+    marginTop: 30,
+    fontFamily: 'Poppins_600SemiBold',
+  },
+
   input: {
     flex: 1,
     height: 40,
     margin: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
+    marginTop: 40,
+    backgroundColor: Colors.listHolder,
+    borderRadius: 5,
     padding: 10,
     fontSize: 16,
     color: "black",

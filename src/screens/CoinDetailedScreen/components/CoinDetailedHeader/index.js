@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import styles from "./styles";
+import * as Colors from "../../../../constants/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useWatchlist } from "../../../../Contexts/WatchlistContext";
 
@@ -25,7 +26,7 @@ const CoinDetailedHeader = (props) => {
       <Ionicons
         name="chevron-back-sharp"
         size={30}
-        color="black"
+        color= {Colors.textColor}
         onPress={() => navigation.goBack()}
       />
       <View style={styles.tickerContainer}>
