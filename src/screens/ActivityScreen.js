@@ -47,6 +47,11 @@ export default function ActivityScreen() {
   );
 
   function History() {
+
+    const historyList = () =>{
+
+    }
+    
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
