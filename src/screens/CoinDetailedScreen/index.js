@@ -261,7 +261,7 @@ const CoinDetailedScreen = () => {
 
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexDirection: "row", flex: 1 }}>
-            <Text style={{ color: "black", alignSelf: "center" }}>
+            <Text style={styles.currencytext}>
               {symbol.toUpperCase()}
             </Text>
             <TextInput
@@ -273,7 +273,7 @@ const CoinDetailedScreen = () => {
           </View>
 
           <View style={{ flexDirection: "row", flex: 1 }}>
-            <Text style={{ color: "black", alignSelf: "center" }}>USD</Text>
+            <Text style={styles.currencytext}>USD</Text>
             <TextInput
               style={styles.input}
               value={usdValue}
