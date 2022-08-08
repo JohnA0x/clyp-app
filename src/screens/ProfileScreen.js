@@ -99,6 +99,7 @@ export default function ProfileScreen({ navigation, route }) {
           size={24}
           color={Colors.primary}
           style={styles.editProfileButton}
+          handlePress = {() => navigation.navigate(Strings.editprofile)}
         />
       </View>
 
