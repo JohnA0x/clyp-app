@@ -27,6 +27,7 @@ import BuyCryptoScreen from "../screens/BuyCryptoScreen";
 import SellCryptoScreen from "../screens/SellCryptoScreen";
 import ActivityScreen from "../screens/ActivityScreen";
 import SwapCryptoScreen from "../screens/SwapCryptoScreen";
+import EditProfileScreen from "../screens/EditProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -56,6 +57,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.sell} component={SellCryptoScreen} />
       <HomeStack.Screen name={Strings.swap} component={SwapCryptoScreen} />
       <HomeStack.Screen name={Strings.activity} component={ActivityScreen} />
+      <HomeStack.Screen name={Strings.editprofile} component={EditProfileScreen} />
       
     </HomeStack.Navigator>
   );
