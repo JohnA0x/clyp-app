@@ -42,9 +42,10 @@ export default function HomeScreen({ navigation }) {
   const [id, setID] = React.useState("")
   const [firstName, setFirstName] = React.useState("")
   const [lastName, setLastName] = React.useState("")
-  const [preferences, setPrefrences]  = React.useState("")
+  const [preferences, setPrefrences] = React.useState("")
   const [user, setUser] = React.useState({})
   const [token, setToken] = React.useState("")
+  const [coins, setCoins] = React.useState([])
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -90,7 +91,7 @@ export default function HomeScreen({ navigation }) {
       let token = await AsyncStorage.getItem("token").then(value => value)
 
       setToken(token)
-      axios.post('/user-gateway/get-full-user', { user_id: id } )
+      axios.post('/user-gateway/get-full-user', { user_id: id })
         .then(data => {
           // console.log(data.data)
           setID(data.data.user.id)
@@ -98,6 +99,10 @@ export default function HomeScreen({ navigation }) {
           setLastName(data.data.user.last_name)
           setPrefrences(data.data.user.prefrence[0])
           setUser(data.data.user)
+          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
+            .then(coins_data => {
+              setCoins(coins_data.data.coins)
+            })
         })
         .catch(err => {
           CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
@@ -110,33 +115,33 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-      <View style={styles.topBar}>
-        <ImageButton
-          style={styles.profileImage}
-          imageStyle={styles.profileImage}
-          image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
-          handlePress={() => {
-            navigation.navigate("Profile", {id, firstName, lastName, preferences, user});
-            navigation.setOptions({ tabBarVisible: false });
-          }}
-        />
-        <Text style={styles.nameText}>Welcome {firstName}</Text>
-        <VectorButton
-          style={styles.notificationButton}
-          name="notifications-outline"
-          size={24}
-          color={Colors.primary}
-          handlePress={() => navigation.push(Strings.notifications)}
-        />
-        <VectorButton
-          style={styles.scanButton}
-          name="scan"
-          size={24}
-          color={Colors.primary}
-          handlePress={() => navigation.navigate(Strings.qrcode, {token})}
-        />
-      </View>
-      
+        <View style={styles.topBar}>
+          <ImageButton
+            style={styles.profileImage}
+            imageStyle={styles.profileImage}
+            image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
+            handlePress={() => {
+              navigation.navigate("Profile", { id, firstName, lastName, preferences, user });
+              navigation.setOptions({ tabBarVisible: false });
+            }}
+          />
+          <Text style={styles.nameText}>Welcome {firstName}</Text>
+          <VectorButton
+            style={styles.notificationButton}
+            name="notifications-outline"
+            size={24}
+            color={Colors.primary}
+            handlePress={() => navigation.push(Strings.notifications)}
+          />
+          <VectorButton
+            style={styles.scanButton}
+            name="scan"
+            size={24}
+            color={Colors.primary}
+            handlePress={() => navigation.navigate(Strings.qrcode, { token })}
+          />
+        </View>
+
         <Swiper
           style={styles.swiperContainer}
           activeDotColor={Colors.fadedButton}
@@ -151,35 +156,35 @@ export default function HomeScreen({ navigation }) {
                 size={18}
                 color={Colors.white}
                 style={styles.sendbutton}
-                handlePress={() => navigation.navigate(Strings.sendCrypto)}
+                handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
               />
               <VectorButton
                 name="arrow-down"
                 size={18}
                 color={Colors.white}
                 style={styles.receivebutton}
-                handlePress={() => navigation.navigate(Strings.receiveCrypto)}
+                handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
               />
               <VectorButton
                 name="pricetag-outline"
                 size={18}
                 color={Colors.white}
                 style={styles.buybutton}
-                handlePress={() => navigation.navigate(Strings.buy)}
+                handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
               />
               <VectorButton
                 name="cash-outline"
                 size={18}
                 color={Colors.white}
                 style={styles.sellbutton}
-                handlePress={() => navigation.navigate(Strings.sell)}
+                handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
               />
               <VectorButton
                 name="swap-horizontal"
                 size={18}
                 color={Colors.white}
                 style={styles.swapbutton}
-                handlePress={() => navigation.navigate(Strings.swap)}
+                handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
               />
             </View>
           </View>
@@ -195,7 +200,7 @@ export default function HomeScreen({ navigation }) {
                 color={Colors.white}
                 style={styles.sendbutton}
                 handlePress={() => navigation.push(Strings.withdraw)}
-                
+
               />
               <VectorButton
                 name="arrow-down"
@@ -220,16 +225,16 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-      <View style={styles.coinContainer}>
-        <Text style={styles.holdingText}>{Strings.holdings}</Text>
-        <FlatList
-          contentContainerStyle={styles.flatlist}
-          data={favouriteListArray}
-          renderItem={holdingsList}
-          //numColumns={2}
-          keyExtractor={(item, id) => id}
-        />
-      </View>
+        <View style={styles.coinContainer}>
+          <Text style={styles.holdingText}>{Strings.holdings}</Text>
+          <FlatList
+            contentContainerStyle={styles.flatlist}
+            data={favouriteListArray}
+            renderItem={holdingsList}
+            //numColumns={2}
+            keyExtractor={(item, id) => id}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
