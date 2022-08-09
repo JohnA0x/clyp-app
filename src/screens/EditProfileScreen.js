@@ -19,7 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const Stack = createNativeStackNavigator();
 
-export default function EditProfileScreen({ navigation }) {
+export default function EditProfileScreen({ navigation, route }) {
   //const img =
     
   const [image, setImage] = useState("https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
@@ -78,20 +78,29 @@ export default function EditProfileScreen({ navigation }) {
 
     return (
       <SafeAreaView style={styles.container}>
+
         <VectorButton
           name="chevron-back"
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.push(Strings.home)}
+          handlePress={() => navigation.navigate(Strings.home, {
+            id: route.params.id,
+            preferences: route.params.preferences,
+            firstName: route.params.firstName,
+            lastName: route.params.lastName,
+            user: route.params.user
+          })}
         />
+
         <ImageButton
-          image={image}
+          image={route.params.user.picture ? route.params.user.picture : image}
           style={styles.profileImage}
           imageStyle={styles.profileImage}
           handlePress={pickImage}
         />
-        <Text style={styles.profileName}>John Alalade</Text>
+
+        <Text style={styles.profileName}>{route.params.user.first_name} {route.params.user.last_name}</Text>
 
         <FlatList
           contentContainerStyle={styles.flatlist}
@@ -103,6 +112,28 @@ export default function EditProfileScreen({ navigation }) {
   }
 
   function UserNameEdit() {
+    const [first_name, setFName] = useState(route.params.user.first_name ? route.params.user.first_name : "" );
+    const [last_name, setLName] = useState(route.params.user.last_name ? route.params.user.last_name : "");
+    const [middle_name, seMFName] = useState(route.params.user.middle_name ? route.params.user.middle_name : "" );
+
+    const submit = () => {
+
+      let data = {
+        first_name,
+        last_name,
+        middle_name,
+        user_id: route.params.user.id
+      }
+      axios.post('/user-gateway/update', data)
+      .then(user_data => {
+
+      })
+      .catch(err => {
+        
+      })
+
+    }
+
     return (
       <SafeAreaView>
         <View style={styles.header}>
@@ -120,30 +151,56 @@ export default function EditProfileScreen({ navigation }) {
           style={styles.inputText}
           placeholder="First Name"
           selectionColor={Colors.primary}
+          value={first_name}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="Middle Name"
           selectionColor={Colors.primary}
+          value={middle_name ? middle_name : ""}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="Last Name"
           selectionColor={Colors.primary}
+          value={last_name}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
+          onPress={() => submit()}
         />
       </SafeAreaView>
     );
   }
 
   function AddressEdit() {
+      const [state, setState] = useState(route.params.user.state ? route.params.user.state : "");
+      const [city, setCity] = useState(route.params.user.city ? route.params.user.city : "");
+      const [house, setHouse] = useState(route.params.user.house ? route.params.user.house : "");
+
+      const submit = () => {
+
+        let data = {
+          state,
+          city,
+          house,
+          user_id: route.params.user.id
+        }
+        axios.post('/user-gateway/update', data)
+        .then(user_data => {
+  
+        })
+        .catch(err => {
+          
+        })
+  
+      }
+
     return (
       <SafeAreaView>
         <View style={styles.header}>
@@ -161,30 +218,55 @@ export default function EditProfileScreen({ navigation }) {
           style={styles.inputText}
           placeholder="State"
           selectionColor={Colors.primary}
+          value={state}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="City"
           selectionColor={Colors.primary}
+          value={city}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="House Number and Street Name"
           selectionColor={Colors.primary}
+          value={house}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
+          onPress={() => submit()}
         />
       </SafeAreaView>
     );
   }
 
   function ContactEdit() {
+    
+    const [phone, setPhone] = useState(route.params.user.email ? route.params.user.email: "" );
+    const [email, setEmail] = useState(route.params.user.phone ? route.params.user.phone : "" );
+
+    const submit = () => {
+
+      let data = {
+        phone,
+        email,
+        user_id: route.params.user.id
+      }
+      axios.post('/user-gateway/update', data)
+      .then(user_data => {
+
+      })
+      .catch(err => {
+        
+      })
+
+    }
+
     return (
       <SafeAreaView>
         <View style={styles.header}>
@@ -202,24 +284,48 @@ export default function EditProfileScreen({ navigation }) {
           style={styles.inputText}
           placeholder="Phone Number"
           selectionColor={Colors.primary}
+          value={email}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="Email"
           selectionColor={Colors.primary}
+          value={phone}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
+          onPress={() => submit()}
         />
       </SafeAreaView>
     );
   }
 
   function IdentifictaionEdit() {
+
+    const [bvn, setBVN] = useState(route.params.user.bvn ? route.params.user.bvn : "");
+    const [nin, setNIN] = useState(route.params.user.nin ? route.params.user.nin : "");
+
+    const submit = () => {
+
+      let data = {
+        bvn,
+        nin,
+        user_id: route.params.user.id
+      }
+      axios.post('/user-gateway/update', data)
+      .then(user_data => {
+
+      })
+      .catch(err => {
+        
+      })
+
+    }
+
     return (
       <SafeAreaView>
         <View style={styles.header}>
@@ -237,18 +343,21 @@ export default function EditProfileScreen({ navigation }) {
           style={styles.inputText}
           placeholder="BVN Number"
           selectionColor={Colors.primary}
+          value={bvn}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           placeholder="NIN Number"
           selectionColor={Colors.primary}
+          value={nin}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
+          onPress={() => submit()}
         />
       </SafeAreaView>
     );

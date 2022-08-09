@@ -99,7 +99,13 @@ export default function ProfileScreen({ navigation, route }) {
           size={24}
           color={Colors.primary}
           style={styles.editProfileButton}
-          handlePress = {() => navigation.navigate(Strings.editprofile)}
+          handlePress = {() => navigation.navigate(Strings.editprofile, {
+            id: route.params.id,
+            preferences: route.params.preferences,
+            firstName: route.params.firstName,
+            lastName: route.params.lastName,
+            user: route.params.user
+          } )}
         />
       </View>
 

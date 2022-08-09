@@ -68,7 +68,7 @@ export default function HomeScreen({ navigation }) {
   );
 
   const holdingsList = ({ item }) => {
-    let coin = coins.filter(c => c.currency == item.abb)[0]
+    // let coin = coins.filter(c => c.currency == item.abb)[0]
      return (
         <View style={styles.historyBaseContainer}>
           <TouchableOpacity
@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }) {
               imageStyle={styles.holdingsCryptoimage}
             />
             <Text style={styles.holdingsTextButton}>{item.name}</Text>
-            <Text style={styles.holdingsValueButton}>{coin.balance} {coin.currency}</Text>
+            <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
           </TouchableOpacity>
         </View>
       )
