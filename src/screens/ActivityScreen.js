@@ -48,30 +48,36 @@ export default function ActivityScreen() {
 
   function History() {
 
-    const historyList = () =>{
-
+    const historyList = ({item}) =>{
+      return(
+        <View style={styles.rowContainer}>
+        <TouchableOpacity
+          style={styles.list}
+        >
+          <VectorButton name = {item.icon} size = {15}
+          style={styles.statusIcon} color = {Colors.white}/>
+          <Text style={styles.time}>{item.time}</Text>
+          <Text style={styles.title}>{item.title.toUpperCase()}</Text>
+          <Text style={styles.description} numberOfLines = {1}
+          >{item.description}</Text>
+          <Text style={styles.date} numberOfLines = {1}
+          >{item.date}</Text>
+           <Text style={styles.status} numberOfLines = {1}
+          >{item.status}</Text>
+        </TouchableOpacity>
+      </View>
+      )
+   
     }
     
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
-          data={activityListArray}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.country}</Text>
-              <FlatList
-                data={item.artists}
-                renderItem={({ item2 }) => (
-                  <View>
-                    <Text>{item2.artist_name}</Text>
-                  </View>
-                )}
-                keyExtractor={(item2, index) => index}
-              />
-            </View>
-          )}
-          keyExtractor={(item, index) => index}
-        />
+         <FlatList
+            data={activityListArray}
+            //ListHeaderComponent={renderHeader}
+            renderItem={historyList}
+            
+          />
       </SafeAreaView>
     );
   }
