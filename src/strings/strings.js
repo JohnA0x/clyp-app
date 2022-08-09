@@ -102,6 +102,10 @@ export const paymentmethod = 'Payment Method'
 
 export const seeAll = 'See All'
 
+export const username = "User's Name"
+export const useraddress = 'Address'
+export const contact = 'Contact and Email'
+export const iddocument = 'Identification Document'
 
 // Cryptocurrencies
 export const bitcoin = 'Bitcoin'
