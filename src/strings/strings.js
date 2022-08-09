@@ -60,7 +60,9 @@ export const favourite = 'Favourites'
 
 export const info = 'Info'
 
+// Clyp Hub
 export const clyphub = 'Clyp Hub'
+export const News = 'News'
 
 export const fund = 'Fund Your Wallet'
 

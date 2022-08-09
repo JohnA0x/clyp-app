@@ -20,7 +20,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewsScreen from "./NewsScreen";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function ClypHub() {
+export default function ClypHub({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -28,7 +28,9 @@ export default function ClypHub() {
       </View>
 
       <View style={styles.newsContainer}>
-        <Text style={styles.seeAll}>{Strings.seeAll} </Text>
+        <Text style={styles.seeAll}
+        onPress={() => navigation.navigate(Strings.News)}
+        >{Strings.seeAll}</Text>
         <Swiper activeDotColor={Colors.fadedButton}>
           <FileImageButton style={styles.newsImage} />
           <FileImageButton style={styles.newsImage} />

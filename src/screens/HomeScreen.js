@@ -19,6 +19,7 @@ import {
   FlatListButton,
 } from "../components/button";
 import Swiper from "react-native-swiper";
+import { Ionicons } from "@expo/vector-icons";
 import ProfileScreen from "../screens/ProfileScreen";
 import SignupScreen from "../screens/SignupScreen";
 import favouriteListArray from "../strings/favouritelist";
@@ -56,6 +57,11 @@ export default function HomeScreen({ navigation }) {
         style={styles.favouriteButton}
         onPress={() => navigation.push(item.name)}
       >
+         <Ionicons
+              name='star'
+              size={12}
+              color={Colors.primary}
+            />
         <ImageButton
           image={item.icon}
           style={styles.cryptoimage}
