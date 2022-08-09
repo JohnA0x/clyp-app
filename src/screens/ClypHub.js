@@ -81,4 +81,10 @@ export default function ClypHub({navigation}) {
       </View>
     </SafeAreaView>
   );
+
+  
+
+  function Recharge(){
+
+  }
 }
