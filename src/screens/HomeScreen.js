@@ -67,22 +67,25 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 
-  const holdingsList = ({ item }) => (
-    <View style={styles.historyBaseContainer}>
-      <TouchableOpacity
-        style={styles.holdingButton}
-        onPress={() => navigation.push(item.name)}
-      >
-        <ImageButton
-          image={item.icon}
-          style={styles.holdingsCryptoimage}
-          imageStyle={styles.holdingsCryptoimage}
-        />
-        <Text style={styles.holdingsTextButton}>{item.name}</Text>
-        <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const holdingsList = ({ item }) => {
+    let coin = coins.filter(c => c.currency == item.abb)[0]
+     return (
+        <View style={styles.historyBaseContainer}>
+          <TouchableOpacity
+            style={styles.holdingButton}
+            onPress={() => navigation.push(item.name)}
+          >
+            <ImageButton
+              image={item.icon}
+              style={styles.holdingsCryptoimage}
+              imageStyle={styles.holdingsCryptoimage}
+            />
+            <Text style={styles.holdingsTextButton}>{item.name}</Text>
+            <Text style={styles.holdingsValueButton}>{coin.balance} {coin.currency}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+  };
 
   React.useEffect(() => {
 
@@ -229,7 +232,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.holdingText}>{Strings.holdings}</Text>
           <FlatList
             contentContainerStyle={styles.flatlist}
-            data={favouriteListArray}
+            data={favouriteListArray} //coins
             renderItem={holdingsList}
             //numColumns={2}
             keyExtractor={(item, id) => id}

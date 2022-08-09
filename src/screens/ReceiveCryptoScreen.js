@@ -106,7 +106,7 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     };
-    const coin = route.params.coins.filter(c => c.currency[0] == cryptoName[0])[0]
+    const coin = route.params.coins.filter(c => c.currency == walletOptions)[0]
     console.log(coin)
     return (
       <SafeAreaView style={styles.container}>
@@ -176,7 +176,7 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
     const navigation = useNavigation();
 
     const receiveCryptoList = ({ item }) => {
-      let coin = route.params.coins.filter(c => c.currency == item.name)[0]
+      let coin = route.params.coins.filter(c => c.currency == item.abb)[0]
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity

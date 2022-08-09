@@ -27,7 +27,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 
-export default function BuyCryptoScreen({ navigation }) {
+export default function BuyCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [walletOptions, setWalletOptions] = useState([
