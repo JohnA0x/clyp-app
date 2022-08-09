@@ -47,6 +47,13 @@ export const styles = StyleSheet.create({
     color: Colors.textColor,
   },
 
+  newsHeaderImage:{
+    width: '80%',
+    height: 140,
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+
   separator: {
     height: 1,
     width: '95%',
