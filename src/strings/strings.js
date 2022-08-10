@@ -144,3 +144,14 @@ export const buywithwalletsubtitle = 'Buy crypto with your balance in your clypp
 export const buywithdebitcardTitle = 'Buy With Your Debit Cards'
 export const buywithdebitcardSubtitle = 'Deposit cash via a trusted or saved debit card'
 
+// Security
+export const authentication = 'Authentication'
+export const transactionPin = 'Transaction Pin'
+export const changePassword = 'Change Password'
+export const resetPassword = 'Reset Password'
+export const smsAuthentication = 'SMS Authentication'
+export const emailAuthentication = 'Email Authentication'
+export const biometricAuthentication = 'Biometric Authentication'
+export const twoFAAuthentication = 'Two-Factor Authentication'
+export const changePin = 'Change PIN'
+export const forgetPin = 'Forget PIN'
