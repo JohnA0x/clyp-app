@@ -8,6 +8,7 @@ import { useFonts, Poppins_900Black, Poppins_700Bold, Poppins_600SemiBold, Poppi
 
 import AppLoading from 'expo-app-loading';
 
+
 export default function App() {
 
   let [fontsLoaded, error] = useFonts({ 
