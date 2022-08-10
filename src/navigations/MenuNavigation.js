@@ -29,6 +29,7 @@ import ActivityScreen from "../screens/ActivityScreen";
 import SwapCryptoScreen from "../screens/SwapCryptoScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import NewsScreen from "../screens/NewsScreen";
+import SecurityScreen from "../screens/SecurityScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -60,6 +61,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.activity} component={ActivityScreen} />
       <HomeStack.Screen name={Strings.editprofile} component={EditProfileScreen} />
       <HomeStack.Screen name={Strings.News} component={NewsScreen} />
+      <HomeStack.Screen name={Strings.security} component={SecurityScreen} />
       
     </HomeStack.Navigator>
   );
