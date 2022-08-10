@@ -201,7 +201,7 @@ export default function InfoScreen({ navigation }) {
           <View style={styles.infoContainer}>
             <Text style={styles.nameinfoOptions}>{Strings.name}</Text>
             <Text style={styles.infoOptions}>{Strings.change}</Text>
-            <Text style={styles.infoOptions}>{Strings.price}</Text>
+            <Text style={styles.infoOptions}>${Strings.price}</Text>
             <Text style={styles.infoOptions}>{Strings.marketCap}</Text>
           </View>
           {/* <FlatList
