@@ -38,6 +38,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CoinItem from "../components/CoinItem/index";
 import { getMarketData } from "../services/requests";
 import CoinDetailedScreen from "./CoinDetailedScreen/index";
+import axios from "axios";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -84,6 +85,25 @@ export default function InfoScreen({ navigation }) {
   );
 
   function TabNavigator() {
+    const [marketCap, setMarketCap] = useState(0)
+    const [volume, setVolume] = useState(0)
+    const [percentageChange, setPercentageChange] = useState(0)
+
+    useEffect(() => {
+      async function fetchData(){
+        axios.get('https://api.coingecko.com/api/v3/global')
+        .then(data => {
+          
+          setMarketCap(data.data.data.total_market_cap.usd)
+          setVolume(data.data.data.total_volume.usd)
+          setPercentageChange(data.data.data.market_cap_change_percentage_24h_usd)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+      fetchData()
+    },[])
     return (
       <SafeAreaView style={styles.container}>
          <View>
@@ -91,11 +111,11 @@ export default function InfoScreen({ navigation }) {
       </View>
         <View style={styles.summaryContainer}>
           <Text style={styles.marketCapText}>Market Cap</Text>
-          <Text style={styles.marketCapValueText}>$1,063,703,175,775</Text>
-          <Text style={styles.marketCapMovementText}>+0%</Text>
+          <Text style={styles.marketCapValueText}>${marketCap.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={styles.marketCapMovementText}>{percentageChange.toFixed(1)}%</Text>
           <Text style={styles.volume24hText}>Volume 24h</Text>
-          <Text style={styles.volume24hValueText}>$97,104,936,866</Text>
-          <Text style={styles.volume24hMovementText}>+0%</Text>
+          <Text style={styles.volume24hValueText}>${volume.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={styles.volume24hMovementText}>{percentageChange.toFixed(1)}%</Text>
         </View>
 
         <Tab.Navigator

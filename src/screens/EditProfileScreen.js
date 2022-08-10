@@ -16,13 +16,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import editprofileListArray from "../strings/editprofilelist";
 import * as Strings from "../strings/strings";
 import * as ImagePicker from "expo-image-picker";
+import { CustomAlert } from "../components/alert";
 
 const Stack = createNativeStackNavigator();
 
 export default function EditProfileScreen({ navigation, route }) {
   //const img =
-    
-  const [image, setImage] = useState("https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+
+  const [image, setImage] = useState(route.params.user.picture ? route.params.user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
   );
 
   const pickImage = async () => {
@@ -37,7 +38,49 @@ export default function EditProfileScreen({ navigation, route }) {
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+
+      let formdata = new FormData()
+
+      formdata.append("file", {
+        uri: result.uri,
+        name: `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`,
+        type: `${result.type}/${result.uri.slice(result.uri.lastIndexOf('.') - 1)}`,
+        height: result.height,
+        width: result.width
+      })
+
+      formdata.append("filename", `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`)
+
+      formdata.append("user_id", route.params.user.id)
+
+      axios.post('/user-gateway/update-user', formdata, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        }
+      })
+        .then(user_data => {
+          if (user_data.data.message == "success") {
+            setImage(result.uri);
+            route.params.user.picture = result.uri
+            navigation.navigate("editprofile")
+          }
+          else {
+            CustomAlert({
+              title: "Update failed",
+              subtitle: "Please try again...",
+              handlePress: () => { },
+            });
+          }
+        })
+        .catch(err => {
+          CustomAlert({
+            title: "Error",
+            subtitle: err,
+            handlePress: () => { },
+          });
+        })
+
     }
   };
 
@@ -94,7 +137,7 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <ImageButton
-          image={route.params.user.picture ? route.params.user.picture : image}
+          image={image}
           style={styles.profileImage}
           imageStyle={styles.profileImage}
           handlePress={pickImage}
@@ -112,25 +155,40 @@ export default function EditProfileScreen({ navigation, route }) {
   }
 
   function UserNameEdit() {
-    const [first_name, setFName] = useState(route.params.user.first_name ? route.params.user.first_name : "" );
+    const [first_name, setFName] = useState(route.params.user.first_name ? route.params.user.first_name : "");
     const [last_name, setLName] = useState(route.params.user.last_name ? route.params.user.last_name : "");
-    const [middle_name, seMFName] = useState(route.params.user.middle_name ? route.params.user.middle_name : "" );
+    const [middle_name, setMName] = useState(route.params.user.middle_name ? route.params.user.middle_name : "");
 
     const submit = () => {
 
       let data = {
         first_name,
         last_name,
-        middle_name,
+        // middle_name,
         user_id: route.params.user.id
       }
-      axios.post('/user-gateway/update', data)
-      .then(user_data => {
-
-      })
-      .catch(err => {
-        
-      })
+      axios.post('/user-gateway/update-user', data)
+        .then(user_data => {
+          if (user_data.data.message == "success") {
+            route.params.user.first_name = data.first_name
+            route.params.user.last_name = data.last_name
+            navigation.navigate("editprofile")
+          }
+          else {
+            CustomAlert({
+              title: "Update failed",
+              subtitle: "Please try again...",
+              handlePress: () => { },
+            });
+          }
+        })
+        .catch(err => {
+          CustomAlert({
+            title: "Error",
+            subtitle: err,
+            handlePress: () => { },
+          });
+        })
 
     }
 
@@ -152,6 +210,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="First Name"
           selectionColor={Colors.primary}
           value={first_name}
+          onChangeText={(value) => setFName(value)}
         />
 
         <TextInput
@@ -159,6 +218,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="Middle Name"
           selectionColor={Colors.primary}
           value={middle_name ? middle_name : ""}
+          onChangeText={(value) => setMName(value)}
         />
 
         <TextInput
@@ -166,40 +226,60 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="Last Name"
           selectionColor={Colors.primary}
           value={last_name}
+          onChangeText={(value) => setLName(value)}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
-          onPress={() => submit()}
+          handlePress={() => submit()}
         />
       </SafeAreaView>
     );
   }
 
   function AddressEdit() {
-      const [state, setState] = useState(route.params.user.state ? route.params.user.state : "");
-      const [city, setCity] = useState(route.params.user.city ? route.params.user.city : "");
-      const [house, setHouse] = useState(route.params.user.house ? route.params.user.house : "");
+    const [state, setState] = useState(route.params.user.state ? route.params.user.state : "");
+    const [city, setCity] = useState(route.params.user.city ? route.params.user.city : "");
+    const [house, setHouse] = useState(route.params.user.address ? route.params.user.address : "");
 
-      const submit = () => {
+    const submit = () => {
 
-        let data = {
-          state,
-          city,
-          house,
-          user_id: route.params.user.id
-        }
-        axios.post('/user-gateway/update', data)
+      let data = {
+        state,
+        city,
+        house,
+        user_id: route.params.user.id
+      }
+      axios.post('/user-gateway/update-user', data)
         .then(user_data => {
-  
+          if (user_data.data.message == "success") {
+
+            route.params.user.state = data.state
+            route.params.user.city = data.city
+            route.params.user.address = data.house
+
+            navigation.navigate("editprofile")
+          }
+          else {
+            CustomAlert({
+              title: "Update failed",
+              subtitle: "Please try again...",
+              handlePress: () => { },
+            });
+          }
         })
         .catch(err => {
-          
+          CustomAlert({
+            title: "Error",
+            subtitle: err,
+            handlePress: () => { },
+          });
         })
-  
-      }
+
+
+    }
 
     return (
       <SafeAreaView>
@@ -219,6 +299,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="State"
           selectionColor={Colors.primary}
           value={state}
+          onChangeText={(value) => setState(value)}
         />
 
         <TextInput
@@ -226,6 +307,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="City"
           selectionColor={Colors.primary}
           value={city}
+          onChangeText={(value) => setCity(value)}
         />
 
         <TextInput
@@ -233,22 +315,23 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="House Number and Street Name"
           selectionColor={Colors.primary}
           value={house}
+          onChangeText={(value) => setHouse(value)}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
-          onPress={() => submit()}
+          handlePress={() => submit()}
         />
       </SafeAreaView>
     );
   }
 
   function ContactEdit() {
-    
-    const [phone, setPhone] = useState(route.params.user.email ? route.params.user.email: "" );
-    const [email, setEmail] = useState(route.params.user.phone ? route.params.user.phone : "" );
+
+    const [phone, setPhone] = useState(route.params.user.email ? route.params.user.email : "");
+    const [email, setEmail] = useState(route.params.user.phone ? route.params.user.phone : "");
 
     const submit = () => {
 
@@ -257,13 +340,31 @@ export default function EditProfileScreen({ navigation, route }) {
         email,
         user_id: route.params.user.id
       }
-      axios.post('/user-gateway/update', data)
-      .then(user_data => {
+      axios.post('/user-gateway/update-user', data)
+        .then(user_data => {
+          if (user_data.data.message == "success") {
 
-      })
-      .catch(err => {
-        
-      })
+            route.params.user.email = data.email
+            route.params.user.phone = data.phone
+
+            navigation.navigate("editprofile")
+          }
+          else {
+            CustomAlert({
+              title: "Update failed",
+              subtitle: "Please try again...",
+              handlePress: () => { },
+            });
+          }
+        })
+        .catch(err => {
+          CustomAlert({
+            title: "Error",
+            subtitle: err,
+            handlePress: () => { },
+          });
+        })
+
 
     }
 
@@ -285,6 +386,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="Phone Number"
           selectionColor={Colors.primary}
           value={email}
+          onChangeText={(value) => setPhone(value)}
         />
 
         <TextInput
@@ -292,13 +394,14 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="Email"
           selectionColor={Colors.primary}
           value={phone}
+          onChangeText={(value) => setEmail(value)}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
-          onPress={() => submit()}
+          handlePress={() => submit()}
         />
       </SafeAreaView>
     );
@@ -316,13 +419,32 @@ export default function EditProfileScreen({ navigation, route }) {
         nin,
         user_id: route.params.user.id
       }
-      axios.post('/user-gateway/update', data)
-      .then(user_data => {
 
-      })
-      .catch(err => {
-        
-      })
+      axios.post('/user-gateway/update-user', data)
+        .then(user_data => {
+          if (user_data.data.message == "success") {
+
+            route.params.user.bvn = data.bvn
+            route.params.user.nin = data.nin
+
+            navigation.navigate("editprofile")
+          }
+          else {
+            CustomAlert({
+              title: "Update failed",
+              subtitle: "Please try again...",
+              handlePress: () => { },
+            });
+          }
+        })
+        .catch(err => {
+          CustomAlert({
+            title: "Error",
+            subtitle: err,
+            handlePress: () => { },
+          });
+        })
+
 
     }
 
@@ -344,6 +466,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="BVN Number"
           selectionColor={Colors.primary}
           value={bvn}
+          onChangeText={(value) => setBVN(value)}
         />
 
         <TextInput
@@ -351,13 +474,14 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="NIN Number"
           selectionColor={Colors.primary}
           value={nin}
+          onChangeText={(value) => setNIN(value)}
         />
 
         <RoundedButton
           text="Save"
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
-          onPress={() => submit()}
+          handlePress={() => submit()}
         />
       </SafeAreaView>
     );
