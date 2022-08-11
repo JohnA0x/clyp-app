@@ -27,6 +27,12 @@ import React from "react";
 import axios from "../components/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CustomAlert } from "../components/alert";
+import biometricsAuth from "../services/biometricsAuth";
+import { 
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync 
+} from 'expo-local-authentication';
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -51,11 +57,12 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
 
+
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
       <TouchableOpacity
         style={styles.favouriteButton}
-        onPress={() => navigation.push(item.name)}
+        onPress={biometricsAuth}
       >
          <Ionicons
               name='star'

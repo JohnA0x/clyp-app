@@ -154,7 +154,7 @@ export default function BuyCryptoScreen({ navigation }) {
             handlePress={() => navigation.navigate("buyoptions")}
           />
           <Text style={styles.headerText}>{Strings.buy}</Text>
-        </View>
+        </View>\
 
         <View style={styles.walletBalanceContainer}>
           <Text style={styles.walletBalanceText}>Wallet Balance</Text>

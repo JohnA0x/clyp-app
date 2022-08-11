@@ -24,7 +24,7 @@ export default function ClypHub({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text style={styles.headerText}>{Strings.clyphub}</Text>
+        <Text style={styles.hubHeaderText}>{Strings.clyphub}</Text>
       </View>
 
       <View style={styles.newsContainer}>
@@ -46,7 +46,8 @@ export default function ClypHub({navigation}) {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+           onPress = {() => navigation.navigate(Strings.bill)}>
             <BILLSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -62,7 +63,8 @@ export default function ClypHub({navigation}) {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+          onPress = {() => navigation.navigate(Strings.recharge)}>
             <RECHARGESVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -81,10 +83,4 @@ export default function ClypHub({navigation}) {
       </View>
     </SafeAreaView>
   );
-
-  
-
-  function Recharge(){
-
-  }
 }

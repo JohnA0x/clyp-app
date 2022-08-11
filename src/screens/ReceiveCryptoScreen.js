@@ -145,14 +145,13 @@ export default function ReceiveCryptoScreen({ navigation }) {
           </Text>
         </View>
 
-        <CustomModal isVisible={isModalVisible} />
+    
         <RoundedButton
           text="Copy Address"
           textStyle={styles.textButton}
           style={styles.button}
           handlePress={toggleModal}
         />
-          <CustomModal isVisible = {isModalVisible}/>
           <RoundedButton text ={'Copy Address'} textStyle = {styles.textButton} title=""
           style = {styles.button} handlePress = {toggleModal}/>
        

@@ -99,4 +99,47 @@ export const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
   },
+
+  addressInput: {
+    height: 60,
+    margin: "5%",
+    marginTop: 40,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.listHolder,
+    padding: 20,
+  },
+
+  otherTextInputs: {
+    height: 60,
+    margin: "5%",
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: Colors.listHolder,
+    backgroundColor: 10,
+    padding: 20,
+  },
+
+
+  roundedButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "85%",
+    height: 60,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedTextButton: {
+    color: Colors.white,
+    fontFamily: "Poppins_600SemiBold",
+  },
 });

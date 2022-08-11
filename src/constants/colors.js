@@ -25,7 +25,7 @@ export const qrcode = '#000'
 export const logoutColor = '#FF4D67'
 
 export const lineSeparator = '#EDEDED'
-export const listHolder = '#E1E1E1'
+export const listHolder = 16//'#E1E1E1'
 
 export const inputLabel = '#B6B6B6'
 export const backgroundColor = '#F8F8F8'

@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
       
     },
 
-    headerText:{
+    hubHeaderText:{
         fontFamily:'Poppins_700Bold',
         fontSize:20,
         color: Colors.textColor,
@@ -21,9 +21,23 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         
     },
+
+    header: {
+        color: Colors.textColor,
+        marginTop: 20,
+      },
+    
+      headerText: {
+        color: Colors.textColor,
+        fontFamily: "Poppins_700Bold",
+        textAlign: "center",
+        fontSize: 20,
+      },
+    
     
     optionsContainer:{
         marginTop: '0%',
+        alignSelf: 'center'
     },
 
     newsContainer:{
@@ -39,7 +53,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         padding: 10,
         flexDirection: 'row',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
 
     button:{
@@ -60,7 +74,124 @@ export const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         fontSize: 12,
         marginLeft: '70%',
-    }
+    },
+
+    fiatBalanceContainer: {
+        width: '90%',
+        height: '20%',
+        backgroundColor: Colors.primary,
+        borderRadius: 20,
+        marginTop: 20,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+    
+      fiatBalanceText:{
+        fontSize: 15,
+        fontFamily: "Poppins_600SemiBold",
+        color: Colors.white,
+      },
+    
+      fiatBalanceValueText:{
+        fontSize: 40,
+        fontFamily: "Poppins_700Bold",
+        color: Colors.white,
+      },
+
+      backButton: {
+        marginLeft: 10,
+        position: "absolute",
+        left: 0,
+        zIndex: 1,
+      },
+
+      header: {
+        color: Colors.textColor,
+        marginTop: 20,
+      },
+    
+      headerText: {
+        color: Colors.textColor,
+        fontFamily: "Poppins_700Bold",
+        textAlign: "center",
+        fontSize: 20,
+      },
+
+      dropDownPicker:{
+        backgroundColor: Colors.listHolder,
+        borderColor: Colors.primary,
+        borderRadius: 50,
+        width: '90%',
+        height: 60,
+        alignSelf: 'center',
+        marginTop: 50,
+        padding: 10,
+      },
+
+      selectPlanPicker:{
+        backgroundColor: Colors.listHolder,
+        borderColor: Colors.primary,
+        borderRadius: 50,
+        width: '90%',
+        height: 60,
+        alignSelf: 'center',
+        marginTop: 10,
+        marginBottom: 20,
+        padding: 10,
+      },
+    
+    
+      dropDownContainerPicker:{
+        borderColor: Colors.primary
+      },
+    
+      dropDownToContainerPicker:{
+        borderColor: Colors.primary
+      },
+
+      addressInput: {
+        height: 60,
+        margin: "5%",
+        marginTop: 30,
+        borderWidth: 1,
+        borderRadius: 40,
+        borderColor: Colors.primary,
+        backgroundColor: Colors.listHolder,
+        padding: 20,
+      },
+    
+      otherTextInputs: {
+        height: 60,
+        margin: "5%",
+        marginTop: 10,
+        borderWidth: 1,
+        borderRadius: 40,
+        borderColor: Colors.primary,
+        backgroundColor: Colors.listHolder,
+        padding: 20,
+      },
+
+      roundedButton: {
+        backgroundColor: Colors.primary,
+        borderRadius: 40,
+        width: "85%",
+        height: 60,
+        marginTop: 40,
+        shadowOffset: { width: 0, height: 3 },
+        shadowColor: Colors.shadowColor,
+        shadowOpacity: 0.1,
+        elevation: 3,
+        alignItems: "center",
+        alignSelf: "center",
+        justifyContent: 'center'
+      },
+    
+      roundedTextButton: {
+        color: Colors.white,
+        fontFamily: "Poppins_600SemiBold",
+      },
+    
 
 
 })
