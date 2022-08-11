@@ -68,6 +68,7 @@ export default function HomeScreen({ navigation }) {
               name='star'
               size={12}
               color={Colors.primary}
+              style ={{marginRight: 5}}
             />
         <ImageButton
           image={item.icon}

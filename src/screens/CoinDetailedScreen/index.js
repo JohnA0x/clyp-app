@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import CoinDetailedHeader from "./components/CoinDetailedHeader/index";
 import styles from "./styles";
@@ -136,6 +137,7 @@ const CoinDetailedScreen = () => {
 
   return (
     <SafeAreaView style={{ paddingHorizontal: 10 }}>
+      <ScrollView>
       <LineChart.Provider
         data={prices.map(([timestamp, value]) => ({ timestamp, value }))}
       >
@@ -283,6 +285,16 @@ const CoinDetailedScreen = () => {
           </View>
         </View>
       </LineChart.Provider>
+
+      <Text style = {styles.aboutText}>
+       About {name}
+      </Text>
+
+      <Text style = {styles.aboutContentText}>
+       Input Content here
+      </Text>
+      </ScrollView>
+      
     </SafeAreaView>
   );
 };
