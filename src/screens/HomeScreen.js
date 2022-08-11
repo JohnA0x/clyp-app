@@ -28,11 +28,11 @@ import axios from "../components/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CustomAlert } from "../components/alert";
 import biometricsAuth from "../services/biometricsAuth";
-import { 
+import {
   hasHardwareAsync,
   isEnrolledAsync,
-  authenticateAsync 
-} from 'expo-local-authentication';
+  authenticateAsync,
+} from "expo-local-authentication";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -45,31 +45,26 @@ import {
 } */
 
 export default function HomeScreen({ navigation }) {
-
-  const [id, setID] = React.useState("")
-  const [firstName, setFirstName] = React.useState("")
-  const [lastName, setLastName] = React.useState("")
-  const [preferences, setPrefrences]  = React.useState("")
-  const [user, setUser] = React.useState({})
-  const [token, setToken] = React.useState("")
+  const [id, setID] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [preferences, setPrefrences] = React.useState("");
+  const [user, setUser] = React.useState({});
+  const [token, setToken] = React.useState("");
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
-
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
-      <TouchableOpacity
-        style={styles.favouriteButton}
-        onPress={biometricsAuth}
-      >
-         <Ionicons
-              name='star'
-              size={12}
-              color={Colors.primary}
-              style ={{marginRight: 5}}
-            />
+      <TouchableOpacity style={styles.favouriteButton} onPress={biometricsAuth}>
+        <Ionicons
+          name="star"
+          size={12}
+          color={Colors.primary}
+          style={{ marginRight: 5 }}
+        />
         <ImageButton
           image={item.icon}
           style={styles.cryptoimage}
@@ -98,59 +93,73 @@ export default function HomeScreen({ navigation }) {
   );
 
   React.useEffect(() => {
-
     async function fetchData() {
-      let id = await AsyncStorage.getItem("user_id").then(value => value)
-      let token = await AsyncStorage.getItem("token").then(value => value)
+      let id = await AsyncStorage.getItem("user_id").then((value) => value);
+      let token = await AsyncStorage.getItem("token").then((value) => value);
 
-      setToken(token)
-      axios.post('/user-gateway/get-full-user', { user_id: id } )
-        .then(data => {
+      setToken(token);
+      axios
+        .post("/user-gateway/get-full-user", { user_id: id })
+        .then((data) => {
           // console.log(data.data)
-          setID(data.data.user.id)
-          setFirstName(data.data.user.first_name)
-          setLastName(data.data.user.last_name)
-          setPrefrences(data.data.user.prefrence[0])
-          setUser(data.data.user)
+          setID(data.data.user.id);
+          setFirstName(data.data.user.first_name);
+          setLastName(data.data.user.last_name);
+          setPrefrences(data.data.user.prefrence[0]);
+          setUser(data.data.user);
         })
-        .catch(err => {
-          CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
-          console.log({ err })
-        })
+        .catch((err) => {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error making request, please try again...",
+            handlePress: () => {},
+          });
+          console.log({ err });
+        });
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-      <View style={styles.topBar}>
-        <ImageButton
-          style={styles.profileImage}
-          imageStyle={styles.profileImage}
-          image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
-          handlePress={() => {
-            navigation.navigate("Profile", {id, firstName, lastName, preferences, user});
-            navigation.setOptions({ tabBarVisible: false });
-          }}
-        />
-        <Text style={styles.nameText}>Welcome {firstName}</Text>
-        <VectorButton
-          style={styles.notificationButton}
-          name="notifications-outline"
-          size={24}
-          color={Colors.primary}
-          handlePress={() => navigation.push(Strings.notifications)}
-        />
-        <VectorButton
-          style={styles.scanButton}
-          name="scan"
-          size={24}
-          color={Colors.primary}
-          handlePress={() => navigation.navigate(Strings.qrcode, {token})}
-        />
-      </View>
-      
+        <View style={styles.topBar}>
+          <ImageButton
+            style={styles.profileImage}
+            imageStyle={styles.profileImage}
+            image={
+              user.picture
+                ? user.picture
+                : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+            }
+            handlePress={() => {
+              navigation.navigate("Profile", {
+                id,
+                firstName,
+                lastName,
+                preferences,
+                user,
+              });
+              navigation.setOptions({ tabBarVisible: false });
+            }}
+          />
+          <Text style={styles.nameText}>Welcome {firstName}</Text>
+          <VectorButton
+            style={styles.notificationButton}
+            name="notifications-outline"
+            size={24}
+            color={Colors.primary}
+            handlePress={() => navigation.push(Strings.notifications)}
+          />
+          <VectorButton
+            style={styles.scanButton}
+            name="scan"
+            size={24}
+            color={Colors.primary}
+            handlePress={() => navigation.navigate(Strings.qrcode, { token })}
+          />
+        </View>
+
         <Swiper
           style={styles.swiperContainer}
           activeDotColor={Colors.fadedButton}
@@ -160,41 +169,60 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
 
             <View style={styles.transactionOptions}>
-              <VectorButton
-                name="arrow-up"
-                size={18}
-                color={Colors.white}
-                style={styles.sendbutton}
-                handlePress={() => navigation.navigate(Strings.sendCrypto)}
-              />
-              <VectorButton
-                name="arrow-down"
-                size={18}
-                color={Colors.white}
-                style={styles.receivebutton}
-                handlePress={() => navigation.navigate(Strings.receiveCrypto)}
-              />
-              <VectorButton
-                name="pricetag-outline"
-                size={18}
-                color={Colors.white}
-                style={styles.buybutton}
-                handlePress={() => navigation.navigate(Strings.buy)}
-              />
-              <VectorButton
-                name="cash-outline"
-                size={18}
-                color={Colors.white}
-                style={styles.sellbutton}
-                handlePress={() => navigation.navigate(Strings.sell)}
-              />
-              <VectorButton
-                name="swap-horizontal"
-                size={18}
-                color={Colors.white}
-                style={styles.swapbutton}
-                handlePress={() => navigation.navigate(Strings.swap)}
-              />
+              <View style={styles.columnContainer}>
+                <VectorButton
+                  name="arrow-up"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.sendbutton}
+                  handlePress={() => navigation.navigate(Strings.sendCrypto)}
+                />
+                <Text style={styles.optionText}>{Strings.send}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="arrow-down"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.receivebutton}
+                  handlePress={() => navigation.navigate(Strings.receiveCrypto)}
+                />
+                <Text style={styles.optionText}>{Strings.receive}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="pricetag-outline"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.buybutton}
+                  handlePress={() => navigation.navigate(Strings.buy)}
+                />
+                <Text style={styles.optionText}>{Strings.buy}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="cash-outline"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.sellbutton}
+                  handlePress={() => navigation.navigate(Strings.sell)}
+                />
+                <Text style={styles.optionText}>{Strings.sell}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="swap-horizontal"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.swapbutton}
+                  handlePress={() => navigation.navigate(Strings.swap)}
+                />
+                <Text style={styles.optionText}>{Strings.swap}</Text>
+              </View>
             </View>
           </View>
 
@@ -203,21 +231,27 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.cryptoBalanceText}>N 35,000</Text>
 
             <View style={styles.transactionOptions}>
-              <VectorButton
-                name="arrow-up"
-                size={20}
-                color={Colors.white}
-                style={styles.sendbutton}
-                handlePress={() => navigation.push(Strings.withdraw)}
-                
-              />
-              <VectorButton
-                name="arrow-down"
-                size={20}
-                color={Colors.white}
-                style={styles.receivebutton}
-                handlePress={() => navigation.push(Strings.deposit)}
-              />
+              <View style={styles.columnContainer}>
+                <VectorButton
+                  name="arrow-down"
+                  size={20}
+                  color={Colors.white}
+                  style={styles.sendbutton}
+                  handlePress={() => navigation.push(Strings.deposit)}
+                />
+                <Text style={styles.optionText}>{Strings.deposit}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="arrow-up"
+                  size={20}
+                  color={Colors.white}
+                  style={styles.receivebutton}
+                  handlePress={() => navigation.push(Strings.withdraw)}
+                />
+                <Text style={styles.optionText}>{Strings.withdraw}</Text>
+              </View>
             </View>
           </View>
         </Swiper>
@@ -234,16 +268,16 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-      <View style={styles.coinContainer}>
-        <Text style={styles.holdingText}>{Strings.holdings}</Text>
-        <FlatList
-          contentContainerStyle={styles.flatlist}
-          data={favouriteListArray}
-          renderItem={holdingsList}
-          //numColumns={2}
-          keyExtractor={(item, id) => id}
-        />
-      </View>
+        <View style={styles.coinContainer}>
+          <Text style={styles.holdingText}>{Strings.holdings}</Text>
+          <FlatList
+            contentContainerStyle={styles.flatlist}
+            data={favouriteListArray}
+            renderItem={holdingsList}
+            //numColumns={2}
+            keyExtractor={(item, id) => id}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
