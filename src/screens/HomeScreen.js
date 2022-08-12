@@ -28,11 +28,11 @@ import axios from "../components/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CustomAlert } from "../components/alert";
 import biometricsAuth from "../services/biometricsAuth";
-import { 
+import {
   hasHardwareAsync,
   isEnrolledAsync,
-  authenticateAsync 
-} from 'expo-local-authentication';
+  authenticateAsync,
+} from "expo-local-authentication";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -58,18 +58,15 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
 
-
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
-      <TouchableOpacity
-        style={styles.favouriteButton}
-        onPress={biometricsAuth}
-      >
-         <Ionicons
-              name='star'
-              size={12}
-              color={Colors.primary}
-            />
+      <TouchableOpacity style={styles.favouriteButton} onPress={biometricsAuth}>
+        <Ionicons
+          name="star"
+          size={12}
+          color={Colors.primary}
+          style={{ marginRight: 5 }}
+        />
         <ImageButton
           image={item.icon}
           style={styles.cryptoimage}
@@ -101,10 +98,9 @@ export default function HomeScreen({ navigation }) {
   };
 
   React.useEffect(() => {
-
     async function fetchData() {
-      let id = await AsyncStorage.getItem("user_id").then(value => value)
-      let token = await AsyncStorage.getItem("token").then(value => value)
+      let id = await AsyncStorage.getItem("user_id").then((value) => value);
+      let token = await AsyncStorage.getItem("token").then((value) => value);
 
       setToken(token)
       axios.post('/user-gateway/get-full-user', { user_id: id })
@@ -115,6 +111,7 @@ export default function HomeScreen({ navigation }) {
           setLastName(data.data.user.last_name)
           setPrefrences(data.data.user.prefrence[0])
           setUser(data.data.user)
+          console.log(data.data.user)
           axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
             .then(coins_data => {
               setCoins(coins_data.data.coins)
@@ -124,9 +121,17 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
           console.log({ err })
         })
+        .catch((err) => {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error making request, please try again...",
+            handlePress: () => {},
+          });
+          console.log({ err });
+        });
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -167,41 +172,60 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
 
             <View style={styles.transactionOptions}>
-              <VectorButton
-                name="arrow-up"
-                size={18}
-                color={Colors.white}
-                style={styles.sendbutton}
-                handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
-              />
-              <VectorButton
-                name="arrow-down"
-                size={18}
-                color={Colors.white}
-                style={styles.receivebutton}
-                handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
-              />
-              <VectorButton
-                name="pricetag-outline"
-                size={18}
-                color={Colors.white}
-                style={styles.buybutton}
-                handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
-              />
-              <VectorButton
-                name="cash-outline"
-                size={18}
-                color={Colors.white}
-                style={styles.sellbutton}
-                handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
-              />
-              <VectorButton
-                name="swap-horizontal"
-                size={18}
-                color={Colors.white}
-                style={styles.swapbutton}
-                handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
-              />
+              <View style={styles.columnContainer}>
+                <VectorButton
+                  name="arrow-up"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.sendbutton}
+                  handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
+                />
+                <Text style={styles.optionText}>{Strings.send}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="arrow-down"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.receivebutton}
+                  handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
+                />
+                <Text style={styles.optionText}>{Strings.receive}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="pricetag-outline"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.buybutton}
+                  handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
+                />
+                <Text style={styles.optionText}>{Strings.buy}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="cash-outline"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.sellbutton}
+                  handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
+                />
+                <Text style={styles.optionText}>{Strings.sell}</Text>
+              </View>
+
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="swap-horizontal"
+                  size={18}
+                  color={Colors.white}
+                  style={styles.swapbutton}
+                  handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
+                />
+                <Text style={styles.optionText}>{Strings.swap}</Text>
+              </View>
             </View>
           </View>
 
@@ -210,21 +234,27 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.cryptoBalanceText}>N 35,000</Text>
 
             <View style={styles.transactionOptions}>
-              <VectorButton
-                name="arrow-up"
-                size={20}
-                color={Colors.white}
-                style={styles.sendbutton}
-                handlePress={() => navigation.push(Strings.withdraw)}
+              <View style={styles.columnContainer}>
+                <VectorButton
+                  name="arrow-down"
+                  size={20}
+                  color={Colors.white}
+                  style={styles.sendbutton}
+                  handlePress={() => navigation.push(Strings.deposit)}
+                />
+                <Text style={styles.optionText}>{Strings.deposit}</Text>
+              </View>
 
-              />
-              <VectorButton
-                name="arrow-down"
-                size={20}
-                color={Colors.white}
-                style={styles.receivebutton}
-                handlePress={() => navigation.push(Strings.deposit)}
-              />
+              <View style={styles.othercolumnContainer}>
+                <VectorButton
+                  name="arrow-up"
+                  size={20}
+                  color={Colors.white}
+                  style={styles.receivebutton}
+                  handlePress={() => navigation.push(Strings.withdraw)}
+                />
+                <Text style={styles.optionText}>{Strings.withdraw}</Text>
+              </View>
             </View>
           </View>
         </Swiper>

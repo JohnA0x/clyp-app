@@ -27,6 +27,17 @@ export const styles = StyleSheet.create({
       height: 270
     },
 
+    columnContainer:{
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+
+    othercolumnContainer:{
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginLeft: 30,
+    },
+
     cryptoContainer:{
         backgroundColor: Colors.primary,
         borderRadius: 20,
@@ -106,13 +117,11 @@ export const styles = StyleSheet.create({
 
     transactionOptions:{
       flexDirection: 'row',
-      padding: 2,
       alignItems: 'center',
       alignContent: 'center',
       justifyContent:'center',
       backgroundColor: Colors.tertiary,
       borderRadius: 20,
-      paddingTop: 20,
       marginTop: 5,
       height: '30%',
       width: '90%',
@@ -151,6 +160,12 @@ export const styles = StyleSheet.create({
       color: Colors.backgroundColor,
     },
 
+    optionText:{
+      fontSize: 10,
+      fontFamily: 'Poppins_600SemiBold',
+      color: Colors.white
+    },
+
     sendbutton: {
       justifyContent: 'center',
       alignContent: 'center',
@@ -159,7 +174,6 @@ export const styles = StyleSheet.create({
       height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
-      marginBottom: 20,
     },
 
     receivebutton: {
@@ -170,8 +184,6 @@ export const styles = StyleSheet.create({
       height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
-      marginBottom: 20,
-      marginLeft: 40,
     },
 
     buybutton: {
@@ -182,8 +194,8 @@ export const styles = StyleSheet.create({
       height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
-      marginBottom: 20,
-      marginLeft: 40,
+      //marginBottom: 20,
+      //marginLeft: 40,
     },
 
     sellbutton: {
@@ -194,8 +206,8 @@ export const styles = StyleSheet.create({
       height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
-      marginBottom: 20,
-      marginLeft: 40,
+     // marginBottom: 20,
+     // marginLeft: 40,
     },
 
     swapbutton: {
@@ -206,8 +218,8 @@ export const styles = StyleSheet.create({
       height:30,
       backgroundColor:Colors.fadedButton,
       borderRadius:50,
-      marginBottom: 20,
-      marginLeft: 40,
+     // marginBottom: 20,
+     // marginLeft: 40,
     },
 
 

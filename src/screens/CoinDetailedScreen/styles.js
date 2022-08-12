@@ -67,7 +67,24 @@ const styles = StyleSheet.create({
   candleStickTextLabel: {
     color: 'grey',
     fontSize: 13
-  }
+  },
+  aboutText:{
+    color: Colors.textColor,
+    marginLeft: 10,
+    marginTop: 20,
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 20,
+  },
+
+  aboutContentText:{
+    color: Colors.textColor,
+    width: '90%',
+    textAlign: 'left',
+    marginLeft: 10,
+    marginTop: 5,
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 15,
+  },
 });
 
 export default styles;

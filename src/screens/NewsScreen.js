@@ -25,12 +25,29 @@ import {
   ImageButton,
   VectorButton,
 } from "../components/button";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
 export default function NewsScreen({ navigation }) {
   const [image, setImage] = useState("");
   const [newsContent, steNewsContent] = useState("");
+  const [news, setNews] = useState(null)
+
+  const fetchNews = async () => {
+
+    const mediaStackNews = await axios.get(`https://newsdata.io/api/1/news?apikey=pub_72923f07282dc8e1ce33feacd6823d57cd8e&category=business,technology&language=en&q=crypto`)
+// %20OR%20crypto
+    setNews(mediaStackNews.data.results)
+    console.log(mediaStackNews.data.results[0])
+    
+
+  }
+
+  useEffect(() => {
+    fetchNews()
+  }, [])
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -48,10 +65,11 @@ export default function NewsScreen({ navigation }) {
         style={styles.rowContainer}
         onPress={() => {
           navigation.navigate("newscontainer");
-          setImage(item.image);
+          setImage(item.image_url ? item.image_url : 'https://cdn-icons-png.flaticon.com/512/2964/2964063.png');
+          steNewsContent(item.content)
         }}
       >
-        <Image style={styles.newsImage} source={{ uri: item.image }} />
+        <Image style={styles.newsImage} source={{ uri: item.image_url ? item.image_url : 'https://cdn-icons-png.flaticon.com/512/2964/2964063.png' }} />
         <Text style={styles.newsText} numberOfLines={1}>
           {item.title}
         </Text>
@@ -74,7 +92,7 @@ export default function NewsScreen({ navigation }) {
         <View style={styles.flatlist}>
           <FlatList
             //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-            data={newsArrayList}
+            data={news}
             renderItem={newsList}
             ItemSeparatorComponent={listSeparator}
           />

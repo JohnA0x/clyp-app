@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -6,7 +7,6 @@ import {
   Switch,
   TextInput,
 } from "react-native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from "../constants/colors";
 import * as Strings from "../strings/strings";
@@ -21,7 +21,7 @@ import { useState } from "react";
 import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
 
-import {Ionicons} from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -30,16 +30,16 @@ import { set } from "lodash";
 
 const Stack = createNativeStackNavigator();
 
-export default function SecurityScreen({ navigation }) {
-  const [isEnabled, setIsEnabled] = useState(false);
+export default function SecurityScreen({ navigation, route }) {
+
+  const [isEnabled, setIsEnabled] = useState(false)
   const [isBiometricsEnabled, setBiometricsEnabled] = useState(false);
 
 
   const [mode, setMode] = useState();
-  const [formerPin, setFormerPin] = useState('');
-  const [newPin, setNewPin] = useState("");
-  const [reenterPin, setReenterPin] = useState('');
+
   const [isBiometrics, setBiometrics] = useState(false)
+
   const toggleBiometricsSwitch = () => setIsEnabled(previousState => !previousState);
 
 
@@ -105,7 +105,13 @@ export default function SecurityScreen({ navigation }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.home, {
+              id: route.params.id,
+              preferences: route.params.preferences,
+              firstName: route.params.firstName,
+              lastName: route.params.lastName,
+              user: route.params.user
+            })}
           />
           <Text style={styles.headerText}>{Strings.security}</Text>
         </View>
@@ -120,11 +126,118 @@ export default function SecurityScreen({ navigation }) {
   }
 
   function AuthenticationScreen() {
-    function biometrics(){
+    function biometrics() {
       toggleBiometricsSwitch
       storeData(isBiometrics)
       alert(isBiometrics)
     }
+
+    const [isSMSEnabled, setIsSMSEnabled] = useState(route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0] ? (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status === "active" ? true : false) : false);
+
+    const [isMailEnabled, setIsMailEnabled] = useState(route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0] ? (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status === "active" ? true : false) : false);
+
+
+    const toggleSMSSwitch = () => {
+
+      if (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0]) {
+
+        axios.post('/user-gateway/update-extra-permission', {
+          user_id: route.params.user.id,
+          id: route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].id,
+          status: isSMSEnabled ? "inactive" : "active"
+        })
+          .then(data => {
+            if (data.data.message === "success") {
+
+              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status = isSMSEnabled ? "inactive" : "active"
+
+              setIsSMSEnabled(previousState => !previousState)
+            } else {
+              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+            }
+          })
+          .catch(error => {
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+
+      else {
+
+        axios.post('/user-gateway/add-extra-permission', {
+          user_id: route.params.id,
+          permission_name: "can_authenticate_sms",
+          permission_type: "public",
+          status: "active"
+        })
+          .then(data => {
+            if (data.data.message === "success") {
+
+              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status = "active"
+
+              setIsSMSEnabled(previousState => !previousState)
+            } else {
+              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+            }
+          })
+          .catch(error => {
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+    }
+
+    const toggleMailSwitch = () => {
+
+      if (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0]) {
+
+        axios.post('/user-gateway/update-extra-permission', {
+          user_id: route.params.user.id,
+          id: route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].id,
+          status: isMailEnabled ? "inactive" : "active"
+        })
+          .then(data => {
+            if (data.data.message === "success") {
+
+              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status = isMailEnabled ? "inactive" : "active"
+
+              setIsMailEnabled(previousState => !previousState)
+            } else {
+              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+            }
+          })
+          .catch(error => {
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+      else {
+
+        axios.post('/user-gateway/add-extra-permission', {
+          user_id: route.params.id,
+          permission_name: "can_authenticate_mail",
+          permission_type: "public",
+          status: "active"
+        })
+          .then(data => {
+            if (data.data.message === "success") {
+
+              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status = "active"
+
+              setIsMailEnabled(previousState => !previousState)
+
+            } else {
+              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+            }
+          })
+          .catch(error => {
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+
+    }
+
 
     return (
       <SafeAreaView style={styles.container}>
@@ -151,11 +264,11 @@ export default function SecurityScreen({ navigation }) {
           <Switch
             style={styles.switch}
             trackColor={{ false: Colors.black, true: Colors.primary }}
-            thumbColor={isEnabled ? Colors.secondary : Colors.grey}
+            thumbColor={isSMSEnabled ? Colors.secondary : Colors.grey}
             ios_backgroundColor={Colors.black}
-            onValueChange={isBiometricsEnabled}
+            onValueChange={toggleSMSSwitch}
             size={100}
-            value={isEnabled}
+            value={isSMSEnabled}
           />
         </TouchableOpacity>
 
@@ -171,11 +284,11 @@ export default function SecurityScreen({ navigation }) {
           <Switch
             style={styles.switch}
             trackColor={{ false: Colors.black, true: Colors.primary }}
-            thumbColor={isEnabled ? Colors.secondary : Colors.grey}
+            thumbColor={isMailEnabled ? Colors.secondary : Colors.grey}
             ios_backgroundColor={Colors.black}
-            onValueChange={toggleBiometricsSwitch}
+            onValueChange={toggleMailSwitch}
             size={100}
-            value={isEnabled}
+            value={isMailEnabled}
           />
         </TouchableOpacity>
 
@@ -245,8 +358,48 @@ export default function SecurityScreen({ navigation }) {
   }
 
   function ChangePin() {
+
+    const [formerPin, setFormerPin] = useState('');
+    const [newPin, setNewPin] = useState("");
+    const [reenterPin, setReenterPin] = useState('');
+
+    const submitPin = () => {
+
+      if (newPin !== reenterPin) {
+
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
+        return false
+
+      } else if (formerPin !== route.params.user.prefrence[0].pin){
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
+        return false
+
+      }
+      else {
+
+        axios.post('/user-gateway/update-prefrences', {
+          pin: newPin,
+          user_id: route.params.user.id,
+        })
+          .then(data => {
+            if (data.data.message === "success") {
+              route.params.user.prefrence[0].pin = newPin
+              navigation.navigate("securitylist")
+            } else {
+              CustomAlert({ title: "Failed", subtitle: "Failed to change your transaction pin, please try again" })
+            }
+          })
+          .catch(error => {
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+
+    }
+
     return (
-      <SafeAreaView style = {styles.container}>
+      <SafeAreaView style={styles.container}>
+
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -257,6 +410,7 @@ export default function SecurityScreen({ navigation }) {
           />
           <Text style={styles.headerText}>{Strings.changePin}</Text>
         </View>
+
         <TextInput
           style={styles.addressInput}
           placeholder={Strings.enterFormerPassword}
@@ -282,14 +436,15 @@ export default function SecurityScreen({ navigation }) {
           placeholder={Strings.reenterNewPassword}
           secureTextEntry={true}
           selectionColor={Colors.primary}
-        >
-          <Ionicons/>
-        </TextInput>
+        />
+        {/* <Ionicons />
+        </TextInput> */}
 
         <RoundedButton
           text={Strings.confirm}
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
+          handlePress={() => submitPin()}
         />
       </SafeAreaView>
     );

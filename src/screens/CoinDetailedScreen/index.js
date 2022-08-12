@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import CoinDetailedHeader from "./components/CoinDetailedHeader/index";
 import styles from "./styles";
@@ -19,6 +20,7 @@ import {
 import FilterComponent from "./components/FilterComponent/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 
 const filterDaysArray = [
   { filterDay: "1", filterText: "24h" },
@@ -42,6 +44,8 @@ const CoinDetailedScreen = () => {
   const [usdValue, setUsdValue] = useState("");
   const [selectedRange, setSelectedRange] = useState("1");
   const [isCandleChartVisible, setIsCandleChartVisible] = useState(false);
+
+  const [news, setNews] = useState(null)
 
   const fetchCoinData = async () => {
     setLoading(true);
@@ -67,10 +71,20 @@ const CoinDetailedScreen = () => {
     setCoinCandleChartData(fetchedSelectedCandleChartData);
   };
 
+  const fetchNews = async () => {
+
+    const mediaStackNews = await axios.get(`https://newsdata.io/api/1/news?apikey=pub_72923f07282dc8e1ce33feacd6823d57cd8e&category=business,technology&language=en&q=${coinId}%20OR%20crypto`)
+// %20OR%20crypto
+    setNews(mediaStackNews.data.results[0].content !== null ? mediaStackNews.data.results[0].content : mediaStackNews.data.results[0].description)
+    
+
+  }
+
   useEffect(() => {
     fetchCoinData();
     fetchMarketCoinData(1);
     fetchCandleStickChartData();
+    fetchNews();
   }, []);
 
 
@@ -136,6 +150,7 @@ const CoinDetailedScreen = () => {
 
   return (
     <SafeAreaView style={{ paddingHorizontal: 10 }}>
+      <ScrollView>
       <LineChart.Provider
         data={prices.map(([timestamp, value]) => ({ timestamp, value }))}
       >
@@ -283,6 +298,16 @@ const CoinDetailedScreen = () => {
           </View>
         </View>
       </LineChart.Provider>
+
+      <Text style = {styles.aboutText}>
+       About {name}
+      </Text>
+
+      <Text style = {styles.aboutContentText}>
+       {news ? news : `No news available for ${name}`}
+      </Text>
+      </ScrollView>
+      
     </SafeAreaView>
   );
 };
