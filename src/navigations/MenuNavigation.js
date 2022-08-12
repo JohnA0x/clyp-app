@@ -30,6 +30,8 @@ import SwapCryptoScreen from "../screens/SwapCryptoScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import NewsScreen from "../screens/NewsScreen";
 import SecurityScreen from "../screens/SecurityScreen";
+import RechargeScreen from "../screens/RechargeScreen";
+import BillPayScreen from "../screens/BillPayScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -87,6 +89,8 @@ function ClypHubStackScreen() {
       }}
     >
       <HubStack.Screen name={Strings.clyphub} component={ClypHub} />
+      <HubStack.Screen name={Strings.recharge} component={RechargeScreen} />
+      <HubStack.Screen name={Strings.bill} component={BillPayScreen} />
     </HubStack.Navigator>
   );
 }

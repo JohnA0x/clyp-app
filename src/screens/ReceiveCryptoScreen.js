@@ -25,6 +25,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { CustomModal } from "../components/modal";
 
 import QRCode from "react-native-qrcode-svg";
+import * as Clipboard from 'expo-clipboard';
+import { CustomAlert } from "../components/alert";
 
 export default function ReceiveCryptoScreen({ navigation, route }) {
   const [query, setQuery] = useState("");
@@ -146,18 +148,23 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
           </Text>
         </View>
 
-        <CustomModal isVisible={isModalVisible} />
+    
         <RoundedButton
           text="Copy Address"
           textStyle={styles.textButton}
           style={styles.button}
-          handlePress={toggleModal}
+          handlePress={async () => {
+            await Clipboard.setStringAsync(coin.address)
+            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
+          }}
         />
-        <CustomModal isVisible={isModalVisible} />
-        <RoundedButton text={'Copy Address'} textStyle={styles.textButton} title=""
-          style={styles.button} handlePress={toggleModal} />
-
-        {/*     <DropDownPicker
+          <RoundedButton text ={'Copy Address'} textStyle = {styles.textButton} title=""
+          style = {styles.button} handlePress = {async () => {
+            await Clipboard.setStringAsync(coin.address)
+            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
+          }}/>
+       
+      {/*     <DropDownPicker
           style={styles.dropdown}
             open={open}
             value={value}

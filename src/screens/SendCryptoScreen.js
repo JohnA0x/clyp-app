@@ -27,8 +27,9 @@ export default function SendCryptoScreen({ navigation }) {
   const [query, setQuery] = useState("");
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
-  const [walletOptions, setWalletOptions] = useState([{address: "hh", 
-  abb: "hh"}]);
+  const [walletOptions, setWalletOptions] = useState([
+    { address: "hh", abb: "hh" },
+  ]);
   const [data, setData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const SendStack = createNativeStackNavigator();
@@ -91,8 +92,8 @@ export default function SendCryptoScreen({ navigation }) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
-      {label: 'Apple', value: 'apple'},
-      {label: 'Banana', value: 'banana'}
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" },
     ]);
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -115,33 +116,40 @@ export default function SendCryptoScreen({ navigation }) {
         </Text>
         <Image style={styles.optionsimage} source={{ uri: cryptoIcon }} />
 
-        <TextInput
-            style={styles.walletAddressInput}
-            placeholder={Strings.walletAddress}
-            selectionColor={Colors.primary}
-          />
-          <TextInput
-            style={styles.otherTextInputs}
-            placeholder={Strings.walletName}
-            selectionColor={Colors.primary}
-          />
-          <TextInput
-            style={styles.otherTextInputs}
-            placeholder={Strings.selectNetwork}
-            selectionColor={Colors.primary}
-          />
-          <TextInput
-            style={styles.otherTextInputs}
-            placeholder={Strings.enterAmount}
-            selectionColor={Colors.primary}
-            keyboardType='numeric'
-          />
+        <ScrollView>
+          <View>
+            <TextInput
+              style={styles.walletAddressInput}
+              placeholder={Strings.walletAddress}
+              selectionColor={Colors.primary}
+            />
+            <TextInput
+              style={styles.otherTextInputs}
+              placeholder={Strings.walletName}
+              selectionColor={Colors.primary}
+            />
+            <TextInput
+              style={styles.otherTextInputs}
+              placeholder={Strings.selectNetwork}
+              selectionColor={Colors.primary}
+            />
+            <TextInput
+              style={styles.otherTextInputs}
+              placeholder={Strings.enterAmount}
+              selectionColor={Colors.primary}
+              keyboardType="numeric"
+            />
 
-          <CustomModal isVisible = {isModalVisible}/>
-          <RoundedButton text = {'Send ' + walletOptions.abb} textStyle = {styles.textButton} 
-          style = {styles.button} handlePress = {toggleModal}/>
-       
-      {/*     <DropDownPicker
+            <RoundedButton
+              text={"Send " + walletOptions.abb}
+              textStyle={styles.textButton}
+              style={styles.button}
+              handlePress={toggleModal}
+            />
+          </View>
+        </ScrollView>
+
+        {/*     <DropDownPicker
           style={styles.dropdown}
             open={open}
             value={value}
@@ -167,8 +175,7 @@ export default function SendCryptoScreen({ navigation }) {
             navigation.push("sendoptions");
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
-            setWalletOptions({abb: item.abb})
-           
+            setWalletOptions({ abb: item.abb });
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
@@ -196,7 +203,6 @@ export default function SendCryptoScreen({ navigation }) {
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
             renderItem={sendCryptoList}
-            
           />
         </View>
       </SafeAreaView>

@@ -175,7 +175,7 @@ export const styles = StyleSheet.create({
   },
 
   walletAddressInput: {
-    height: "8%",
+    height: 60,
     margin: "5%",
     marginTop: 40,
     borderWidth: 1,
@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   },
 
   otherTextInputs: {
-    height: "8%",
+    height: 60,
     margin: "5%",
     marginTop: 10,
     borderWidth: 1,
