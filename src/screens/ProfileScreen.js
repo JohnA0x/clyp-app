@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation, route }) {
       <View style={styles.profileContainer}>
         <ImageButton
           image={
-            "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+            route.params.user.picture ? route.params.user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
           }
           style={styles.profileImage}
           imageStyle={styles.profileImage}
@@ -99,7 +99,13 @@ export default function ProfileScreen({ navigation, route }) {
           size={24}
           color={Colors.primary}
           style={styles.editProfileButton}
-          handlePress = {() => navigation.navigate(Strings.editprofile)}
+          handlePress = {() => navigation.navigate(Strings.editprofile, {
+            id: route.params.id,
+            preferences: route.params.preferences,
+            firstName: route.params.firstName,
+            lastName: route.params.lastName,
+            user: route.params.user
+          } )}
         />
       </View>
 

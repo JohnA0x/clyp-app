@@ -25,8 +25,10 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { CustomModal } from "../components/modal";
 
 import QRCode from "react-native-qrcode-svg";
+import * as Clipboard from 'expo-clipboard';
+import { CustomAlert } from "../components/alert";
 
-export default function ReceiveCryptoScreen({ navigation }) {
+export default function ReceiveCryptoScreen({ navigation, route }) {
   const [query, setQuery] = useState("");
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
@@ -106,7 +108,8 @@ export default function ReceiveCryptoScreen({ navigation }) {
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     };
-
+    const coin = route.params.coins.filter(c => c.currency == walletOptions.abb)[0]
+    console.log(coin)
     return (
       <SafeAreaView style={styles.container}>
         <VectorButton
@@ -124,24 +127,24 @@ export default function ReceiveCryptoScreen({ navigation }) {
 
         <View style={styles.qrcode}>
           <QRCode
-            value="ClypPay"
+            value={coin.address}
             color={Colors.qrcode}
             backgroundColor={Colors.backgroundColor}
             size={Dimensions.get("window").width / 2.3}
-            //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
-            // logoMargin={2}
-            // logoSize={20}
-            //logoBorderRadius={10}
-            //logoBackgroundColor={'transparent'}
+          //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
+          // logoMargin={2}
+          // logoSize={20}
+          //logoBorderRadius={10}
+          //logoBackgroundColor={'transparent'}
           />
         </View>
 
         <View style={styles.detailsScreen}>
           <Text style={styles.networkText}>{Strings.network}</Text>
-          <Text style={styles.addressText}>{Strings.address}</Text>
+          <Text style={styles.addressText}>{coin.address}</Text>
           <Text style={styles.networkValueText}>ERC-20</Text>
           <Text style={styles.addressValueText} numberOfLines={1}>
-            {Strings.dummyAddress}
+            {coin.address}
           </Text>
         </View>
 
@@ -150,10 +153,16 @@ export default function ReceiveCryptoScreen({ navigation }) {
           text="Copy Address"
           textStyle={styles.textButton}
           style={styles.button}
-          handlePress={toggleModal}
+          handlePress={async () => {
+            await Clipboard.setStringAsync(coin.address)
+            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
+          }}
         />
           <RoundedButton text ={'Copy Address'} textStyle = {styles.textButton} title=""
-          style = {styles.button} handlePress = {toggleModal}/>
+          style = {styles.button} handlePress = {async () => {
+            await Clipboard.setStringAsync(coin.address)
+            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
+          }}/>
        
       {/*     <DropDownPicker
           style={styles.dropdown}
@@ -173,23 +182,27 @@ export default function ReceiveCryptoScreen({ navigation }) {
   function ReceiveCryptoList() {
     const navigation = useNavigation();
 
-    const receiveCryptoList = ({ item }) => (
-      <View style={styles.rowContainer}>
-        <TouchableOpacity
-          style={styles.list}
-          onPress={() => {
-            navigation.push("receiveoptions");
-            setCryptoName(item.name);
-            setCryptoIcon(item.icon);
-            setWalletOptions({ abb: item.abb });
-          }}
-        >
-          <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={styles.valueText}>{item.value}</Text>
-          <Text style={styles.text}>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    const receiveCryptoList = ({ item }) => {
+      let coin = route.params.coins.filter(c => c.currency == item.abb)[0]
+      return (
+        <View style={styles.rowContainer}>
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => {
+              navigation.navigate("receiveoptions", {coin});
+              setCryptoName(item.name);
+              setCryptoIcon(item.icon);
+              setWalletOptions({ abb: item.abb });
+            }}
+          >
+            <Image source={{ uri: item.icon }} style={styles.image} />
+            <Text style={styles.valueText}>{item.value}</Text>
+            <Text style={styles.text}>{item.name}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+
+    }
 
     // This renders some components and the flatlist together
     return (

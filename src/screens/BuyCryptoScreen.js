@@ -27,7 +27,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 
-export default function BuyCryptoScreen({ navigation }) {
+export default function BuyCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [walletOptions, setWalletOptions] = useState([
@@ -154,7 +154,7 @@ export default function BuyCryptoScreen({ navigation }) {
             handlePress={() => navigation.navigate("buyoptions")}
           />
           <Text style={styles.headerText}>{Strings.buy}</Text>
-        </View>\
+        </View>
 
         <View style={styles.walletBalanceContainer}>
           <Text style={styles.walletBalanceText}>Wallet Balance</Text>

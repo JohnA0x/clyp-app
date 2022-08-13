@@ -20,6 +20,7 @@ import {
 import FilterComponent from "./components/FilterComponent/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 
 const filterDaysArray = [
   { filterDay: "1", filterText: "24h" },
@@ -43,6 +44,8 @@ const CoinDetailedScreen = () => {
   const [usdValue, setUsdValue] = useState("");
   const [selectedRange, setSelectedRange] = useState("1");
   const [isCandleChartVisible, setIsCandleChartVisible] = useState(false);
+
+  const [news, setNews] = useState(null)
 
   const fetchCoinData = async () => {
     setLoading(true);
@@ -68,10 +71,20 @@ const CoinDetailedScreen = () => {
     setCoinCandleChartData(fetchedSelectedCandleChartData);
   };
 
+  const fetchNews = async () => {
+
+    const mediaStackNews = await axios.get(`https://newsdata.io/api/1/news?apikey=pub_72923f07282dc8e1ce33feacd6823d57cd8e&category=business,technology&language=en&q=${coinId}%20OR%20crypto`)
+// %20OR%20crypto
+    setNews(mediaStackNews.data.results[0].content !== null ? mediaStackNews.data.results[0].content : mediaStackNews.data.results[0].description)
+    
+
+  }
+
   useEffect(() => {
     fetchCoinData();
     fetchMarketCoinData(1);
     fetchCandleStickChartData();
+    fetchNews();
   }, []);
 
 
@@ -113,14 +126,14 @@ const CoinDetailedScreen = () => {
     "worklet";
     if (value === "") {
       if (current_price.usd < 1) {
-        return `$${current_price.usd}`;
+        return `$${current_price.usd.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
       }
-      return `$${current_price.usd.toFixed(2)}`;
+      return `$${current_price.usd.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
     }
     if (current_price.usd < 1) {
-      return `$${parseFloat(value)}`;
+      return `$${parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
     }
-    return `$${parseFloat(value).toFixed(2)}`;
+    return `$${parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
   };
 
   const changeCoinValue = (value) => {
@@ -268,7 +281,7 @@ const CoinDetailedScreen = () => {
             </Text>
             <TextInput
               style={styles.input}
-              value={coinValue}
+              value={coinValue.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               keyboardType="numeric"
               onChangeText={changeCoinValue}
             />
@@ -278,7 +291,7 @@ const CoinDetailedScreen = () => {
             <Text style={styles.currencytext}>USD</Text>
             <TextInput
               style={styles.input}
-              value={usdValue}
+              value={usdValue.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               keyboardType="numeric"
               onChangeText={changeUsdValue}
             />
@@ -291,7 +304,7 @@ const CoinDetailedScreen = () => {
       </Text>
 
       <Text style = {styles.aboutContentText}>
-       Input Content here
+       {news ? news : `No news available for ${name}`}
       </Text>
       </ScrollView>
       

@@ -28,6 +28,7 @@
     "expo-apple-authentication": "~4.2.1",
     "expo-auth-session": "~3.6.1",
     "expo-barcode-scanner": "~11.3.0",
+    "expo-clipboard": "^3.1.0",
     "expo-font": "~10.1.0",
     "expo-google-sign-in": "~10.2.0",
     "expo-image-picker": "~13.1.1",

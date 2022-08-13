@@ -55,7 +55,7 @@ const CoinItem = ({ marketCoin }) => {
           name={isFavouritedIcon}
           size={12}
           color={Colors.primary}
-          onPress={() => setisFavourited(true)}
+          onPress={() => setisFavourited(!isFavourited)}
         />
         <Image
           source={{ uri: image }}
@@ -85,7 +85,7 @@ const CoinItem = ({ marketCoin }) => {
         {/* </View> */}
         {/* </View> */}
         {/* <View style={{ marginLeft: "auto", alignItems: "flex-end" }}> */}
-        <Text style={styles.cryptoPriceText}>{current_price}</Text>
+        <Text style={styles.cryptoPriceText}>{current_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
         <Text style={styles.cryptoMarketCapText} numberOfLines={1}>
           {normalizeMarketCap(market_cap)}
         </Text>

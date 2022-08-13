@@ -5,7 +5,7 @@
     "owner": "gabrielclyp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ico.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashscreen/splashscreen.png",
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"
       }
     },

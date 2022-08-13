@@ -45,12 +45,14 @@ import {
 } */
 
 export default function HomeScreen({ navigation }) {
-  const [id, setID] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [preferences, setPrefrences] = React.useState("");
-  const [user, setUser] = React.useState({});
-  const [token, setToken] = React.useState("");
+
+  const [id, setID] = React.useState("")
+  const [firstName, setFirstName] = React.useState("")
+  const [lastName, setLastName] = React.useState("")
+  const [preferences, setPrefrences] = React.useState("")
+  const [user, setUser] = React.useState({})
+  const [token, setToken] = React.useState("")
+  const [coins, setCoins] = React.useState([])
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -75,38 +77,49 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 
-  const holdingsList = ({ item }) => (
-    <View style={styles.historyBaseContainer}>
-      <TouchableOpacity
-        style={styles.holdingButton}
-        onPress={() => navigation.push(item.name)}
-      >
-        <ImageButton
-          image={item.icon}
-          style={styles.holdingsCryptoimage}
-          imageStyle={styles.holdingsCryptoimage}
-        />
-        <Text style={styles.holdingsTextButton}>{item.name}</Text>
-        <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const holdingsList = ({ item }) => {
+    // let coin = coins.filter(c => c.currency == item.abb)[0]
+     return (
+        <View style={styles.historyBaseContainer}>
+          <TouchableOpacity
+            style={styles.holdingButton}
+            onPress={() => navigation.push(item.name)}
+          >
+            <ImageButton
+              image={item.icon}
+              style={styles.holdingsCryptoimage}
+              imageStyle={styles.holdingsCryptoimage}
+            />
+            <Text style={styles.holdingsTextButton}>{item.name}</Text>
+            <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+  };
 
   React.useEffect(() => {
     async function fetchData() {
       let id = await AsyncStorage.getItem("user_id").then((value) => value);
       let token = await AsyncStorage.getItem("token").then((value) => value);
 
-      setToken(token);
-      axios
-        .post("/user-gateway/get-full-user", { user_id: id })
-        .then((data) => {
+      setToken(token)
+      axios.post('/user-gateway/get-full-user', { user_id: id })
+        .then(data => {
           // console.log(data.data)
-          setID(data.data.user.id);
-          setFirstName(data.data.user.first_name);
-          setLastName(data.data.user.last_name);
-          setPrefrences(data.data.user.prefrence[0]);
-          setUser(data.data.user);
+          setID(data.data.user.id)
+          setFirstName(data.data.user.first_name)
+          setLastName(data.data.user.last_name)
+          setPrefrences(data.data.user.prefrence[0])
+          setUser(data.data.user)
+          console.log(data.data.user)
+          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
+            .then(coins_data => {
+              setCoins(coins_data.data.coins)
+            })
+        })
+        .catch(err => {
+          CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
+          console.log({ err })
         })
         .catch((err) => {
           CustomAlert({
@@ -127,19 +140,9 @@ export default function HomeScreen({ navigation }) {
           <ImageButton
             style={styles.profileImage}
             imageStyle={styles.profileImage}
-            image={
-              user.picture
-                ? user.picture
-                : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
-            }
+            image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
             handlePress={() => {
-              navigation.navigate("Profile", {
-                id,
-                firstName,
-                lastName,
-                preferences,
-                user,
-              });
+              navigation.navigate("Profile", { id, firstName, lastName, preferences, user });
               navigation.setOptions({ tabBarVisible: false });
             }}
           />
@@ -175,7 +178,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.sendbutton}
-                  handlePress={() => navigation.navigate(Strings.sendCrypto)}
+                  handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
                 />
                 <Text style={styles.optionText}>{Strings.send}</Text>
               </View>
@@ -186,7 +189,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.receivebutton}
-                  handlePress={() => navigation.navigate(Strings.receiveCrypto)}
+                  handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
                 />
                 <Text style={styles.optionText}>{Strings.receive}</Text>
               </View>
@@ -197,7 +200,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.buybutton}
-                  handlePress={() => navigation.navigate(Strings.buy)}
+                  handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
                 />
                 <Text style={styles.optionText}>{Strings.buy}</Text>
               </View>
@@ -208,7 +211,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.sellbutton}
-                  handlePress={() => navigation.navigate(Strings.sell)}
+                  handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
                 />
                 <Text style={styles.optionText}>{Strings.sell}</Text>
               </View>
@@ -219,7 +222,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.swapbutton}
-                  handlePress={() => navigation.navigate(Strings.swap)}
+                  handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
                 />
                 <Text style={styles.optionText}>{Strings.swap}</Text>
               </View>
@@ -272,7 +275,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.holdingText}>{Strings.holdings}</Text>
           <FlatList
             contentContainerStyle={styles.flatlist}
-            data={favouriteListArray}
+            data={favouriteListArray} //coins
             renderItem={holdingsList}
             //numColumns={2}
             keyExtractor={(item, id) => id}
