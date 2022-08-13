@@ -8,12 +8,13 @@ import * as Colors from '../constants/colors'
 export const styles = StyleSheet.create({
     container:{
         flex:1,
-        padding: 2,
+        padding: 5,
+        backgroundColor: Colors.backgroundColor
     },
 
     svgLogo:{
         alignSelf: 'center',
-        marginTop: '5%',
+        marginTop: '1%',
     },
 
     header: {
@@ -50,7 +51,8 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'Poppins_400Regular',
         color: Colors.textColor,
-        textAlign: "center"
+        textAlign: "center",
+        marginTop: -15,
       },
 
       aboutText:{
@@ -63,15 +65,26 @@ export const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: Colors.primary,
         margin: 20,
+        marginTop: 30,
         borderRadius: 20,
 
+      },
+
+      readMoreText:{
+        fontSize: 15,
+        fontFamily: 'Poppins_500Medium',
+        color: Colors.primary,
+        textAlign: 'right',
+        marginRight: 32,
+        marginTop: -10,
       },
 
       privacyText:{
         fontSize: 15,
         fontFamily: 'Poppins_500Medium',
         color: Colors.textColor,
-        textAlign: "center"
+        textAlign: "center",
+        marginTop: 10,
       },
 
 })

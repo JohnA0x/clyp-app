@@ -15,9 +15,28 @@ export const styles = StyleSheet.create({
 
   tabBar: {
     width: "100%",
-    marginTop: "10%",
+    marginTop: "2%",
     shadowOpacity: 0,
     elevation: 1,
+  },
+
+  header: {
+    color: Colors.textColor,
+    marginTop: 20,
+  },
+
+  headerText: {
+    color: Colors.textColor,
+    fontFamily: "Poppins_700Bold",
+    textAlign: "center",
+    fontSize: 20,
+  },
+
+  backButton: {
+    marginLeft: 10,
+    position: "absolute",
+    left: 0,
+    zIndex: 1,
   },
 
   // History 

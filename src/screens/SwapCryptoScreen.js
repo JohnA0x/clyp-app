@@ -54,6 +54,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
   ]);
 
   const [swipeIndex, setSwipeIndex] = useState(0);
+  const [fromIndex, setFromIndex] = useState(0);
 
   //value for drop down
   const [fromInstantOpen, setFromInstantOpen] = useState(false);
@@ -94,6 +95,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
             setCryptoIcon(item.icon);
             setWalletOptions({ abb: item.abb });
             setButtonColorsDefault();
+            setFromIndex(item.id)
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
@@ -223,13 +225,15 @@ export default function SwapCryptoScreen({ navigation, route }) {
 
               <DropDownPicker
                 style={styles.dropDownFromPicker}
+                index = {fromIndex}
                 dropDownContainerStyle={styles.dropDownFromContainerPicker}
                 zIndex={600}
                 dropDownDirection="AUTO"
                 stickyHeader={true}
                 open={fromInstantOpen}
-                value={fromInstantValue}
+                value={fromIndex}
                 items={fromInstantItems}
+                disabled = {true}
                 setOpen={setFromInstantOpen}
                 setValue={setFromInstantValue}
                 setItems={setFromInstantItems}
@@ -297,6 +301,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
 
               <DropDownPicker
                 style={styles.dropDownFromPicker}
+                index ={fromIndex}
                 dropDownContainerStyle={styles.dropDownFromContainerPicker}
                 zIndex={600}
                 dropDownDirection="AUTO"

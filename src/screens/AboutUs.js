@@ -40,6 +40,10 @@ const AboutUs = ({ navigation, route }) => {
         <Text style = {styles.aboutText}>{Strings.aboutContent}</Text>
       </View>
 
+      <Text style = {styles.readMoreText}>
+        Read More
+      </Text>
+
       <Text style={styles.privacyText}>{Strings.showPrivacyPolicy}</Text>
 
     </SafeAreaView>

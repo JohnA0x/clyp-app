@@ -32,6 +32,7 @@ import NewsScreen from "../screens/NewsScreen";
 import SecurityScreen from "../screens/SecurityScreen";
 import RechargeScreen from "../screens/RechargeScreen";
 import BillPayScreen from "../screens/BillPayScreen";
+import SupportScreen from "../screens/SupportScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -64,6 +65,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.editprofile} component={EditProfileScreen} />
       <HomeStack.Screen name={Strings.News} component={NewsScreen} />
       <HomeStack.Screen name={Strings.security} component={SecurityScreen} />
+      <HomeStack.Screen name={Strings.help} component={SupportScreen} />
       
     </HomeStack.Navigator>
   );
