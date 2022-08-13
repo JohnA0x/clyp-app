@@ -10,7 +10,7 @@ import { VectorButton, RoundedButton } from "../components/button";
 
 export default function SavingsScreen() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style = {styles.container}>
       <View style={styles.header}>
         <VectorButton
           name="chevron-back"

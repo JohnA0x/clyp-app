@@ -204,7 +204,7 @@ export const styles = StyleSheet.create({
         borderRadius: 30,
         padding: 20,
         margin: 30,
-        marginTop: 1,
+        marginTop: -10,
         height: '30%'
       },
 
