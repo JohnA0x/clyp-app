@@ -793,7 +793,7 @@ function PhoneSignupScreen({ route }) {
     if (data.password.length < 8) {
       CustomAlert({
         title: "Sign up error",
-        subtitle: "Password is too short (Minmum of 8 characters)",
+        subtitle: "Password is too short (Minimum of 8 characters)",
         handlePress: () => { },
       });
       return false;

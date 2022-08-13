@@ -191,6 +191,52 @@ export const styles = StyleSheet.create({
         color: Colors.white,
         fontFamily: "Poppins_600SemiBold",
       },
+
+
+      // Savings
+      savingsImage:{
+        alignSelf: 'center',
+        marginTop: 0,
+      },
+
+      continueView:{
+        backgroundColor: Colors.listHolder,
+        borderRadius: 30,
+        padding: 20,
+        margin: 30,
+        marginTop: 1,
+        height: '30%'
+      },
+
+      continueTitle:{
+        fontSize: 20,
+        fontFamily: "Poppins_600SemiBold",
+        textAlign: 'center',
+      },
+
+      continueDescription:{
+        fontSize: 12,
+        fontFamily: "Poppins_500Medium",
+        textAlign: 'center',
+        marginTop: 10,
+      },
+
+      roundedContinueButton: {
+        backgroundColor: Colors.primary,
+        borderRadius: 40,
+        width: "85%",
+        height: 50,
+        marginTop: 40,
+        shadowOffset: { width: 0, height: 3 },
+        shadowColor: Colors.shadowColor,
+        shadowOpacity: 0.1,
+        elevation: 3,
+        alignItems: "center",
+        alignSelf: "center",
+        justifyContent: 'center'
+      },
+    
+
     
 
 

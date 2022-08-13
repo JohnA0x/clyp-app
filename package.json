@@ -60,7 +60,8 @@
     "react-native-svg-transformer": "^1.0.0",
     "react-native-swiper": "^1.6.0",
     "react-native-wagmi-charts": "^2.1.0",
-    "react-native-web": "0.17.7"
+    "react-native-web": "0.17.7",
+    "@react-native-community/datetimepicker": "6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

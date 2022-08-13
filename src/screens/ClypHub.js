@@ -73,7 +73,7 @@ export default function ClypHub({navigation}) {
         </View>
 
         <View style={styles.rowContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings)}>
             <SAVINGSSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
