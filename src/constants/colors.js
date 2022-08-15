@@ -29,6 +29,7 @@ export const listHolder = 16//'#E1E1E1'
 
 export const inputLabel = '#B6B6B6'
 export const backgroundColor = '#F8F8F8'
+export const addGoal = '#4CAF50'
 
 
 

@@ -33,6 +33,7 @@ import {
   isEnrolledAsync,
   authenticateAsync,
 } from "expo-local-authentication";
+import { ProcessingModal } from "../components/modal";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -162,7 +163,8 @@ export default function HomeScreen({ navigation }) {
             handlePress={() => navigation.navigate(Strings.qrcode, { token })}
           />
         </View>
-
+        
+        <ProcessingModal isVisible={false}/>
         <Swiper
           style={styles.swiperContainer}
           activeDotColor={Colors.fadedButton}
