@@ -347,6 +347,12 @@ export const styles = StyleSheet.create({
     height: 28,
   },
 
+  selectedIcon:{
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+
   // End of Cards
 
   amountText: {

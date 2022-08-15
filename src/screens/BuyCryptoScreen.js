@@ -194,6 +194,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithCard() {
+    const [checkmarkColor, setCheckmarkColor] = useState(debitCardListArray[1].selectedColor);
+
     const cardList = ({ item }) => {
       return (
         <View style={styles.cardViewContainer}>
@@ -202,7 +204,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
               styles.cardsContainer,
               { backgroundColor: item.cardColour },
             ]}
-            onPress={() => navigation.navigate(item.title)}
+            onPress={() => setCheckmarkColor(Colors.addGoal)}
           >
             <VectorButton
               name={item.icon}
@@ -217,6 +219,11 @@ export default function BuyCryptoScreen({ navigation, route }) {
             <Text style={styles.cardValidityText}>{item.validity}</Text>
             <Text style={styles.cardCVVText}>CVV</Text>
             <Text style={styles.cardCVV}>{item.cvv}</Text>
+            <Ionicons
+            name={'checkmark-circle'}
+            size={24}
+            style ={styles.selectedIcon}
+            color ={checkmarkColor}/>
           </TouchableOpacity>
         </View>
       );

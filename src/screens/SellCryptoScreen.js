@@ -46,12 +46,12 @@ export default function SellCryptoScreen({ navigation, route }) {
   function SellCryptoList() {
     const navigation = useNavigation();
 
-    const sellCrypyoList = ({ item }) => (
+    const sellCryptoList = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
           style={styles.list}
           onPress={() => {
-            navigation.navigate("buyoptions");
+            navigation.navigate("selloptions");
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
             setWalletOptions({ abb: item.abb });
@@ -82,7 +82,7 @@ export default function SellCryptoScreen({ navigation, route }) {
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
-            renderItem={sellCrypyoList}
+            renderItem={sellCryptoList}
           />
         </View>
       </SafeAreaView>

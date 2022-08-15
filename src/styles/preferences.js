@@ -35,6 +35,15 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
+  addNewCard: {
+    color: Colors.primary,
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 14,
+    textAlign: 'right',
+    marginRight: 20,  
+    marginBottom: '10%',
+  },
+
   preferencesHeader: {
     color: Colors.textColor,
     marginTop: 20,
