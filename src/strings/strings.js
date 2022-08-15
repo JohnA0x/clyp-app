@@ -112,6 +112,7 @@ export const depositviaP2P = "Deposit Via P2P";
 export const depositviaDebit = "Deposit via Debit Card";
 
 export const paymentmethod = "Payment Method";
+export const addNewCard = "Add Card";
 
 export const seeAll = "See All";
 

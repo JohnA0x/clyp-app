@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Switch,
+  TextInput,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -59,6 +60,11 @@ export default function PreferencesScreen({ navigation, route }) {
         name={Strings.paymentmethod}
         initialParams={route}
         component={PaymentMethod}
+      />
+       <Stack.Screen
+        name={Strings.addNewCard}
+        initialParams={route}
+        component={AddCard}
       />
     </Stack.Navigator>
   );
@@ -317,9 +323,30 @@ export function PaymentMethod({ navigation, route }) {
         data={debitCardListArray}
         renderItem={paymentMethods}
       />
-      <Text style = {styles.addNewCard}>
+      <Text style = {styles.addNewCard}
+      onPress={() => navigation.navigate(Strings.addNewCard)}>
         Add New Card
       </Text>
     </SafeAreaView>
   );
+}
+
+export function AddCard(){
+  return(
+    <SafeAreaView>
+       <View style={styles.preferencesHeader}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.preferences)}
+        />
+        <Text style={styles.preferencesHeaderText}>
+          {Strings.addNewCard}
+        </Text>
+      </View>
+
+    </SafeAreaView>
+  )
 }
