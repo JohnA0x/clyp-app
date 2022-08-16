@@ -44,6 +44,56 @@ export const styles = StyleSheet.create({
     marginBottom: '10%',
   },
 
+  rowCardContainer:{
+    flexDirection: "row",
+    alignSelf: "center",
+  },
+
+  inputText: {
+    height: 60,
+    margin: "5%",
+    marginTop: 40,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+  otherTextInputs: {
+    height: 60,
+    width: '40%',
+    margin: "5%",
+    marginTop: 10,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+    textAlign:'center'
+  },
+
+  roundedButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "85%",
+    height: 60,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedTextButton: {
+    color: Colors.white,
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+
   preferencesHeader: {
     color: Colors.textColor,
     marginTop: 20,

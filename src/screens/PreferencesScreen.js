@@ -18,6 +18,7 @@ import {
   FileImageButton,
   ImageButton,
   VectorButton,
+  RoundedButton
 } from "../components/button";
 import { preferencesListArray } from "../strings/preferenceslist";
 import { listSeparator } from "../components/listseparator";
@@ -61,7 +62,7 @@ export default function PreferencesScreen({ navigation, route }) {
         initialParams={route}
         component={PaymentMethod}
       />
-       <Stack.Screen
+      <Stack.Screen
         name={Strings.addNewCard}
         initialParams={route}
         component={AddCard}
@@ -323,18 +324,24 @@ export function PaymentMethod({ navigation, route }) {
         data={debitCardListArray}
         renderItem={paymentMethods}
       />
-      <Text style = {styles.addNewCard}
-      onPress={() => navigation.navigate(Strings.addNewCard)}>
+      <Text
+        style={styles.addNewCard}
+        onPress={() => navigation.navigate(Strings.addNewCard)}
+      >
         Add New Card
       </Text>
     </SafeAreaView>
   );
 }
 
-export function AddCard(){
-  return(
-    <SafeAreaView>
-       <View style={styles.preferencesHeader}>
+export function AddCard() {
+  const [cardNumber, setCardNumber] = useState("");
+  const [cvvNumber, setCVVNumber] = useState("");
+  const [expiryNumber, setExpiryNumber] = useState("");
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
           size={24}
@@ -342,11 +349,44 @@ export function AddCard(){
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.preferences)}
         />
-        <Text style={styles.preferencesHeaderText}>
-          {Strings.addNewCard}
-        </Text>
+        <Text style={styles.preferencesHeaderText}>{Strings.addNewCard}</Text>
       </View>
 
+      <TextInput
+        style={styles.inputText}
+        placeholder="Card Number"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardNumber}
+        onChangeText={(value) => setCardNumber(value)}
+      />
+
+      <View style={styles.rowCardContainer}>
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={expiryNumber}
+          onChangeText={(value) => setExpiryNumber(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="CVV"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          value={cvvNumber}
+          onChangeText={(value) => setCVVNumber(value)}
+        />
+      </View>
+
+      <RoundedButton
+          text="Add Card"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => submit()}
+        />
     </SafeAreaView>
-  )
+  );
 }
