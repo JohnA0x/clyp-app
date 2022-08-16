@@ -26,6 +26,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from "../constants/colors";
 import { TouchableOpacity } from "react-native";
+import {Ionicons} from '@expo/vector-icons'
 
 import SignupScreen from "./SignupScreen";
 import ForgotPassword from "./ForgotPassword";
@@ -40,6 +41,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuNavigation from "../navigations/MenuNavigation";
 import { CustomAlert } from "../components/alert";
 import BiometricScreen from "./BiometricScreen";
+import { 
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync 
+} from 'expo-local-authentication';
 
 const Stack = createNativeStackNavigator();
 
@@ -198,7 +204,7 @@ function LoginScreen({ navigation }) {
                       "email",
                       data.data.user_data.email,
                       (err) => {
-                        navigation.navigate("BiometricScreen");
+                        navigation.navigate("MenuNavigation");
                       }
                     );
                   }
@@ -251,7 +257,7 @@ function LoginScreen({ navigation }) {
                   "email",
                   data.data.user.email,
                   (err) => {
-                    navigation.navigate("BiometricScreen");
+                    navigation.navigate("MenuNavigation");
                   }
                 );
               }
@@ -276,6 +282,21 @@ function LoginScreen({ navigation }) {
       });
   };
 
+  const biometricsAuth = async (message) => {
+    const compatible = await hasHardwareAsync()
+    if (!compatible) alert("This device is not compatible for biometric authentication") 
+    message = 'This device is not compatible for biometric authentication' 
+
+    const enrolled = await isEnrolledAsync()
+    if (!enrolled) alert("This device doesn't have biometric authentication enabled")
+    message = "This device doesn't have biometric authentication enabled"
+    
+    const result = await authenticateAsync()
+    if(result.success) navigation.navigate("MenuNavigation")
+    if (!result.success) throw `${result.error} - Authentication unsuccessful`
+    return
+}
+
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
@@ -299,9 +320,17 @@ function LoginScreen({ navigation }) {
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
+          right={ <TextInput.Icon 
+            name="fingerprint"
+            color={Colors.primary}
+            size={24}
+            style={{right: 10}}
+            onPress={biometricsAuth}/>}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
-        />
+        >
+         
+        </TextInput>
 
         <TouchableOpacity style={styles.button} onPress={() => login()}>
           <Text style={styles.textButton}> {Strings.login}</Text>

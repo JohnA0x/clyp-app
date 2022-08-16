@@ -334,7 +334,7 @@ export function PaymentMethod({ navigation, route }) {
   );
 }
 
-export function AddCard() {
+export function AddCard({ navigation, route}) {
   const [cardNumber, setCardNumber] = useState("");
   const [cvvNumber, setCVVNumber] = useState("");
   const [expiryNumber, setExpiryNumber] = useState("");
