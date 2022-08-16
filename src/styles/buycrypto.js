@@ -102,6 +102,10 @@ export const styles = StyleSheet.create({
     height: 30,
   },
 
+  preferencesimage:{
+    marginLeft:10,
+  },
+
   text: {
     marginLeft: 20,
     fontSize: 15,

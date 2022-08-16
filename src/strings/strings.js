@@ -158,6 +158,13 @@ export const buywithdebitcardTitle = "Buy With Your Debit Cards";
 export const buywithdebitcardSubtitle =
   "Deposit cash via a trusted or saved debit card";
 
+//Sell
+export const sellNowTitle = "Sell Now";
+export const sellNowSubtitle =
+  "Sell crypto instantly and get your balance in your clyppay wallet";
+export const sellwithP2P = "Sell via P2P";
+export const sellwithP2PSubtitle = "Select your preferred offers to sell \ncrypto in a peer to peer service ";
+
 // Security
 export const authentication = "Authentication";
 export const transactionPin = "Transaction Pin";
