@@ -27,7 +27,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 const Stack = createNativeStackNavigator();
 
-export default function BillPayScreen({ navigation }) {
+export default function BillPayScreen({ navigation, route }) {
   const [networkValue, setNetworkValue] = useState(false);
   const [open, setOpen] = useState(null);
   const [networkList, setNetworkList] = useState(

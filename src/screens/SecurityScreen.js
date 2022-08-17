@@ -27,6 +27,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import securityListArray from "../strings/securitylist";
 import { set } from "lodash";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -362,15 +363,17 @@ export default function SecurityScreen({ navigation, route }) {
     const [formerPin, setFormerPin] = useState('');
     const [newPin, setNewPin] = useState("");
     const [reenterPin, setReenterPin] = useState('');
+    const [isVisible, setIsVisible] = useState(false)
 
     const submitPin = () => {
-
+      setIsVisible(true)
       if (newPin !== reenterPin) {
-
+        setIsVisible(false)
         CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
         return false
 
       } else if (formerPin !== route.params.user.prefrence[0].pin){
+        setIsVisible(false)
         CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
         return false
 
@@ -382,6 +385,7 @@ export default function SecurityScreen({ navigation, route }) {
           user_id: route.params.user.id,
         })
           .then(data => {
+            setIsVisible(false)
             if (data.data.message === "success") {
               route.params.user.prefrence[0].pin = newPin
               navigation.navigate("securitylist")
@@ -390,6 +394,7 @@ export default function SecurityScreen({ navigation, route }) {
             }
           })
           .catch(error => {
+            setIsVisible(false)
             CustomAlert({ title: "Error", subtitle: error })
           })
 
@@ -446,6 +451,8 @@ export default function SecurityScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submitPin()}
         />
+
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

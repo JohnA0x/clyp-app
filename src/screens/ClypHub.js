@@ -1,3 +1,4 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,9 +19,57 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import NewsScreen from "./NewsScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "../components/axios";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ClypHub({navigation}) {
+
+  const [id, setID] = React.useState("")
+  const [firstName, setFirstName] = React.useState("")
+  const [lastName, setLastName] = React.useState("")
+  const [preferences, setPrefrences] = React.useState("")
+  const [user, setUser] = React.useState({})
+  const [token, setToken] = React.useState("")
+  const [coins, setCoins] = React.useState([])
+
+  React.useEffect(() => {
+    async function fetchData() {
+      let id = await AsyncStorage.getItem("user_id").then((value) => value);
+      let token = await AsyncStorage.getItem("token").then((value) => value);
+
+      setToken(token)
+      axios.post('/user-gateway/get-full-user', { user_id: id })
+        .then(data => {
+          // console.log(data.data)
+          setID(data.data.user.id)
+          setFirstName(data.data.user.first_name)
+          setLastName(data.data.user.last_name)
+          setPrefrences(data.data.user.prefrence[0])
+          setUser(data.data.user)
+          console.log(data.data.user)
+          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
+            .then(coins_data => {
+              setCoins(coins_data.data.coins)
+            })
+        })
+        .catch(err => {
+          CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
+          console.log({ err })
+        })
+        .catch((err) => {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error making request, please try again...",
+            handlePress: () => {},
+          });
+          console.log({ err });
+        });
+    }
+    fetchData();
+  }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -29,7 +78,7 @@ export default function ClypHub({navigation}) {
 
       <View style={styles.newsContainer}>
         <Text style={styles.seeAll}
-        onPress={() => navigation.navigate(Strings.News)}
+        onPress={() => navigation.navigate(Strings.News, { user })}
         >{Strings.seeAll}</Text>
         <Swiper activeDotColor={Colors.fadedButton}>
           <FileImageButton style={styles.newsImage} />
@@ -47,7 +96,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-           onPress = {() => navigation.navigate(Strings.bill)}>
+           onPress = {() => navigation.navigate(Strings.bill, { user })}>
             <BILLSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -64,7 +113,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-          onPress = {() => navigation.navigate(Strings.recharge)}>
+          onPress = {() => navigation.navigate(Strings.recharge, { user })}>
             <RECHARGESVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -73,7 +122,7 @@ export default function ClypHub({navigation}) {
         </View>
 
         <View style={styles.rowContainer}>
-          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings)}>
+          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings, { user })}>
             <SAVINGSSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}

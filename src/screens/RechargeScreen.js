@@ -9,13 +9,34 @@ import * as Strings from "../strings/strings";
 import Swiper from "react-native-swiper";
 
 import DropDownPicker from "react-native-dropdown-picker";
+import { ProcessingModal } from "../components/modal";
+import { CustomAlert } from "../components/alert";
 
-export default function RechargeScreen({ navigation }) {
+export default function RechargeScreen({ navigation, route }) {
   const [networkValue, setNetworkValue] = useState(false);
   const [open, setOpen] = useState(null);
   const [networkList, setNetworkList] = useState(
     DropDownList.rechargeDropDownArray
   );
+  const [mobile, setMobile] = useState()
+  const [amount, setAmount] = useState()
+  const [pin, setPin] = useState()
+  const [isVisible, setIsVisible] = useState(false)
+
+  const recharge = () => {
+    setIsVisible(true)
+    if (pin !== route.params.user.prefrence[0].pin){
+      setIsVisible(false)
+      CustomAlert({title: "Invalid Pin", subtitle: "Please enter your correct transaction pin"})
+    }
+    let data = {
+      phone: mobile,
+      network: networkValue,
+      amount,
+      pin,
+      user_id: route.params.user.id
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,17 +77,20 @@ export default function RechargeScreen({ navigation }) {
             style={styles.addressInput}
             placeholder="Enter Mobile Number"
             selectionColor={Colors.primary}
+            onChangeText={(text) => setMobile(text)}
           />
           <TextInput
             style={styles.otherTextInputs}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText={(text) => setAmount(text)}
           />
           <TextInput
             style={styles.otherTextInputs}
             placeholder="Pin"
             secureTextEntry={true}
             selectionColor={Colors.primary}
+            onChangeText={(text) => setPin(text)}
           />
 
           <RoundedButton
@@ -75,6 +99,7 @@ export default function RechargeScreen({ navigation }) {
             style={styles.roundedButton}
           />
         </View>
+        <ProcessingModal isVisible={isVisible} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -24,6 +24,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Ionicons } from "@expo/vector-icons";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -143,6 +144,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithWallet() {
+
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+    
+    const buy = () => {
+      setIsVisible(true)
+
+      let data = {
+        amount,
+        user_id: route.params.user.id
+      }
+    }
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -175,6 +188,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText={(text) => setAmount(text)}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
@@ -189,11 +203,24 @@ export default function BuyCryptoScreen({ navigation, route }) {
           text={Strings.deposit}
           textStyle={styles.depositText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
 
   function BuyWithCard() {
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+    
+    const buy = () => {
+      setIsVisible(true)
+
+      let data = {
+        amount,
+        user_id: route.params.user.id
+      }
+    }
+
     const cardList = ({ item }) => {
       return (
         <View style={styles.cardViewContainer}>
@@ -258,6 +285,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText = {(text) => setAmount(text)}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
@@ -272,6 +300,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
           text={Strings.deposit}
           textStyle={styles.depositText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

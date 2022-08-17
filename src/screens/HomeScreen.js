@@ -180,7 +180,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.sendbutton}
-                  handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
+                  handlePress={() => navigation.navigate(Strings.sendCrypto, { coins, user })}
                 />
                 <Text style={styles.optionText}>{Strings.send}</Text>
               </View>
@@ -191,7 +191,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.receivebutton}
-                  handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
+                  handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins, user })}
                 />
                 <Text style={styles.optionText}>{Strings.receive}</Text>
               </View>
@@ -202,7 +202,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.buybutton}
-                  handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
+                  handlePress={() => navigation.navigate(Strings.buy, { coins, user })}
                 />
                 <Text style={styles.optionText}>{Strings.buy}</Text>
               </View>
@@ -213,7 +213,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.sellbutton}
-                  handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
+                  handlePress={() => navigation.navigate(Strings.sell, { coins, user })}
                 />
                 <Text style={styles.optionText}>{Strings.sell}</Text>
               </View>
@@ -224,7 +224,7 @@ export default function HomeScreen({ navigation }) {
                   size={18}
                   color={Colors.white}
                   style={styles.swapbutton}
-                  handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
+                  handlePress={() => navigation.navigate(Strings.swap, { coins, user })}
                 />
                 <Text style={styles.optionText}>{Strings.swap}</Text>
               </View>
@@ -242,7 +242,7 @@ export default function HomeScreen({ navigation }) {
                   size={20}
                   color={Colors.white}
                   style={styles.sendbutton}
-                  handlePress={() => navigation.push(Strings.deposit)}
+                  handlePress={() => navigation.push(Strings.deposit, { user })}
                 />
                 <Text style={styles.optionText}>{Strings.deposit}</Text>
               </View>
@@ -253,7 +253,7 @@ export default function HomeScreen({ navigation }) {
                   size={20}
                   color={Colors.white}
                   style={styles.receivebutton}
-                  handlePress={() => navigation.push(Strings.withdraw)}
+                  handlePress={() => navigation.push(Strings.withdraw, { user })}
                 />
                 <Text style={styles.optionText}>{Strings.withdraw}</Text>
               </View>

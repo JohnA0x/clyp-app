@@ -23,6 +23,7 @@ import { withdrawalList } from "../strings/withdrawlist";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,17 @@ export default function WithdrawScreen({ route }) {
   );
 
   function accountWithdraw({ navigation }) {
+
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+
+    const withdraw = () => {
+      setIsVisible(true)
+       let data = { 
+        amount,
+        user_id: route.params.user.id
+       }
+    }
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -72,6 +84,9 @@ export default function WithdrawScreen({ route }) {
           style={styles.amountInput}
           placeholder={Strings.inputAmount}
           selectionColor={Colors.primary}
+          onChangeText={(text) => {
+            setAmount(text)
+          }}
         />
 
         <RoundedButton
@@ -79,6 +94,7 @@ export default function WithdrawScreen({ route }) {
           text={Strings.withdraw}
           textStyle={styles.roundedButtonText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

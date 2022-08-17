@@ -40,6 +40,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuNavigation from "../navigations/MenuNavigation";
 import { CustomAlert } from "../components/alert";
 import BiometricScreen from "./BiometricScreen";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,7 @@ function LoginScreen({ navigation }) {
 
   const [text, setText] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isVisible, setIsVisible] = React.useState(false)
 
   React.useEffect(() => {
     async function fetchStorage() {
@@ -94,6 +96,7 @@ function LoginScreen({ navigation }) {
       console.log(response);
 
       const fetchData = async () => {
+        setIsVisible(true)
         const requestOptions = {
           method: "GET",
           headers: {
@@ -112,7 +115,7 @@ function LoginScreen({ navigation }) {
             console.log({
               facebook_data: data.data,
             });
-
+            setIsVisible(false)
             if (data.data.message == "success") {
               await AsyncStorage.setItem(
                 "token",
@@ -131,7 +134,7 @@ function LoginScreen({ navigation }) {
                         "email",
                         data.data.user_data.email,
                         (err) => {
-                          navigation.navigate("BiometricScreen");
+                          navigation.navigate("MenuNavigation");
                         }
                       );
                     }
@@ -148,6 +151,7 @@ function LoginScreen({ navigation }) {
             }
           })
           .catch((err) => {
+            setIsVisible(false)
             CustomAlert({
               title: "Signup Error",
               subtitle: err,
@@ -171,6 +175,7 @@ function LoginScreen({ navigation }) {
 
   React.useEffect(() => {
     if (gresponse?.type === "success") {
+      setIsVisible(true)
       const { authentication } = gresponse;
       console.log(gresponse);
       axios
@@ -179,6 +184,7 @@ function LoginScreen({ navigation }) {
           console.log({
             google_data: data.data,
           });
+          setIsVisible(false)
 
           if (data.data.message == "success") {
             await AsyncStorage.setItem(
@@ -198,7 +204,7 @@ function LoginScreen({ navigation }) {
                       "email",
                       data.data.user_data.email,
                       (err) => {
-                        navigation.navigate("BiometricScreen");
+                        navigation.navigate("MenuNavigation");
                       }
                     );
                   }
@@ -220,12 +226,14 @@ function LoginScreen({ navigation }) {
 
   // Login API
   const login = () => {
+    setIsVisible(true)
     let data = {
       email: text,
       password: password,
     };
 
     if (data.email === "" || data.password === "") {
+      setIsVisible(false)
       CustomAlert({
         title: "All fields Required",
         subtitle: "Please provide your email and password",
@@ -236,6 +244,7 @@ function LoginScreen({ navigation }) {
     axios
       .post("/user-gateway/login", data)
       .then(async (data) => {
+        setIsVisible(false)
         if (data.data.message == "success") {
           await AsyncStorage.setItem("token", data.data.token, async (err) => {
             console.log({ err });
@@ -251,7 +260,7 @@ function LoginScreen({ navigation }) {
                   "email",
                   data.data.user.email,
                   (err) => {
-                    navigation.navigate("BiometricScreen");
+                    navigation.navigate("MenuNavigation");
                   }
                 );
               }
@@ -267,6 +276,7 @@ function LoginScreen({ navigation }) {
         }
       })
       .catch((err) => {
+        setIsVisible(false)
         CustomAlert({
           title: "Login Error",
           subtitle: "Error making request, please try again...",
@@ -359,6 +369,7 @@ function LoginScreen({ navigation }) {
             {Strings.signup}
           </Text>
         </View>
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     </PaperProvider>
   );

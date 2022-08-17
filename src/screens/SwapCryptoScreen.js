@@ -33,6 +33,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Swiper from "react-native-swiper";
 
 import DropDownPicker from "react-native-dropdown-picker";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -139,6 +140,24 @@ export default function SwapCryptoScreen({ navigation, route }) {
   }
 
   function SwapCrypto() {
+
+    const [fromAmount, setFromAmount] = useState('')
+    const [toAmount, setToAmount] = useState('')
+    const [limit, setLimit] = useState()
+
+    const [isVisible, setIsVisible] = useState(false)
+
+    const swap = () => {
+      setIsVisible(true)
+
+      let data = {
+        fromAmount,
+        toAmount,
+        limit,
+        user_id: route.params.user.id
+      }
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -217,6 +236,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 maxLength={12}
                 placeholder="Amount"
                 selectionColor={Colors.primary}
+                onChangeText={(text)=> {
+                  setFromAmount(text)
+                }}
               ></TextInput>
               <Text style={styles.fromDollarValue}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
@@ -252,6 +274,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 maxLength={12}
                 placeholder="Amount"
                 selectionColor={Colors.primary}
+                onChangeText= {(text)=> {
+                  setToAmount(text)
+                }}
               ></TextInput>
               <Text style={styles.fromDollarValue}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
@@ -293,6 +318,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 maxLength={12}
                 placeholder="Amount"
                 selectionColor={Colors.primary}
+                onChangeText={(text)=> {
+                  setFromAmount(text)
+                }}
               ></TextInput>
               <Text style={styles.fromDollarValue}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
@@ -327,6 +355,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 maxLength={12}
                 placeholder="Amount"
                 selectionColor={Colors.primary}
+                onChangeText={(text)=> {
+                  setToAmount(text)
+                }}
               ></TextInput>
               <Text style={styles.fromDollarValue}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
@@ -353,6 +384,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
             <TextInput
               style={styles.priceInput}
               placeholder="Set limit price"
+              onChangeText={(text)=> {
+                setLimit(text)
+              }}
             />
 
             <RoundedButton
@@ -363,6 +397,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
             />
           </ScrollView>
         </Swiper>
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
