@@ -24,6 +24,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Ionicons } from "@expo/vector-icons";
+import sellOptionsListArray from "../strings/selloptionslist";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,19 +40,20 @@ export default function SellCryptoScreen({ navigation, route }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="buylist" component={SellCryptoList} />
+      <Stack.Screen name="selllist" component={SellCryptoList} />
+      <Stack.Screen name="selloptions" component={SellOptions} />
     </Stack.Navigator>
   );
 
   function SellCryptoList() {
     const navigation = useNavigation();
 
-    const sellCrypyoList = ({ item }) => (
+    const sellCryptoList = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
           style={styles.list}
           onPress={() => {
-            navigation.navigate("buyoptions");
+            navigation.navigate("selloptions");
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
             setWalletOptions({ abb: item.abb });
@@ -82,9 +84,53 @@ export default function SellCryptoScreen({ navigation, route }) {
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
-            renderItem={sellCrypyoList}
+            renderItem={sellCryptoList}
           />
         </View>
+      </SafeAreaView>
+    );
+  }
+
+  function SellOptions() {
+    const sellOptionsList = ({ item }) => {
+      return (
+        <View style={styles.optionsContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate(item.title)}
+          >
+            <VectorButton
+              name={item.icon}
+              size={24}
+              color={Colors.primary}
+              style={styles.preferencesimage}
+            />
+            <Text style={styles.preferencestext}>{item.title}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("selllist")}
+          />
+          <Text style={styles.headerText}>{Strings.sell}</Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={styles.buyOptionsFlatlist}
+          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+          data={sellOptionsListArray}
+          renderItem={sellOptionsList}
+          keyExtractor={(item) => item.id}
+        />
       </SafeAreaView>
     );
   }

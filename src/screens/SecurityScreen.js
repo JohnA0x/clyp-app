@@ -21,28 +21,31 @@ import { useState } from "react";
 import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
 
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from "@expo/vector-icons";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import securityListArray from "../strings/securitylist";
 import { set } from "lodash";
 import { ProcessingModal } from "../components/modal";
+import {
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync,
+} from "expo-local-authentication";
 
 const Stack = createNativeStackNavigator();
 
 export default function SecurityScreen({ navigation, route }) {
-
-  const [isEnabled, setIsEnabled] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(false);
   const [isBiometricsEnabled, setBiometricsEnabled] = useState(false);
-
 
   const [mode, setMode] = useState();
 
-  const [isBiometrics, setBiometrics] = useState(false)
+  const [isBiometrics, setBiometrics] = useState(false);
 
-  const toggleBiometricsSwitch = () => setIsEnabled(previousState => !previousState);
-
+  const toggleBiometricsSwitch = () =>
+    setIsEnabled((previousState) => !previousState);
 
   const toggleSwitch = () => {
     let data = {
@@ -53,12 +56,11 @@ export default function SecurityScreen({ navigation, route }) {
 
   const storeData = async (value) => {
     try {
-      await AsyncStorage.setItem('biometrics', value)
+      await AsyncStorage.setItem("biometrics", value);
     } catch (e) {
       // saving error
     }
-  }
-
+  };
 
   React.useEffect(() => {
     toggleBiometricsSwitch();
@@ -106,13 +108,15 @@ export default function SecurityScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home, {
-              id: route.params.id,
-              preferences: route.params.preferences,
-              firstName: route.params.firstName,
-              lastName: route.params.lastName,
-              user: route.params.user
-            })}
+            handlePress={() =>
+              navigation.navigate(Strings.home, {
+                id: route.params.id,
+                preferences: route.params.preferences,
+                firstName: route.params.firstName,
+                lastName: route.params.lastName,
+                user: route.params.user,
+              })
+            }
           />
           <Text style={styles.headerText}>{Strings.security}</Text>
         </View>
@@ -128,123 +132,158 @@ export default function SecurityScreen({ navigation, route }) {
 
   function AuthenticationScreen() {
     function biometrics() {
-      toggleBiometricsSwitch
-      storeData(isBiometrics)
-      alert(isBiometrics)
+      toggleBiometricsSwitch;
+      storeData(isBiometrics);
+      alert(isBiometrics);
     }
 
-    const [isSMSEnabled, setIsSMSEnabled] = useState(route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0] ? (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status === "active" ? true : false) : false);
+    const [isSMSEnabled, setIsSMSEnabled] = useState(
+      route.params.user.extra_authorization.filter(
+        (ex) => ex.permission_name === "can_authenticate_sms"
+      )[0]
+        ? route.params.user.extra_authorization.filter(
+            (ex) => ex.permission_name === "can_authenticate_sms"
+          )[0].status === "active"
+          ? true
+          : false
+        : false
+    );
 
-    const [isMailEnabled, setIsMailEnabled] = useState(route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0] ? (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status === "active" ? true : false) : false);
-
+    const [isMailEnabled, setIsMailEnabled] = useState(
+      route.params.user.extra_authorization.filter(
+        (ex) => ex.permission_name === "can_authenticate_mail"
+      )[0]
+        ? route.params.user.extra_authorization.filter(
+            (ex) => ex.permission_name === "can_authenticate_mail"
+          )[0].status === "active"
+          ? true
+          : false
+        : false
+    );
 
     const toggleSMSSwitch = () => {
-
-      if (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0]) {
-
-        axios.post('/user-gateway/update-extra-permission', {
-          user_id: route.params.user.id,
-          id: route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].id,
-          status: isSMSEnabled ? "inactive" : "active"
-        })
-          .then(data => {
+      if (
+        route.params.user.extra_authorization.filter(
+          (ex) => ex.permission_name === "can_authenticate_sms"
+        )[0]
+      ) {
+        axios
+          .post("/user-gateway/update-extra-permission", {
+            user_id: route.params.user.id,
+            id: route.params.user.extra_authorization.filter(
+              (ex) => ex.permission_name === "can_authenticate_sms"
+            )[0].id,
+            status: isSMSEnabled ? "inactive" : "active",
+          })
+          .then((data) => {
             if (data.data.message === "success") {
+              route.params.user.extra_authorization.filter(
+                (ex) => ex.permission_name === "can_authenticate_sms"
+              )[0].status = isSMSEnabled ? "inactive" : "active";
 
-              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status = isSMSEnabled ? "inactive" : "active"
-
-              setIsSMSEnabled(previousState => !previousState)
+              setIsSMSEnabled((previousState) => !previousState);
             } else {
-              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+              CustomAlert({
+                title: "Failed",
+                subtitle: "Failed to enable SMS authentication",
+              });
             }
           })
-          .catch(error => {
-            CustomAlert({ title: "Error", subtitle: error })
+          .catch((error) => {
+            CustomAlert({ title: "Error", subtitle: error });
+          });
+      } else {
+        axios
+          .post("/user-gateway/add-extra-permission", {
+            user_id: route.params.id,
+            permission_name: "can_authenticate_sms",
+            permission_type: "public",
+            status: "active",
           })
-
-      }
-
-      else {
-
-        axios.post('/user-gateway/add-extra-permission', {
-          user_id: route.params.id,
-          permission_name: "can_authenticate_sms",
-          permission_type: "public",
-          status: "active"
-        })
-          .then(data => {
+          .then((data) => {
             if (data.data.message === "success") {
+              route.params.user.extra_authorization.filter(
+                (ex) => ex.permission_name === "can_authenticate_sms"
+              )[0].status = "active";
 
-              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_sms")[0].status = "active"
-
-              setIsSMSEnabled(previousState => !previousState)
+              setIsSMSEnabled((previousState) => !previousState);
             } else {
-              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+              CustomAlert({
+                title: "Failed",
+                subtitle: "Failed to enable SMS authentication",
+              });
             }
           })
-          .catch(error => {
-            CustomAlert({ title: "Error", subtitle: error })
-          })
-
+          .catch((error) => {
+            CustomAlert({ title: "Error", subtitle: error });
+          });
       }
-    }
+    };
 
     const toggleMailSwitch = () => {
-
-      if (route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0]) {
-
-        axios.post('/user-gateway/update-extra-permission', {
-          user_id: route.params.user.id,
-          id: route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].id,
-          status: isMailEnabled ? "inactive" : "active"
-        })
-          .then(data => {
+      if (
+        route.params.user.extra_authorization.filter(
+          (ex) => ex.permission_name === "can_authenticate_mail"
+        )[0]
+      ) {
+        axios
+          .post("/user-gateway/update-extra-permission", {
+            user_id: route.params.user.id,
+            id: route.params.user.extra_authorization.filter(
+              (ex) => ex.permission_name === "can_authenticate_mail"
+            )[0].id,
+            status: isMailEnabled ? "inactive" : "active",
+          })
+          .then((data) => {
             if (data.data.message === "success") {
+              route.params.user.extra_authorization.filter(
+                (ex) => ex.permission_name === "can_authenticate_mail"
+              )[0].status = isMailEnabled ? "inactive" : "active";
 
-              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status = isMailEnabled ? "inactive" : "active"
-
-              setIsMailEnabled(previousState => !previousState)
+              setIsMailEnabled((previousState) => !previousState);
             } else {
-              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+              CustomAlert({
+                title: "Failed",
+                subtitle: "Failed to enable SMS authentication",
+              });
             }
           })
-          .catch(error => {
-            CustomAlert({ title: "Error", subtitle: error })
+          .catch((error) => {
+            CustomAlert({ title: "Error", subtitle: error });
+          });
+      } else {
+        axios
+          .post("/user-gateway/add-extra-permission", {
+            user_id: route.params.id,
+            permission_name: "can_authenticate_mail",
+            permission_type: "public",
+            status: "active",
           })
-
-      }
-      else {
-
-        axios.post('/user-gateway/add-extra-permission', {
-          user_id: route.params.id,
-          permission_name: "can_authenticate_mail",
-          permission_type: "public",
-          status: "active"
-        })
-          .then(data => {
+          .then((data) => {
             if (data.data.message === "success") {
+              route.params.user.extra_authorization.filter(
+                (ex) => ex.permission_name === "can_authenticate_mail"
+              )[0].status = "active";
 
-              route.params.user.extra_authorization.filter(ex => ex.permission_name === "can_authenticate_mail")[0].status = "active"
-
-              setIsMailEnabled(previousState => !previousState)
-
+              setIsMailEnabled((previousState) => !previousState);
             } else {
-              CustomAlert({ title: "Failed", subtitle: "Failed to enable SMS authentication" })
+              CustomAlert({
+                title: "Failed",
+                subtitle: "Failed to enable SMS authentication",
+              });
             }
           })
-          .catch(error => {
-            CustomAlert({ title: "Error", subtitle: error })
-          })
-
+          .catch((error) => {
+            CustomAlert({ title: "Error", subtitle: error });
+          });
       }
-
-    }
-
+    };
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <VectorButton
-            name="chevron-back"
+            name="chevron-back"git 
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
@@ -359,8 +398,7 @@ export default function SecurityScreen({ navigation, route }) {
   }
 
   function ChangePin() {
-
-    const [formerPin, setFormerPin] = useState('');
+    const [formerPin, setFormerPin] = useState("");
     const [newPin, setNewPin] = useState("");
     const [reenterPin, setReenterPin] = useState('');
     const [isVisible, setIsVisible] = useState(false)
@@ -387,10 +425,14 @@ export default function SecurityScreen({ navigation, route }) {
           .then(data => {
             setIsVisible(false)
             if (data.data.message === "success") {
-              route.params.user.prefrence[0].pin = newPin
-              navigation.navigate("securitylist")
+              route.params.user.prefrence[0].pin = newPin;
+              navigation.navigate("securitylist");
             } else {
-              CustomAlert({ title: "Failed", subtitle: "Failed to change your transaction pin, please try again" })
+              CustomAlert({
+                title: "Failed",
+                subtitle:
+                  "Failed to change your transaction pin, please try again",
+              });
             }
           })
           .catch(error => {
@@ -399,12 +441,10 @@ export default function SecurityScreen({ navigation, route }) {
           })
 
       }
-
-    }
+    };
 
     return (
       <SafeAreaView style={styles.container}>
-
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -421,14 +461,14 @@ export default function SecurityScreen({ navigation, route }) {
           placeholder={Strings.enterFormerPassword}
           secureTextEntry={true}
           value={formerPin}
-          onChangeText={text => setFormerPin(text)}
+          onChangeText={(text) => setFormerPin(text)}
           selectionColor={Colors.primary}
         />
 
         <TextInput
           style={styles.otherTextInputs}
           secureTextEntry={true}
-          onChangeText={text => setNewPin(text)}
+          onChangeText={(text) => setNewPin(text)}
           value={newPin}
           placeholder={Strings.enterNewPassword}
           selectionColor={Colors.primary}
@@ -437,7 +477,7 @@ export default function SecurityScreen({ navigation, route }) {
         <TextInput
           style={styles.otherTextInputs}
           value={reenterPin}
-          onChangeText={text => setReenterPin(text)}
+          onChangeText={(text) => setReenterPin(text)}
           placeholder={Strings.reenterNewPassword}
           secureTextEntry={true}
           selectionColor={Colors.primary}

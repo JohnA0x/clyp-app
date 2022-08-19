@@ -18,7 +18,7 @@ export default function BiometricScreen({navigation}) {
     message = 'This device is not compatible for biometric authentication' 
 
     const enrolled = await isEnrolledAsync()
-    if (!enrolled) alert("This device doesn't have biometric authentication enabled") 
+    if (!enrolled) alert("This device doesn't have biometric authentication enabled")
     message = "This device doesn't have biometric authentication enabled"
     
     const result = await authenticateAsync()

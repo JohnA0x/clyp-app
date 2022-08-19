@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Switch,
+  TextInput,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +18,7 @@ import {
   FileImageButton,
   ImageButton,
   VectorButton,
+  RoundedButton
 } from "../components/button";
 import { preferencesListArray } from "../strings/preferenceslist";
 import { listSeparator } from "../components/listseparator";
@@ -27,6 +29,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
+import debitCardListArray from "../strings/debitcardslist";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +40,11 @@ export default function PreferencesScreen({ navigation, route }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen name={Strings.preferences} initialParams={route} component={Preferences} />
+      <Stack.Screen
+        name={Strings.preferences}
+        initialParams={route}
+        component={Preferences}
+      />
 
       <Stack.Screen
         name={Strings.changeappearance}
@@ -45,7 +52,21 @@ export default function PreferencesScreen({ navigation, route }) {
         initialParams={route}
       />
 
-      <Stack.Screen name={Strings.hidebalance} initialParams={route} component={HideBalance} />
+      <Stack.Screen
+        name={Strings.hidebalance}
+        initialParams={route}
+        component={HideBalance}
+      />
+      <Stack.Screen
+        name={Strings.paymentmethod}
+        initialParams={route}
+        component={PaymentMethod}
+      />
+      <Stack.Screen
+        name={Strings.addNewCard}
+        initialParams={route}
+        component={AddCard}
+      />
     </Stack.Navigator>
   );
 }
@@ -76,13 +97,15 @@ const Preferences = ({ navigation, route }) => {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.Profile, {
-            id: route.params.params.id, 
-            firstName: route.params.params.firstName, 
-            lastName: route.params.params.lastName, 
-            preferences: route.params.params.preferences,
-            user: route.params.params.user
-          })}
+          handlePress={() =>
+            navigation.navigate(Strings.Profile, {
+              id: route.params.params.id,
+              firstName: route.params.params.firstName,
+              lastName: route.params.params.lastName,
+              preferences: route.params.params.preferences,
+              user: route.params.params.user,
+            })
+          }
         />
         <Text style={styles.preferencesHeaderText}>{Strings.preferences}</Text>
       </View>
@@ -98,32 +121,44 @@ const Preferences = ({ navigation, route }) => {
 };
 
 export const ChangeAppearance = ({ navigation, route }) => {
-  const [isEnabled, setIsEnabled] = useState(route.params.params.preferences.mode.indexOf("ight") != -1 ? true : false);
-  const [mode, setMode] = useState(route.params.params.preferences.mode)
+  const [isEnabled, setIsEnabled] = useState(
+    route.params.params.preferences.mode.indexOf("ight") != -1 ? true : false
+  );
+  const [mode, setMode] = useState(route.params.params.preferences.mode);
 
   const toggleSwitch = () => {
     let data = {
       user_id: route.params.params.id,
-      mode: isEnabled ? "Dark" : "Light"
-    }
+      mode: isEnabled ? "Dark" : "Light",
+    };
 
-    axios.post('/user-gateway/update-prefrences', data)
-    .then(res => {
-      if(res.data.message == "success"){
-        setIsEnabled((previousState) => !previousState);
-        setMode(isEnabled ? "Dark" : "Light")
-        route.params.params.preferences.mode = isEnabled ? "Dark" : "Light"
-        route.params.params.user.prefrence[0].mode = isEnabled ? "Dark" : "Light"
-      } else {
-        CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
-      }
-    })
-    .catch(err => {
-      CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
-      console.log({ err })
-    })
-    
-  }
+    axios
+      .post("/user-gateway/update-prefrences", data)
+      .then((res) => {
+        if (res.data.message == "success") {
+          setIsEnabled((previousState) => !previousState);
+          setMode(isEnabled ? "Dark" : "Light");
+          route.params.params.preferences.mode = isEnabled ? "Dark" : "Light";
+          route.params.params.user.prefrence[0].mode = isEnabled
+            ? "Dark"
+            : "Light";
+        } else {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error updating mode, please try again...",
+            handlePress: () => {},
+          });
+        }
+      })
+      .catch((err) => {
+        CustomAlert({
+          title: "Error",
+          subtitle: "Error updating mode, please try again...",
+          handlePress: () => {},
+        });
+        console.log({ err });
+      });
+  };
   // React.useEffect(()=>{
   //   console.log(route)
   // }, [])
@@ -167,32 +202,48 @@ export const ChangeAppearance = ({ navigation, route }) => {
 };
 
 export const HideBalance = ({ navigation, route }) => {
-  const [isEnabled, setIsEnabled] = useState(route.params.params.preferences.private_mode);
-  const [mode, setMode] = useState(route.params.params.preferences.private_mode)
+  const [isEnabled, setIsEnabled] = useState(
+    route.params.params.preferences.private_mode
+  );
+  const [mode, setMode] = useState(
+    route.params.params.preferences.private_mode
+  );
 
   const toggleSwitch = () => {
     let data = {
       user_id: route.params.params.id,
-      private_mode: isEnabled ? false : true
-    }
+      private_mode: isEnabled ? false : true,
+    };
 
-    axios.post('/user-gateway/update-prefrences', data)
-    .then(res => {
-      if(res.data.message == "success"){
-        setIsEnabled((previousState) => !previousState);
-        setMode(isEnabled ? "Dark" : "Light")
-        route.params.params.preferences.private_mode = isEnabled ? false : true
-        route.params.params.user.prefrence[0].private_mode = isEnabled ? false : true
-      } else {
-        CustomAlert({ title: "Error", subtitle: "Error updating private mode, please try again...", handlePress: () => { } })
-      }
-    })
-    .catch(err => {
-      CustomAlert({ title: "Error", subtitle: "Error updating mode, please try again...", handlePress: () => { } })
-      console.log({ err })
-    })
-    
-  }
+    axios
+      .post("/user-gateway/update-prefrences", data)
+      .then((res) => {
+        if (res.data.message == "success") {
+          setIsEnabled((previousState) => !previousState);
+          setMode(isEnabled ? "Dark" : "Light");
+          route.params.params.preferences.private_mode = isEnabled
+            ? false
+            : true;
+          route.params.params.user.prefrence[0].private_mode = isEnabled
+            ? false
+            : true;
+        } else {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error updating private mode, please try again...",
+            handlePress: () => {},
+          });
+        }
+      })
+      .catch((err) => {
+        CustomAlert({
+          title: "Error",
+          subtitle: "Error updating mode, please try again...",
+          handlePress: () => {},
+        });
+        console.log({ err });
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -229,3 +280,113 @@ export const HideBalance = ({ navigation, route }) => {
     </SafeAreaView>
   );
 };
+
+export function PaymentMethod({ navigation, route }) {
+  const paymentMethods = ({ navigation, item, route }) => {
+    return (
+      <View style={styles.rowContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.push(item.name)}
+        >
+          <VectorButton
+            name={item.cardIcon}
+            size={24}
+            color={Colors.primary}
+            style={styles.preferencesimage}
+          />
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.preferencestext}>{item.cardType}</Text>
+            <Text style={styles.preferencestext}>{item.cardNumber}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.preferencesHeader}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.preferences)}
+        />
+        <Text style={styles.preferencesHeaderText}>
+          {Strings.paymentmethod}
+        </Text>
+      </View>
+
+      <FlatList
+        contentContainerStyle={styles.flatlist}
+        //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+        data={debitCardListArray}
+        renderItem={paymentMethods}
+      />
+      <Text
+        style={styles.addNewCard}
+        onPress={() => navigation.navigate(Strings.addNewCard)}
+      >
+        Add New Card
+      </Text>
+    </SafeAreaView>
+  );
+}
+
+export function AddCard({ navigation, route}) {
+  const [cardNumber, setCardNumber] = useState("");
+  const [cvvNumber, setCVVNumber] = useState("");
+  const [expiryNumber, setExpiryNumber] = useState("");
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.preferencesHeader}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.preferences)}
+        />
+        <Text style={styles.preferencesHeaderText}>{Strings.addNewCard}</Text>
+      </View>
+
+      <TextInput
+        style={styles.inputText}
+        placeholder="Card Number"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardNumber}
+        onChangeText={(value) => setCardNumber(value)}
+      />
+
+      <View style={styles.rowCardContainer}>
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={expiryNumber}
+          onChangeText={(value) => setExpiryNumber(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="CVV"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          value={cvvNumber}
+          onChangeText={(value) => setCVVNumber(value)}
+        />
+      </View>
+
+      <RoundedButton
+          text="Add Card"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => submit()}
+        />
+    </SafeAreaView>
+  );
+}

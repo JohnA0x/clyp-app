@@ -40,7 +40,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen name='buylist' component={BuyCryptoList} />
+      <Stack.Screen name="buylist" component={BuyCryptoList} />
       <Stack.Screen name="buyoptions" component={BuyOptions} />
       <Stack.Screen
         name={Strings.buywithwalletTitle}
@@ -127,7 +127,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('buylist')}
+            handlePress={() => navigation.navigate("buylist")}
           />
           <Text style={styles.headerText}>{Strings.buy}</Text>
         </View>
@@ -220,6 +220,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
         user_id: route.params.user.id
       }
     }
+    const [checkmarkColor, setCheckmarkColor] = useState(
+      debitCardListArray[1].id
+    );
 
     const cardList = ({ item }) => {
       return (
@@ -229,7 +232,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
               styles.cardsContainer,
               { backgroundColor: item.cardColour },
             ]}
-            onPress={() => navigation.navigate(item.title)}
+            onPress={(item) => {
+              setCheckmarkColor(item.id);
+            }}
           >
             <VectorButton
               name={item.icon}
@@ -238,12 +243,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
               style={styles.preferencesimage}
             />
             <Text style={styles.cardNameText}>{item.name}</Text>
-            <Image style ={styles.cardIcon}/>
+            <Image style={styles.cardIcon} />
             <Text style={styles.cardNumberText}>{item.cardNumber}</Text>
             <Text style={styles.cardValidThruText}>VALID THRU</Text>
             <Text style={styles.cardValidityText}>{item.validity}</Text>
             <Text style={styles.cardCVVText}>CVV</Text>
             <Text style={styles.cardCVV}>{item.cvv}</Text>
+            <Ionicons
+              name={"checkmark-circle"}
+              size={24}
+              style={styles.selectedIcon}
+              color={checkmarkColor === item.id ? Colors.addGoal : Colors.grey}
+            />
           </TouchableOpacity>
         </View>
       );

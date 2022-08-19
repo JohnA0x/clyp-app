@@ -102,6 +102,10 @@ export const styles = StyleSheet.create({
     height: 30,
   },
 
+  preferencesimage:{
+    marginLeft:10,
+  },
+
   text: {
     marginLeft: 20,
     fontSize: 15,
@@ -345,6 +349,12 @@ export const styles = StyleSheet.create({
     marginLeft: 20,
     width: 28,
     height: 28,
+  },
+
+  selectedIcon:{
+    position: 'absolute',
+    top: 20,
+    right: 20,
   },
 
   // End of Cards
