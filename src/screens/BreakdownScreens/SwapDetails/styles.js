@@ -133,5 +133,25 @@ export const styles = StyleSheet.create({
     right: 0,
     width: 90,
     textAlign: 'right',
-  }
+  },
+
+  roundedButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "95%",
+    height: 50,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedTextButton: {
+    color: Colors.white,
+    fontFamily: "Poppins_600SemiBold",
+  },
 });

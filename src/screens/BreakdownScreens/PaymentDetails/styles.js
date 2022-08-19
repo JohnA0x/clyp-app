@@ -55,6 +55,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  valueBillText:{
+    color: Colors.textColor,
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 28,
+    marginTop: 50,
+    textAlign: 'center',
+  },
+
   dollarText:{
     color: Colors.textColor,
     fontFamily: 'Poppins_500Medium',
@@ -90,5 +98,39 @@ export const styles = StyleSheet.create({
     right: 0,
     width: 90,
     textAlign: 'right',
-  }
+  },
+  roundedButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "95%",
+    height: 50,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedConfirmButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "85%",
+    height: 50,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedTextButton: {
+    color: Colors.white,
+    fontFamily: "Poppins_600SemiBold",
+  },
 });
