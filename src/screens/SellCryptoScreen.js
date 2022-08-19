@@ -42,6 +42,10 @@ export default function SellCryptoScreen({ navigation, route }) {
     >
       <Stack.Screen name="selllist" component={SellCryptoList} />
       <Stack.Screen name="selloptions" component={SellOptions} />
+      <Stack.Screen
+        name={Strings.sellNowTitle}
+        component={SellNow}
+      />
     </Stack.Navigator>
   );
 
@@ -130,6 +134,58 @@ export default function SellCryptoScreen({ navigation, route }) {
           data={sellOptionsListArray}
           renderItem={sellOptionsList}
           keyExtractor={(item) => item.id}
+        />
+      </SafeAreaView>
+    );
+  }
+
+
+  function SellNow() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("selloptions")}
+          />
+          <Text style={styles.headerText}>{Strings.sell}</Text>
+        </View>
+
+        <View style={styles.walletBalanceContainer}>
+          <Text style={styles.walletBalanceText}>Wallet Balance</Text>
+          <Text style={styles.walletBalanceValueText}>N35,000</Text>
+        </View>
+
+        <View style={styles.transactionCryptoContainer}>
+          <Image style={styles.cryptoImage} source={{ uri: cryptoIcon }} />
+          <Text style={styles.cryptoText}>{cryptoName}</Text>
+        </View>
+
+        <View style={styles.transactionAmountContainer}>
+          <Text style={styles.amountText}>Amount:</Text>
+          <TextInput
+            style={styles.amountValueText}
+            keyboardType="numeric"
+            numberOfLines={1}
+            maxLength={12}
+            placeholder="Amount"
+            selectionColor={Colors.primary}
+          ></TextInput>
+          <Text style={styles.amountMaxValue}>Max</Text>
+        </View>
+
+        <View style={styles.lineCrosser} />
+        <Text style={styles.receiveAmount}>
+          You will receive N20,000 in Naira
+        </Text>
+        <Text style={styles.conversionAmount}>1 BTC = $23,000</Text>
+        <RoundedButton
+          style={styles.depositButton}
+          text={Strings.sell +' ' + walletOptions.abb}
+          textStyle={styles.depositText}
         />
       </SafeAreaView>
     );
