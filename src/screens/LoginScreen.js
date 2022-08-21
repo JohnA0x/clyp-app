@@ -15,10 +15,11 @@ import {
   Poppins_600SemiBold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
-import { Button, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import {
   StyleSheet,
   Text,
+  Button,
   View,
   Image,
   TouchableWithoutFeedback,
@@ -304,11 +305,25 @@ function LoginScreen({ navigation }) {
   };
 
   const theme = useSelector((state) => state.themeReducer.theme);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
+        {theme.mode === "light" ? (
+          <Button
+            title="Switch Dark theme"
+            style={styles.themeButton}
+            onPress={() => dispatch(switchTheme(darkTheme))}
+          />
+        ) : (
+          <Button
+            title="Switch Light theme"
+            style={styles.themeButton}
+            onPress={() => dispatch(switchTheme(lightTheme))}
+          />
+        )}
+
         <Text style={styles.texts}>{Strings.loginAccount}</Text>
         <TextInput
           value={text}
