@@ -288,4 +288,8 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
+export function Home(){
+  
+}
+
 //export default HomeScreen
