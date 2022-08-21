@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,7 +21,13 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DropDownPicker from "react-native-dropdown-picker";
-import { CustomModal, ProcessingModal } from "../components/modal";
+import { ProcessingModal } from "../components/modal";
+import { CustomModal } from "../components/modal";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/TransactionSuccessScreen";
+import TransactionFailedScreen from "./BreakdownScreens/PaymentDetails/TransactionFailedScreen";
+import SwapDetails from "./BreakdownScreens/SwapDetails/SwapDetails";
+import SwapConfirmation from "./BreakdownScreens/SwapDetails/SwapConfirmation";
 
 export default function SendCryptoScreen({ navigation, route }) {
   // States
@@ -28,10 +35,16 @@ export default function SendCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [walletOptions, setWalletOptions] = useState([
-    { address: "hh", abb: "hh" },
+    { address: "", abb: "" },
+  ]);
+
+  // Use this state to set details in breakdown
+  const [breakDowns, setBreakDowns] = useState([
+    { source: "", destination: "", date: "", txid: "", status: "", fee: "" },
   ]);
   const [data, setData] = useState([]);
   const [fullData, setFullData] = useState([]);
+  const [cryptoAddress, setCryptoAddress] = useState("");
   const SendStack = createNativeStackNavigator();
 
   return (
@@ -42,6 +55,8 @@ export default function SendCryptoScreen({ navigation, route }) {
     >
       <SendStack.Screen name={Strings.sendCrypto} component={SendCryptoList} />
       <SendStack.Screen name="sendoptions" component={SendOptions} />
+      <SendStack.Screen name="scan" component={Scan} />
+      <SendStack.Screen name="tt" component={TransactionFailed} />
     </SendStack.Navigator>
   );
 
@@ -85,6 +100,11 @@ export default function SendCryptoScreen({ navigation, route }) {
     return false;
   };
 
+  function TransactionFailed() {
+    return <SwapConfirmation  screenName={Strings.send}
+    amount={'10 ' + walletOptions.abb} swapCoin1={cryptoIcon}/>;
+  }
+
   // When a crypto is clicked from the list, it takes you to the send options screen
   function SendOptions() {
     const navigation = useNavigation();
@@ -106,6 +126,9 @@ export default function SendCryptoScreen({ navigation, route }) {
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     };
+    //const [open, setOpen] = useState(false);
+    // const [value, setValue] = useState(null);
+    //const [isModalVisible, setModalVisible] = useState(false);
 
     const send = () => {
       setIsVisible(true)
@@ -128,6 +151,13 @@ export default function SendCryptoScreen({ navigation, route }) {
           style={styles.optionsbackButton}
           handlePress={() => navigation.navigate(Strings.sendCrypto)}
         />
+        <VectorButton
+          name="scan"
+          size={24}
+          color={Colors.textColor}
+          style={styles.optionsScanButton}
+          handlePress={() => navigation.navigate("scan")}
+        />
         <Text style={styles.optionHeaderText}>Send {cryptoName}</Text>
         <Text style={styles.optionSubtitleText}>
           Transfer Crypto from your Clyp Wallet
@@ -139,6 +169,8 @@ export default function SendCryptoScreen({ navigation, route }) {
             <TextInput
               style={styles.walletAddressInput}
               placeholder={Strings.walletAddress}
+              value={cryptoAddress}
+              // onChangeText={(value) => setCryptoAddress(value)}
               selectionColor={Colors.primary}
               onChangeText={(text) => setRAddress(text)}
             />
@@ -166,7 +198,7 @@ export default function SendCryptoScreen({ navigation, route }) {
               text={"Send " + walletOptions.abb}
               textStyle={styles.textButton}
               style={styles.button}
-              handlePress={toggleModal}
+              handlePress={() => navigation.navigate("tt")}
             />
           </View>
         </ScrollView>
@@ -220,6 +252,7 @@ export default function SendCryptoScreen({ navigation, route }) {
             handlePress={() => navigation.navigate(Strings.home)}
           />
           <Text style={styles.headerText}>{Strings.sendCrypto}</Text>
+          <VectorButton />
         </View>
 
         <View style={styles.flatlist}>
@@ -229,6 +262,46 @@ export default function SendCryptoScreen({ navigation, route }) {
             renderItem={sendCryptoList}
           />
         </View>
+      </SafeAreaView>
+    );
+  }
+
+  function Scan({ navigation }) {
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+
+    useEffect(() => {
+      (async () => {
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === "granted");
+      })();
+    }, []);
+
+    const handleBarCodeScanned = ({ type, data }) => {
+      setScanned(true);
+      alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+      setCryptoAddress(data);
+    };
+
+    if (hasPermission === null) {
+      return <Text>Requesting for camera permission</Text>;
+    }
+    if (hasPermission === false) {
+      return <Text>No access to camera</Text>;
+    }
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {scanned && (
+          <Button
+            title={"Tap to Scan Again"}
+            onPress={() => setScanned(false)}
+          />
+        )}
       </SafeAreaView>
     );
   }

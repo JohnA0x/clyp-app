@@ -180,3 +180,8 @@ export const enterFormerPassword = "Enter Former Password";
 export const enterNewPassword = "Enter New Password";
 export const reenterNewPassword = "Re-enter New Password";
 export const confirm = "Confirm";
+
+
+// BreakdownScreens
+export const paymentDetails = "Payment Details";
+export const swapDetails = "Swap Details";

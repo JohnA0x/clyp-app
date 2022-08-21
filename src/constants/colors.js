@@ -31,6 +31,8 @@ export const inputLabel = '#B6B6B6'
 export const backgroundColor = '#F8F8F8'
 export const addGoal = '#4CAF50'
 
+export const successColor = '#4CAF50'
+export const failedColor = '#C52020'
 
 
 

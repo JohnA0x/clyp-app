@@ -167,6 +167,14 @@ export const styles = StyleSheet.create({
     zIndex: 1,
   },
 
+  optionsScanButton: {
+    marginLeft: 10,
+    position: "absolute",
+    marginTop: "12%",
+    right: 35,
+    zIndex: 1,
+  },
+
   switch: {
     marginRight: 30,
     position: "absolute",
