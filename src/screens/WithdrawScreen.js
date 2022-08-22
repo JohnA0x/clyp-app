@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -24,6 +24,8 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProcessingModal } from "../components/modal";
+import axiosFiat from "../components/axios-fait";
+import { CustomAlert } from "../components/alert";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,18 +45,43 @@ export default function WithdrawScreen({ route }) {
     </Stack.Navigator>
   );
 
-  function accountWithdraw({ navigation }) {
+  function accountWithdraw({ navigation, route }) {
 
-    const [amount, setAmount] = useState('')
+    const [amount, setAmount] = useState(0)
     const [isVisible, setIsVisible] = useState(false)
 
     const withdraw = () => {
+
       setIsVisible(true)
-       let data = { 
-        amount,
-        user_id: route.params.user.id
-       }
+      let data = {
+        amount: Number(amount),
+        user_id: route.params.user.id,
+        title: "Clyp Withdrawal",
+        name: route.params.account_name,
+        account_number: route.params.account_number,
+        bank_id: route.params.bank_id,
+        transaction_type: "send",
+        bank_name: route.params.bank_name
+      }
+
+      axiosFiat.post('/fiat-gateway/send', data)
+        .then(sent => {
+          if (sent.data.message === "success") {
+
+          } else {
+            CustomAlert({ title: "Failed", subtitle: "Failed to send transaction", handlePress: () => { } })
+          }
+        })
+        .catch(err => {
+          CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
+        })
+
     }
+
+    useEffect(() => {
+      console.route.params
+    }, [])
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -101,12 +128,15 @@ export default function WithdrawScreen({ route }) {
 
   function withdrawOptions({ navigation }) {
     //Withdrawal FlatList Design
+    const [banks, setBanks] = useState([])
     const withdrawalFlatList = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation.navigate("accountwithdraw");
+            navigation.navigate("accountwithdraw", {
+              account: item
+            });
             setAccountName(item.name);
             setAccountNumber(item.accountNumber);
           }}
@@ -115,12 +145,27 @@ export default function WithdrawScreen({ route }) {
             style={styles.bankIcon}
             source={require("../drawables/bitcoin.png")}
           />
-          <Text style={styles.nameText}>{item.name}</Text>
-          <Text style={styles.bankNameText}>{item.bank}</Text>
-          <Text style={styles.accountNameText}>{item.accountNumber}</Text>
+          <Text style={styles.nameText}>{item.account_name}</Text>
+          <Text style={styles.bankNameText}>{item.bank_name}</Text>
+          <Text style={styles.accountNameText}>{item.account_number}</Text>
         </TouchableOpacity>
       </View>
     );
+
+    useEffect(() => {
+      axiosFiat.post('/fiat-gateway/get-bank-accounts', { user_id: route.params.user.id })
+      .then(banks => {
+        if (data.data.message === "success") {
+          setBanks(data.data.banks)
+        }
+        else {
+          // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
+        }
+      })
+      .catch(err => {
+        // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
+      })
+    }, [])
 
     return (
       <SafeAreaView style={styles.container}>
@@ -140,7 +185,7 @@ export default function WithdrawScreen({ route }) {
         <FlatList
           contentContainerStyle={styles.flatlist}
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={withdrawalList}
+          data={banks}
           renderItem={withdrawalFlatList}
         />
 

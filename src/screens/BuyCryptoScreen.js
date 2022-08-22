@@ -23,8 +23,10 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import axiosFiat from "../components/axios-fait";
 import { Ionicons } from "@expo/vector-icons";
 import { ProcessingModal } from "../components/modal";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -209,8 +211,10 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithCard() {
+
     const [amount, setAmount] = useState('')
     const [isVisible, setIsVisible] = useState(false)
+    const [cards, setCards] = useState([])
     
     const buy = () => {
       setIsVisible(true)
@@ -220,9 +224,25 @@ export default function BuyCryptoScreen({ navigation, route }) {
         user_id: route.params.user.id
       }
     }
+
     const [checkmarkColor, setCheckmarkColor] = useState(
       debitCardListArray[1].id
     );
+
+    useEffect(() => {
+      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.params.id })
+        .then(data => {
+          if (data.data.message === "success") {
+            setCards(data.data.cards)
+          }
+          else {
+            // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
+          }
+        })
+        .catch(err => {
+          // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
+        })
+    }, [])
 
     const cardList = ({ item }) => {
       return (
@@ -242,11 +262,11 @@ export default function BuyCryptoScreen({ navigation, route }) {
               color={Colors.primary}
               style={styles.preferencesimage}
             />
-            <Text style={styles.cardNameText}>{item.name}</Text>
+            <Text style={styles.cardNameText}>{item.card_name}</Text>
             <Image style={styles.cardIcon} />
-            <Text style={styles.cardNumberText}>{item.cardNumber}</Text>
+            <Text style={styles.cardNumberText}>{item.card_number}</Text>
             <Text style={styles.cardValidThruText}>VALID THRU</Text>
-            <Text style={styles.cardValidityText}>{item.validity}</Text>
+            <Text style={styles.cardValidityText}>{item.card_expiry}</Text>
             <Text style={styles.cardCVVText}>CVV</Text>
             <Text style={styles.cardCVV}>{item.cvv}</Text>
             <Ionicons
@@ -276,7 +296,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
         <FlatList
           contentContainerStyle={styles.cardListContainer}
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={debitCardListArray}
+          data={cards}
           renderItem={cardList}
           horizontal={true}
           keyExtractor={(item) => item.id}

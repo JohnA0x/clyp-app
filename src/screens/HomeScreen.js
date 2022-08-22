@@ -171,7 +171,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.cryptoContainer}>
             <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
-            <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
+            <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "*** BTC" : "0.0001 BTC"}</Text>
 
             <View style={styles.transactionOptions}>
               <View style={styles.columnContainer}>
@@ -233,7 +233,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={styles.fiatContainer}>
             <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-            <Text style={styles.cryptoBalanceText}>N 35,000</Text>
+            <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "*** " : "N 35,000"}</Text>
 
             <View style={styles.transactionOptions}>
               <View style={styles.columnContainer}>
@@ -286,6 +286,10 @@ export default function HomeScreen({ navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+export function Home(){
+  
 }
 
 //export default HomeScreen

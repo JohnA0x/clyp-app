@@ -109,7 +109,7 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.textColor}
             style={styles.backButton}
             handlePress={() =>
-              navigation.navigate(Strings.home, {
+              navigation.navigate(Strings.Profile, {
                 id: route.params.id,
                 preferences: route.params.preferences,
                 firstName: route.params.firstName,
@@ -283,7 +283,7 @@ export default function SecurityScreen({ navigation, route }) {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <VectorButton
-            name="chevron-back"git 
+            name="chevron-back"
             size={24}
             color={Colors.textColor}
             style={styles.backButton}

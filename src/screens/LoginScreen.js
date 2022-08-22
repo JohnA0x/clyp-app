@@ -15,10 +15,11 @@ import {
   Poppins_600SemiBold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
-import { Button, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import {
   StyleSheet,
   Text,
+  Button,
   View,
   Image,
   TouchableWithoutFeedback,
@@ -26,7 +27,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from "../constants/colors";
 import { TouchableOpacity } from "react-native";
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from "@expo/vector-icons";
 
 import SignupScreen from "./SignupScreen";
 import ForgotPassword from "./ForgotPassword";
@@ -45,8 +46,12 @@ import { ProcessingModal } from "../components/modal";
 import {
   hasHardwareAsync,
   isEnrolledAsync,
-  authenticateAsync
-} from 'expo-local-authentication';
+  authenticateAsync,
+} from "expo-local-authentication";
+
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
 
 const Stack = createNativeStackNavigator();
 
@@ -372,9 +377,26 @@ function LoginScreen({ navigation }) {
     return
   }
 
+  const theme = useSelector((state) => state.themeReducer.theme);
+  const dispatch = useDispatch();
+
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
+        {theme.mode === "light" ? (
+          <Button
+            title="Switch Dark theme"
+            style={styles.themeButton}
+            onPress={() => dispatch(switchTheme(darkTheme))}
+          />
+        ) : (
+          <Button
+            title="Switch Light theme"
+            style={styles.themeButton}
+            onPress={() => dispatch(switchTheme(lightTheme))}
+          />
+        )}
+
         <Text style={styles.texts}>{Strings.loginAccount}</Text>
         <TextInput
           value={text}

@@ -37,3 +37,11 @@ export const failedColor = '#C52020'
 
 
 // dark mode
+export const primaryDark = '#EA9924';
+export const secondaryDark = '#EFC88F';
+export const tertiaryDark = 'rgba(0, 0, 0, 0.25)'
+
+export const textColorDark = '#fff'
+
+export const qrcodeDark = '#fff'
+export const listHolderDark = 16//'#E1E1E1'

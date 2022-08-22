@@ -8,7 +8,7 @@ import * as Strings from "../../../strings/strings";
 import SUCCESSSVG from "../../../drawables/vector/breakdown/transactionsuccess.svg";
 import {Ionicons} from '@expo/vector-icons'
 
-export default function SwapDetails({navigation, source, destination, date, txid, status, fee, swapCoin1, swapCoin2 }) {
+export default function SwapDetails({navigation, source, destination, txid, fee, swapCoin1, swapCoin2, handlePress }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -49,23 +49,9 @@ export default function SwapDetails({navigation, source, destination, date, txid
           </View>
 
           <View style={styles.breakDownSubview}>
-            <Text style={styles.breakdownTitle}>Date</Text>
-            <Text style={styles.breakdownDescription} numberOfLines={1}>
-            {date}
-            </Text>
-          </View>
-
-          <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>TxId</Text>
             <Text style={styles.breakdownDescription} numberOfLines={1}>
             {txid}
-            </Text>
-          </View>
-
-          <View style={styles.breakDownSubview}>
-            <Text style={styles.breakdownTitle}>Status</Text>
-            <Text style={styles.breakdownDescription} numberOfLines={1}>
-            {status}
             </Text>
           </View>
 
@@ -75,6 +61,13 @@ export default function SwapDetails({navigation, source, destination, date, txid
             {fee}
             </Text>
           </View>
+
+        <RoundedButton
+          text="Continue"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={handlePress}
+        />
         </View>
       </ScrollView>
     </SafeAreaView>

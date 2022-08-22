@@ -28,6 +28,7 @@ import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/Transact
 import TransactionFailedScreen from "./BreakdownScreens/PaymentDetails/TransactionFailedScreen";
 import SwapDetails from "./BreakdownScreens/SwapDetails/SwapDetails";
 import SwapConfirmation from "./BreakdownScreens/SwapDetails/SwapConfirmation";
+import {RechargeConfirmation} from "./BreakdownScreens/PaymentDetails/BillConfirmation";
 
 export default function SendCryptoScreen({ navigation, route }) {
   // States
@@ -101,8 +102,7 @@ export default function SendCryptoScreen({ navigation, route }) {
   };
 
   function TransactionFailed() {
-    return <SwapConfirmation  screenName={Strings.send}
-    amount={'10 ' + walletOptions.abb} swapCoin1={cryptoIcon}/>;
+    return <RechargeConfirmation/>;
   }
 
   // When a crypto is clicked from the list, it takes you to the send options screen

@@ -55,7 +55,7 @@ export default function ActivityScreen({navigation}) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.Profile)}
           />
           <Text style={styles.headerText}>{Strings.activity}</Text>
         </View>

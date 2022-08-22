@@ -185,3 +185,4 @@ export const confirm = "Confirm";
 // BreakdownScreens
 export const paymentDetails = "Payment Details";
 export const swapDetails = "Swap Details";
+export const confirmation = "Confirmation";
