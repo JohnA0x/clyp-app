@@ -113,6 +113,7 @@ export const depositviaDebit = "Deposit via Debit Card";
 
 export const paymentmethod = "Payment Method";
 export const addNewCard = "Add Card";
+export const UseAnotherCard = "Use Another Card";
 
 export const seeAll = "See All";
 

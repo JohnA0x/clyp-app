@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,7 +18,7 @@ import {
   FileImageButton,
   ImageButton,
   VectorButton,
-  RoundedButton
+  RoundedButton,
 } from "../components/button";
 import { preferencesListArray } from "../strings/preferenceslist";
 import { listSeparator } from "../components/listseparator";
@@ -30,6 +30,11 @@ import { useState } from "react";
 import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
 import debitCardListArray from "../strings/debitcardslist";
+
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
+import { getData, storeData } from "../services/storage";
 
 const Stack = createNativeStackNavigator();
 
@@ -121,6 +126,9 @@ const Preferences = ({ navigation, route }) => {
 };
 
 export const ChangeAppearance = ({ navigation, route }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const [isEnabled, setIsEnabled] = useState(
     route.params.params.preferences.mode.indexOf("ight") != -1 ? true : false
   );
@@ -163,8 +171,20 @@ export const ChangeAppearance = ({ navigation, route }) => {
   //   console.log(route)
   // }, [])
 
+  useEffect(() => {
+    if (mode == "Dark") {
+      dispatch(switchTheme(darkTheme));
+      alert("Mode is dark");
+    }
+
+    if (mode == "Light") {
+      dispatch(switchTheme(lightTheme));
+      alert("Mode is light");
+    }
+   
+  }, [mode]);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
@@ -334,7 +354,7 @@ export function PaymentMethod({ navigation, route }) {
   );
 }
 
-export function AddCard({ navigation, route}) {
+export function AddCard({ navigation, route }) {
   const [cardNumber, setCardNumber] = useState("");
   const [cvvNumber, setCVVNumber] = useState("");
   const [expiryNumber, setExpiryNumber] = useState("");
@@ -382,11 +402,11 @@ export function AddCard({ navigation, route}) {
       </View>
 
       <RoundedButton
-          text="Add Card"
-          textStyle={styles.roundedTextButton}
-          style={styles.roundedButton}
-          handlePress={() => submit()}
-        />
+        text="Add Card"
+        textStyle={styles.roundedTextButton}
+        style={styles.roundedButton}
+        handlePress={() => submit()}
+      />
     </SafeAreaView>
   );
 }

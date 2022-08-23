@@ -1,9 +1,14 @@
-import { lightTheme } from "../constants/theme";
+import { lightTheme, darkTheme } from "../constants/theme";
 import { SWITCH_THEME } from "./themeAction";
+import { useState } from "react";
+
+
 
 const initialState = {
+    
   theme: lightTheme,
 };
+
 
 const themeReducer = (state = initialState, action) => {
   switch (action.type) {

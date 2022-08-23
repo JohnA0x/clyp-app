@@ -19,11 +19,20 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import themeReducer from "./src/redux/themeReducer";
+import {
+  storeData,
+  storeObjectData,
+  getData,
+  getObjectData,
+} from "./src/services/storage";
 
-const store = createStore(
-  combineReducers({ themeReducer }),
-  applyMiddleware(thunk)
-);
+import * as Values from "./src/constants/values";
+
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import { store, persistor } from "./src/redux/themeStore";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
   let [fontsLoaded, error] = useFonts({
@@ -40,7 +49,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <Onboarding />
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <Onboarding />
+      </PersistGate>
     </Provider>
   );
 }

@@ -34,6 +34,9 @@ import {
   authenticateAsync,
 } from "expo-local-authentication";
 import { ProcessingModal } from "../components/modal";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -46,14 +49,18 @@ import { ProcessingModal } from "../components/modal";
 } */
 
 export default function HomeScreen({ navigation }) {
-
-  const [id, setID] = React.useState("")
-  const [firstName, setFirstName] = React.useState("")
-  const [lastName, setLastName] = React.useState("")
-  const [preferences, setPrefrences] = React.useState("")
-  const [user, setUser] = React.useState({})
-  const [token, setToken] = React.useState("")
-  const [coins, setCoins] = React.useState([])
+  const [id, setID] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [preferences, setPrefrences] = React.useState("");
+  const [user, setUser] = React.useState({});
+  const [token, setToken] = React.useState("");
+  const [coins, setCoins] = React.useState([]);
+  const [cryptoName, setCryptoName] = React.useState("");
+  const [cryptoIcon, setCryptoIcon] = React.useState("");
+  const [walletOptions, setWalletOptions] = React.useState([
+    { address: "", abb: "" },
+  ]);
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -80,22 +87,27 @@ export default function HomeScreen({ navigation }) {
 
   const holdingsList = ({ item }) => {
     // let coin = coins.filter(c => c.currency == item.abb)[0]
-     return (
-        <View style={styles.historyBaseContainer}>
-          <TouchableOpacity
-            style={styles.holdingButton}
-            onPress={() => navigation.push(item.name)}
-          >
-            <ImageButton
-              image={item.icon}
-              style={styles.holdingsCryptoimage}
-              imageStyle={styles.holdingsCryptoimage}
-            />
-            <Text style={styles.holdingsTextButton}>{item.name}</Text>
-            <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
-          </TouchableOpacity>
-        </View>
-      )
+    return (
+      <View style={styles.historyBaseContainer}>
+        <TouchableOpacity
+          style={styles.holdingButton}
+          onPress={() => {
+            navigation.push(Strings.holdings);
+            setCryptoName(item.name);
+            setCryptoIcon(item.icon);
+            setWalletOptions({ abb: item.abb });
+          }}
+        >
+          <ImageButton
+            image={item.icon}
+            style={styles.holdingsCryptoimage}
+            imageStyle={styles.holdingsCryptoimage}
+          />
+          <Text style={styles.holdingsTextButton}>{item.name}</Text>
+          <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   React.useEffect(() => {
@@ -103,24 +115,33 @@ export default function HomeScreen({ navigation }) {
       let id = await AsyncStorage.getItem("user_id").then((value) => value);
       let token = await AsyncStorage.getItem("token").then((value) => value);
 
-      setToken(token)
-      axios.post('/user-gateway/get-full-user', { user_id: id })
-        .then(data => {
+      setToken(token);
+      axios
+        .post("/user-gateway/get-full-user", { user_id: id })
+        .then((data) => {
           // console.log(data.data)
-          setID(data.data.user.id)
-          setFirstName(data.data.user.first_name)
-          setLastName(data.data.user.last_name)
-          setPrefrences(data.data.user.prefrence[0])
-          setUser(data.data.user)
-          console.log(data.data.user)
-          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
-            .then(coins_data => {
-              setCoins(coins_data.data.coins)
-            })
+          setID(data.data.user.id);
+          setFirstName(data.data.user.first_name);
+          setLastName(data.data.user.last_name);
+          setPrefrences(data.data.user.prefrence[0]);
+          setUser(data.data.user);
+          console.log(data.data.user);
+          axios
+            .post(
+              "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
+              { user_id: id }
+            )
+            .then((coins_data) => {
+              setCoins(coins_data.data.coins);
+            });
         })
-        .catch(err => {
-          CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
-          console.log({ err })
+        .catch((err) => {
+          CustomAlert({
+            title: "Error",
+            subtitle: "Error making request, please try again...",
+            handlePress: () => {},
+          });
+          console.log({ err });
         })
         .catch((err) => {
           CustomAlert({
@@ -134,162 +155,287 @@ export default function HomeScreen({ navigation }) {
     fetchData();
   }, []);
 
+  const Stack = createNativeStackNavigator();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.topBar}>
-          <ImageButton
-            style={styles.profileImage}
-            imageStyle={styles.profileImage}
-            image={user.picture ? user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"}
-            handlePress={() => {
-              navigation.navigate("Profile", { id, firstName, lastName, preferences, user });
-              navigation.setOptions({ tabBarVisible: false });
-            }}
-          />
-          <Text style={styles.nameText}>Welcome {firstName}</Text>
-          <VectorButton
-            style={styles.notificationButton}
-            name="notifications-outline"
-            size={24}
-            color={Colors.primary}
-            handlePress={() => navigation.push(Strings.notifications)}
-          />
-          <VectorButton
-            style={styles.scanButton}
-            name="scan"
-            size={24}
-            color={Colors.primary}
-            handlePress={() => navigation.navigate(Strings.qrcode, { token })}
-          />
-        </View>
-        
-        <ProcessingModal isVisible={false}/>
-        <Swiper
-          style={styles.swiperContainer}
-          activeDotColor={Colors.fadedButton}
-        >
-          <View style={styles.cryptoContainer}>
-            <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
-            <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
-
-            <View style={styles.transactionOptions}>
-              <View style={styles.columnContainer}>
-                <VectorButton
-                  name="arrow-up"
-                  size={18}
-                  color={Colors.white}
-                  style={styles.sendbutton}
-                  handlePress={() => navigation.navigate(Strings.sendCrypto, { coins: coins })}
-                />
-                <Text style={styles.optionText}>{Strings.send}</Text>
-              </View>
-
-              <View style={styles.othercolumnContainer}>
-                <VectorButton
-                  name="arrow-down"
-                  size={18}
-                  color={Colors.white}
-                  style={styles.receivebutton}
-                  handlePress={() => navigation.navigate(Strings.receiveCrypto, { coins: coins })}
-                />
-                <Text style={styles.optionText}>{Strings.receive}</Text>
-              </View>
-
-              <View style={styles.othercolumnContainer}>
-                <VectorButton
-                  name="pricetag-outline"
-                  size={18}
-                  color={Colors.white}
-                  style={styles.buybutton}
-                  handlePress={() => navigation.navigate(Strings.buy, { coins: coins })}
-                />
-                <Text style={styles.optionText}>{Strings.buy}</Text>
-              </View>
-
-              <View style={styles.othercolumnContainer}>
-                <VectorButton
-                  name="cash-outline"
-                  size={18}
-                  color={Colors.white}
-                  style={styles.sellbutton}
-                  handlePress={() => navigation.navigate(Strings.sell, { coins: coins })}
-                />
-                <Text style={styles.optionText}>{Strings.sell}</Text>
-              </View>
-
-              <View style={styles.othercolumnContainer}>
-                <VectorButton
-                  name="swap-horizontal"
-                  size={18}
-                  color={Colors.white}
-                  style={styles.swapbutton}
-                  handlePress={() => navigation.navigate(Strings.swap, { coins: coins })}
-                />
-                <Text style={styles.optionText}>{Strings.swap}</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.fiatContainer}>
-            <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-            <Text style={styles.cryptoBalanceText}>N 35,000</Text>
-
-            <View style={styles.transactionOptions}>
-              <View style={styles.columnContainer}>
-                <VectorButton
-                  name="arrow-down"
-                  size={20}
-                  color={Colors.white}
-                  style={styles.sendbutton}
-                  handlePress={() => navigation.push(Strings.deposit)}
-                />
-                <Text style={styles.optionText}>{Strings.deposit}</Text>
-              </View>
-
-              <View style={styles.othercolumnContainer}>
-                <VectorButton
-                  name="arrow-up"
-                  size={20}
-                  color={Colors.white}
-                  style={styles.receivebutton}
-                  handlePress={() => navigation.push(Strings.withdraw)}
-                />
-                <Text style={styles.optionText}>{Strings.withdraw}</Text>
-              </View>
-            </View>
-          </View>
-        </Swiper>
-
-        <View style={styles.coinContainer}>
-          <Text style={styles.coinText}>{Strings.favourite}</Text>
-          <FlatList
-            contentContainerStyle={styles.flatlist}
-            data={favouriteListArray}
-            renderItem={favouriteList}
-            //numColumns={2}
-            horizontal={true}
-            keyExtractor={(item, id) => id}
-          />
-        </View>
-
-        <View style={styles.coinContainer}>
-          <Text style={styles.holdingText}>{Strings.holdings}</Text>
-          <FlatList
-            contentContainerStyle={styles.flatlist}
-            data={favouriteListArray} //coins
-            renderItem={holdingsList}
-            //numColumns={2}
-            keyExtractor={(item, id) => id}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name={Strings.home} component={HomeScreen} />
+      <Stack.Screen name={Strings.holdings} component={HoldingsDetail} />
+    </Stack.Navigator>
   );
-}
 
-export function Home(){
-  
+  function HomeScreen() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.topBar}>
+            <ImageButton
+              style={styles.profileImage}
+              imageStyle={styles.profileImage}
+              image={
+                user.picture
+                  ? user.picture
+                  : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+              }
+              handlePress={() => {
+                navigation.navigate("Profile", {
+                  id,
+                  firstName,
+                  lastName,
+                  preferences,
+                  user,
+                });
+                navigation.setOptions({ tabBarVisible: false });
+              }}
+            />
+            <Text style={styles.nameText}>Welcome {firstName}</Text>
+            <VectorButton
+              style={styles.notificationButton}
+              name="notifications-outline"
+              size={24}
+              color={Colors.primary}
+              handlePress={() => navigation.push(Strings.notifications)}
+            />
+            <VectorButton
+              style={styles.scanButton}
+              name="scan"
+              size={24}
+              color={Colors.primary}
+              handlePress={() => navigation.navigate(Strings.qrcode, { token })}
+            />
+          </View>
+
+          <ProcessingModal isVisible={false} />
+          <Swiper
+            style={styles.swiperContainer}
+            activeDotColor={Colors.fadedButton}
+          >
+            <View style={styles.cryptoContainer}>
+              <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
+              <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
+
+              <View style={styles.transactionOptions}>
+                <View style={styles.columnContainer}>
+                  <VectorButton
+                    name="arrow-up"
+                    size={18}
+                    color={Colors.white}
+                    style={styles.sendbutton}
+                    handlePress={() =>
+                      navigation.navigate(Strings.sendCrypto, { coins: coins })
+                    }
+                  />
+                  <Text style={styles.optionText}>{Strings.send}</Text>
+                </View>
+
+                <View style={styles.othercolumnContainer}>
+                  <VectorButton
+                    name="arrow-down"
+                    size={18}
+                    color={Colors.white}
+                    style={styles.receivebutton}
+                    handlePress={() =>
+                      navigation.navigate(Strings.receiveCrypto, {
+                        coins: coins,
+                      })
+                    }
+                  />
+                  <Text style={styles.optionText}>{Strings.receive}</Text>
+                </View>
+
+                <View style={styles.othercolumnContainer}>
+                  <VectorButton
+                    name="pricetag-outline"
+                    size={18}
+                    color={Colors.white}
+                    style={styles.buybutton}
+                    handlePress={() =>
+                      navigation.navigate(Strings.buy, { coins: coins })
+                    }
+                  />
+                  <Text style={styles.optionText}>{Strings.buy}</Text>
+                </View>
+
+                <View style={styles.othercolumnContainer}>
+                  <VectorButton
+                    name="cash-outline"
+                    size={18}
+                    color={Colors.white}
+                    style={styles.sellbutton}
+                    handlePress={() =>
+                      navigation.navigate(Strings.sell, { coins: coins })
+                    }
+                  />
+                  <Text style={styles.optionText}>{Strings.sell}</Text>
+                </View>
+
+                <View style={styles.othercolumnContainer}>
+                  <VectorButton
+                    name="swap-horizontal"
+                    size={18}
+                    color={Colors.white}
+                    style={styles.swapbutton}
+                    handlePress={() =>
+                      navigation.navigate(Strings.swap, { coins: coins })
+                    }
+                  />
+                  <Text style={styles.optionText}>{Strings.swap}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.fiatContainer}>
+              <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
+              <Text style={styles.cryptoBalanceText}>N 35,000</Text>
+
+              <View style={styles.transactionOptions}>
+                <View style={styles.columnContainer}>
+                  <VectorButton
+                    name="arrow-down"
+                    size={20}
+                    color={Colors.white}
+                    style={styles.sendbutton}
+                    handlePress={() => navigation.push(Strings.deposit)}
+                  />
+                  <Text style={styles.optionText}>{Strings.deposit}</Text>
+                </View>
+
+                <View style={styles.othercolumnContainer}>
+                  <VectorButton
+                    name="arrow-up"
+                    size={20}
+                    color={Colors.white}
+                    style={styles.receivebutton}
+                    handlePress={() => navigation.push(Strings.withdraw)}
+                  />
+                  <Text style={styles.optionText}>{Strings.withdraw}</Text>
+                </View>
+              </View>
+            </View>
+          </Swiper>
+
+          <View style={styles.coinContainer}>
+            <Text style={styles.coinText}>{Strings.favourite}</Text>
+            <FlatList
+              contentContainerStyle={styles.flatlist}
+              data={favouriteListArray}
+              renderItem={favouriteList}
+              //numColumns={2}
+              horizontal={true}
+              keyExtractor={(item, id) => id}
+            />
+          </View>
+
+          <View style={styles.coinContainer}>
+            <Text style={styles.holdingText}>{Strings.holdings}</Text>
+            <FlatList
+              contentContainerStyle={styles.flatlist}
+              data={favouriteListArray} //coins
+              renderItem={holdingsList}
+              //numColumns={2}
+              keyExtractor={(item, id) => id}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  function HoldingsDetail() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.push(Strings.home)}
+          />
+          <View style={styles.holdingsRowContainer}>
+            <Image
+              style={styles.holdingsDetailImage}
+              source={{ uri: cryptoIcon }}
+            />
+            <Text style={styles.holdingsCryptoName}>{walletOptions.abb}</Text>
+          </View>
+        </View>
+
+        <View style={styles.holdingsTransactionOptions}>
+          <View style={styles.columnContainer}>
+            <VectorButton
+              name="arrow-up"
+              size={18}
+              color={Colors.white}
+              style={styles.sendbutton}
+              handlePress={() =>
+                navigation.navigate(Strings.sendCrypto, { coins: coins })
+              }
+            />
+            <Text style={styles.optionText}>{Strings.send}</Text>
+          </View>
+
+          <View style={styles.othercolumnContainer}>
+            <VectorButton
+              name="arrow-down"
+              size={18}
+              color={Colors.white}
+              style={styles.receivebutton}
+              handlePress={() =>
+                navigation.navigate(Strings.receiveCrypto, {
+                  coins: coins,
+                })
+              }
+            />
+            <Text style={styles.optionText}>{Strings.receive}</Text>
+          </View>
+
+          <View style={styles.othercolumnContainer}>
+            <VectorButton
+              name="pricetag-outline"
+              size={18}
+              color={Colors.white}
+              style={styles.buybutton}
+              handlePress={() =>
+                navigation.navigate(Strings.buy, { coins: coins })
+              }
+            />
+            <Text style={styles.optionText}>{Strings.buy}</Text>
+          </View>
+
+          <View style={styles.othercolumnContainer}>
+            <VectorButton
+              name="cash-outline"
+              size={18}
+              color={Colors.white}
+              style={styles.sellbutton}
+              handlePress={() =>
+                navigation.navigate(Strings.sell, { coins: coins })
+              }
+            />
+            <Text style={styles.optionText}>{Strings.sell}</Text>
+          </View>
+
+          <View style={styles.othercolumnContainer}>
+            <VectorButton
+              name="swap-horizontal"
+              size={18}
+              color={Colors.white}
+              style={styles.swapbutton}
+              handlePress={() =>
+                navigation.navigate(Strings.swap, { coins: coins })
+              }
+            />
+            <Text style={styles.optionText}>{Strings.swap}</Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 //export default HomeScreen

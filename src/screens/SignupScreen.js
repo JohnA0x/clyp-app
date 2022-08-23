@@ -42,6 +42,8 @@ import { ResponseType } from "expo-auth-session";
 import axios from '../components/axios'
 import { CustomAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getData } from "../services/storage";
+import * as Values from '../constants/values'
 
 const Stack = createNativeStackNavigator();
 
@@ -55,8 +57,9 @@ export default function Signup() {
     Poppins_400Regular,
   });
 
+  const value = AsyncStorage.getItem(Values.theme)
   // const [text, setText] = React.useState("");
-
+  getData(Values.theme)
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator

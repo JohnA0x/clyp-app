@@ -45,3 +45,5 @@ export const textColorDark = '#fff'
 
 export const qrcodeDark = '#fff'
 export const listHolderDark = 16//'#E1E1E1'
+
+export const backgroundColorDark = '#363636'

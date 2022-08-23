@@ -21,4 +21,25 @@ export const depositListArray = [
   },
 ];
 
-export default depositListArray;
+export const depositCardList =[
+  {
+    id: 0,
+    cardName: 'ClypPay User',
+    cardType: 'MasterCard',
+    cardNumber: '5399 8304 1723 6903',
+    securityCode: 168,
+    expiry: "02/24"
+    
+  },
+
+  {
+    id: 1,
+    cardName: 'ClypPay User',
+    cardType: 'Visa',
+    cardNumber: '4288 1402 5321 0099',
+    securityCode: 235,
+    expiry: "04/27"
+  }
+]
+
+// export default depositListArray;

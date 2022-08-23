@@ -26,7 +26,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Dropdown } from "react-native-element-dropdown";
 
 import { useState } from "react";
-import depositListArray from "../strings/depositlist";
+import { depositListArray, depositCardList } from "../strings/depositlist";
 import cryptoListArray from "../strings/cryptolist";
 
 const Stack = createNativeStackNavigator();
@@ -38,8 +38,19 @@ export default function DepositScreen({ navigation, route }) {
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
-  
-  const priceChangeColor = priceChange > 0 ? '#009E06' : ''
+
+  // This is the state that defines a card properties when clicked on
+  const [cardOptions, setCardOptions] = useState([
+    { cardName: "", cardType: "", cardNumber: "", securityCode: "", expiryDate: ""},
+  ]);
+
+  const [cardNumber, setCardNumber] = useState("");
+
+  const [cardInputOptions, setCardInputOptions] = useState([
+    { cardNumber: "", expiryDate: "", securityCode: "", amount: "0", pin: "" },
+  ]);
+
+  const priceChangeColor = priceChange > 0 ? "#009E06" : "";
   return (
     <Stack.Navigator
       screenOptions={{
@@ -61,6 +72,23 @@ export default function DepositScreen({ navigation, route }) {
       <Stack.Screen
         name="TransactionsOptions"
         component={TransactionsOptions}
+        initialParams={route}
+      />
+
+      <Stack.Screen
+        name={Strings.depositviaDebit}
+        component={DepositviaDebitCard}
+        initialParams={route}
+      />
+      <Stack.Screen
+        name={Strings.UseAnotherCard}
+        component={UseAnotherCard}
+        initialParams={route}
+      />
+
+      <Stack.Screen
+        name="Complete Use Card"
+        component={CompleteUseCard}
         initialParams={route}
       />
     </Stack.Navigator>
@@ -164,9 +192,8 @@ export default function DepositScreen({ navigation, route }) {
         </View>
 
         <View style={styles.transactionCryptoContainer}>
-          <Image style={styles.cryptoImage}
-          source={{uri: cryptoIcon}}/>
-          <Text style = {styles.cryptoText}>{cryptoName}</Text>
+          <Image style={styles.cryptoImage} source={{ uri: cryptoIcon }} />
+          <Text style={styles.cryptoText}>{cryptoName}</Text>
         </View>
 
         <View style={styles.transactionAmountContainer}>
@@ -191,6 +218,159 @@ export default function DepositScreen({ navigation, route }) {
           style={styles.depositButton}
           text={Strings.deposit}
           textStyle={styles.depositText}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  function DepositviaDebitCard() {
+    //Withdrawal FlatList Design
+    const cardList = ({ item }) => (
+      <View style={styles.cardRowContainer}>
+        <TouchableOpacity
+          style={styles.cardButton}
+          onPress={() => {
+            navigation.navigate("accountwithdraw");
+            setCardOptions({
+              cardName: item.cardName,
+              cardType: item.cardType,
+              cardNumber: item.cardNumber,
+              securityCode: item.securityCode,
+              expiry: item.expiry,
+            });
+          }}
+        >
+          <Image
+            style={styles.bankIcon}
+            source={require("../drawables/bitcoin.png")}
+          />
+          <Text style={styles.nameText}>{item.cardName}</Text>
+          <Text style={styles.bankNameText}>{item.cardType}</Text>
+          <Text style={styles.accountNameText}>{item.cardNumber}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate(Strings.home)}
+          />
+          <Text style={styles.headerText}>{Strings.fund}</Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={styles.cardFlatlist}
+          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+          data={depositCardList}
+          renderItem={cardList}
+        />
+        <View style={styles.otherOptionsView}>
+          <Text style={styles.addNewAccount}>Add New Card</Text>
+          <Text
+            style={styles.useAnotherAccount}
+            onPress={() => navigation.navigate(Strings.UseAnotherCard)}
+          >
+            Use Another Card
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  function UseAnotherCard() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("editprofile")}
+          />
+          <Text style={styles.headerText}>{Strings.UseAnotherCard}</Text>
+        </View>
+
+        <TextInput
+          style={styles.inputText}
+          placeholder="Card Number"
+          selectionColor={Colors.primary}
+          maxLength={16}
+          value={cardOptions.cardNumber}
+          onChangeText={(value) => setCardOptions({cardNumber: value})}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={cardOptions.expiryDate}
+          onChangeText={(value) => setCardOptions({expiryDate: value})}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Security Code"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          keyboardType="numeric"
+        />
+
+        <RoundedButton
+          text="Proceed"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => {
+            navigation.navigate("Complete Use Card");
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  function CompleteUseCard() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate(Strings.UseAnotherCard)}
+          />
+          <Text style={styles.headerText}>{Strings.UseAnotherCard}</Text>
+        </View>
+
+        <TextInput
+          style={styles.inputText}
+          placeholder="Amount"
+          selectionColor={Colors.primary}
+          maxLength={16}
+          keyboardType="numeric"
+          // value={bvn}
+          //onChangeText={(value) => setBVN(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Transaction Pin"
+          selectionColor={Colors.primary}
+          maxLength={5}
+        />
+
+        <RoundedButton
+          text="Deposit"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => submit()}
         />
       </SafeAreaView>
     );

@@ -1,6 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Colors from "../constants/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
+import { getData, storeData } from "../services/storage";
+
 
 export const styles = StyleSheet.create({
   container: {
