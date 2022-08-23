@@ -80,22 +80,22 @@ export default function HomeScreen({ navigation }) {
 
   const holdingsList = ({ item }) => {
     // let coin = coins.filter(c => c.currency == item.abb)[0]
-     return (
-        <View style={styles.historyBaseContainer}>
-          <TouchableOpacity
-            style={styles.holdingButton}
-            onPress={() => navigation.push(item.name)}
-          >
-            <ImageButton
-              image={item.icon}
-              style={styles.holdingsCryptoimage}
-              imageStyle={styles.holdingsCryptoimage}
-            />
-            <Text style={styles.holdingsTextButton}>{item.name}</Text>
-            <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
-          </TouchableOpacity>
-        </View>
-      )
+    return (
+      <View style={styles.historyBaseContainer}>
+        <TouchableOpacity
+          style={styles.holdingButton}
+          onPress={() => navigation.push(item.name)}
+        >
+          <ImageButton
+            image={item.icon}
+            style={styles.holdingsCryptoimage}
+            imageStyle={styles.holdingsCryptoimage}
+          />
+          <Text style={styles.holdingsTextButton}>{item.name}</Text>
+          <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
+        </TouchableOpacity>
+      </View>
+    )
   };
 
   React.useEffect(() => {
@@ -117,6 +117,11 @@ export default function HomeScreen({ navigation }) {
             .then(coins_data => {
               setCoins(coins_data.data.coins)
             })
+
+          axios.post('https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet', { user_id: id })
+            .then(coins_data => {
+              setCoins(coins_data.data.coins)
+            })
         })
         .catch(err => {
           CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
@@ -126,7 +131,7 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
           console.log({ err });
         });
@@ -163,8 +168,8 @@ export default function HomeScreen({ navigation }) {
             handlePress={() => navigation.navigate(Strings.qrcode, { token })}
           />
         </View>
-        
-        <ProcessingModal isVisible={false}/>
+
+        <ProcessingModal isVisible={false} />
         <Swiper
           style={styles.swiperContainer}
           activeDotColor={Colors.fadedButton}
@@ -288,8 +293,8 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-export function Home(){
-  
+export function Home() {
+
 }
 
 //export default HomeScreen
