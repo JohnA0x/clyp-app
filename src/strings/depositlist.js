@@ -35,6 +35,7 @@ export const depositCardList =[
 
   {
     id: 1,
+    cardImage: 'https://cdn-icons-png.flaticon.com/512/196/196578.png',
     cardName: 'ClypPay User',
     cardType: 'Visa',
     cardNumber: '4288 1402 5321 0099',

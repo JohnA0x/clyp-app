@@ -67,6 +67,17 @@ export const styles = StyleSheet.create({
 
   otherTextInputs: {
     height: 60,
+    margin: "5%",
+    marginTop: 10,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+  rowTextInputs: {
+    height: 60,
     width: '40%',
     margin: "5%",
     marginTop: 10,

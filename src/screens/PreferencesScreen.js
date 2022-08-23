@@ -181,10 +181,11 @@ export const ChangeAppearance = ({ navigation, route }) => {
       dispatch(switchTheme(lightTheme));
       alert("Mode is light");
     }
-   
   }, [mode]);
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+    >
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
@@ -355,6 +356,7 @@ export function PaymentMethod({ navigation, route }) {
 }
 
 export function AddCard({ navigation, route }) {
+  const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cvvNumber, setCVVNumber] = useState("");
   const [expiryNumber, setExpiryNumber] = useState("");
@@ -367,13 +369,22 @@ export function AddCard({ navigation, route }) {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.preferences)}
+          handlePress={() => navigation.goBack()}
         />
         <Text style={styles.preferencesHeaderText}>{Strings.addNewCard}</Text>
       </View>
 
       <TextInput
         style={styles.inputText}
+        placeholder="Card Name"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardName}
+        onChangeText={(value) => setCardName(value)}
+      />
+
+      <TextInput
+        style={styles.otherTextInputs}
         placeholder="Card Number"
         selectionColor={Colors.primary}
         maxLength={16}
@@ -383,7 +394,7 @@ export function AddCard({ navigation, route }) {
 
       <View style={styles.rowCardContainer}>
         <TextInput
-          style={styles.otherTextInputs}
+          style={styles.rowTextInputs}
           placeholder="Expiry Date"
           selectionColor={Colors.primary}
           maxLength={5}
@@ -392,7 +403,7 @@ export function AddCard({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={styles.rowTextInputs}
           placeholder="CVV"
           selectionColor={Colors.primary}
           maxLength={3}

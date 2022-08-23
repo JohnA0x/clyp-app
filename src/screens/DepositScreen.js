@@ -28,6 +28,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import { depositListArray, depositCardList } from "../strings/depositlist";
 import cryptoListArray from "../strings/cryptolist";
+import { AddCard } from "./PreferencesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +42,13 @@ export default function DepositScreen({ navigation, route }) {
 
   // This is the state that defines a card properties when clicked on
   const [cardOptions, setCardOptions] = useState([
-    { cardName: "", cardType: "", cardNumber: "", securityCode: "", expiryDate: ""},
+    {
+      cardName: "",
+      cardType: "",
+      cardNumber: "",
+      securityCode: "",
+      expiryDate: "",
+    },
   ]);
 
   const [cardNumber, setCardNumber] = useState("");
@@ -80,6 +87,12 @@ export default function DepositScreen({ navigation, route }) {
         component={DepositviaDebitCard}
         initialParams={route}
       />
+      <Stack.Screen
+        name={Strings.addNewCard}
+        component={AddCard}
+        initialParams={route}
+      />
+
       <Stack.Screen
         name={Strings.UseAnotherCard}
         component={UseAnotherCard}
@@ -240,10 +253,7 @@ export default function DepositScreen({ navigation, route }) {
             });
           }}
         >
-          <Image
-            style={styles.bankIcon}
-            source={require("../drawables/bitcoin.png")}
-          />
+          <Image style={styles.bankIcon} source={{ uri: item.cardImage }} />
           <Text style={styles.nameText}>{item.cardName}</Text>
           <Text style={styles.bankNameText}>{item.cardType}</Text>
           <Text style={styles.accountNameText}>{item.cardNumber}</Text>
@@ -271,7 +281,8 @@ export default function DepositScreen({ navigation, route }) {
           renderItem={cardList}
         />
         <View style={styles.otherOptionsView}>
-          <Text style={styles.addNewAccount}>Add New Card</Text>
+          <Text style={styles.addNewAccount}
+           onPress={() => navigation.navigate(Strings.addNewCard)}>Add New Card</Text>
           <Text
             style={styles.useAnotherAccount}
             onPress={() => navigation.navigate(Strings.UseAnotherCard)}
