@@ -24,6 +24,7 @@ export const depositListArray = [
 export const depositCardList =[
   {
     id: 0,
+    cardImage: 'https://cdn-icons-png.flaticon.com/512/196/196578.png',
     cardName: 'ClypPay User',
     cardType: 'MasterCard',
     cardNumber: '5399 8304 1723 6903',
