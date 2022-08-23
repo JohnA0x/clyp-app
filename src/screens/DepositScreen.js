@@ -292,7 +292,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate("editprofile")}
+            handlePress={() => navigation.navigate(Strings.depositviaDebit)}
           />
           <Text style={styles.headerText}>{Strings.UseAnotherCard}</Text>
         </View>
@@ -302,8 +302,6 @@ export default function DepositScreen({ navigation, route }) {
           placeholder="Card Number"
           selectionColor={Colors.primary}
           maxLength={16}
-          value={cardOptions.cardNumber}
-          onChangeText={(value) => setCardOptions({cardNumber: value})}
         />
 
         <TextInput
@@ -311,8 +309,6 @@ export default function DepositScreen({ navigation, route }) {
           placeholder="Expiry Date"
           selectionColor={Colors.primary}
           maxLength={5}
-          value={cardOptions.expiryDate}
-          onChangeText={(value) => setCardOptions({expiryDate: value})}
         />
 
         <TextInput
@@ -355,8 +351,6 @@ export default function DepositScreen({ navigation, route }) {
           selectionColor={Colors.primary}
           maxLength={16}
           keyboardType="numeric"
-          // value={bvn}
-          //onChangeText={(value) => setBVN(value)}
         />
 
         <TextInput
@@ -364,6 +358,7 @@ export default function DepositScreen({ navigation, route }) {
           placeholder="Transaction Pin"
           selectionColor={Colors.primary}
           maxLength={5}
+          keyboardType="numeric"
         />
 
         <RoundedButton
