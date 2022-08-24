@@ -246,7 +246,7 @@ export const styles = StyleSheet.create({
     color: Colors.white,
   },
 
-  // Deposit via Card
+  // Deposit via Card and Bank
   cardRowContainer: {
     padding: 5,
     flexDirection: "row",
@@ -254,6 +254,12 @@ export const styles = StyleSheet.create({
 
   cardFlatlist: {
     paddingVertical: 10,
+  },
+
+  cardCopyButton:{
+    position: "absolute",
+    right: 30,
+    top: 20,
   },
 
   cardButton: {

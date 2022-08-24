@@ -110,10 +110,12 @@ export const changeappearance = "Change Appearance";
 export const depositviaCrypto = "Deposit Via Crypto";
 export const depositviaP2P = "Deposit Via P2P";
 export const depositviaDebit = "Deposit via Debit Card";
+export const depositviaBank = "Deposit via Bank Transfer";
 
 export const paymentmethod = "Payment Method";
 export const addNewCard = "Add Card";
 export const UseAnotherCard = "Use Another Card";
+export const addBankAccount = "Add Bank Account"
 
 export const seeAll = "See All";
 

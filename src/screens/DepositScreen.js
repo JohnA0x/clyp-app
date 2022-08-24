@@ -24,9 +24,14 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Dropdown } from "react-native-element-dropdown";
+import { Ionicons } from "@expo/vector-icons";
 
 import { useState } from "react";
-import { depositListArray, depositCardList } from "../strings/depositlist";
+import {
+  depositListArray,
+  depositCardList,
+  bankAccountList,
+} from "../strings/depositlist";
 import cryptoListArray from "../strings/cryptolist";
 import { AddCard } from "./PreferencesScreen";
 
@@ -87,6 +92,19 @@ export default function DepositScreen({ navigation, route }) {
         component={DepositviaDebitCard}
         initialParams={route}
       />
+
+      <Stack.Screen
+        name={Strings.addBankAccount}
+        component={AddBankAccount}
+        initialParams={route}
+      />
+
+      <Stack.Screen
+        name={Strings.depositviaBank}
+        component={DepositViaBank}
+        initialParams={route}
+      />
+
       <Stack.Screen
         name={Strings.addNewCard}
         component={AddCard}
@@ -236,6 +254,110 @@ export default function DepositScreen({ navigation, route }) {
     );
   }
 
+  function DepositViaBank() {
+    const accountList = ({ item }) => {
+      return (
+        <View style={styles.cardRowContainer}>
+          <TouchableOpacity
+            style={styles.cardButton}
+            onPress={() => {
+              navigation.navigate("accountwithdraw");
+            }}
+          >
+            <Image style={styles.bankIcon} source={{ uri: item.bankIcon }} />
+            <Text style={styles.nameText}>{item.bankAccountName}</Text>
+            <Text style={styles.bankNameText}>{item.bank}</Text>
+            <Text style={styles.accountNameText}>{item.bankAccountNumber}</Text>
+            <Ionicons
+              name="copy"
+              size={20}
+              color={Colors.primary}
+              style={styles.cardCopyButton}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.goBack()}
+          />
+          <Text style={styles.headerText}>{Strings.depositviaBank}</Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={styles.cardFlatlist}
+          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+          data={bankAccountList}
+          renderItem={accountList}
+        />
+        <View style={styles.otherOptionsView}>
+          <Text
+            style={styles.addNewAccount}
+            onPress={() => navigation.navigate(Strings.addBankAccount)}
+          >
+            Add Bank Account
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  function AddBankAccount() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate(Strings.depositviaBank)}
+          />
+          <Text style={styles.headerText}>{Strings.addBankAccount}</Text>
+        </View>
+
+        <TextInput
+          style={styles.inputText}
+          placeholder="Name"
+          selectionColor={Colors.primary}
+          maxLength={16}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Account Number"
+          selectionColor={Colors.primary}
+          maxLength={5}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Bank Name"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          keyboardType="numeric"
+        />
+
+        <RoundedButton
+          text="Proceed"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => {
+            navigation.navigate("Complete Use Card");
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
   function DepositviaDebitCard() {
     //Withdrawal FlatList Design
     const cardList = ({ item }) => (
@@ -271,7 +393,7 @@ export default function DepositScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.fund}</Text>
+          <Text style={styles.headerText}>{Strings.depositviaDebit}</Text>
         </View>
 
         <FlatList
@@ -281,8 +403,12 @@ export default function DepositScreen({ navigation, route }) {
           renderItem={cardList}
         />
         <View style={styles.otherOptionsView}>
-          <Text style={styles.addNewAccount}
-           onPress={() => navigation.navigate(Strings.addNewCard)}>Add New Card</Text>
+          <Text
+            style={styles.addNewAccount}
+            onPress={() => navigation.navigate(Strings.addNewCard)}
+          >
+            Add New Card
+          </Text>
           <Text
             style={styles.useAnotherAccount}
             onPress={() => navigation.navigate(Strings.UseAnotherCard)}
