@@ -327,6 +327,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
 
+  optionHoldingsText: {
+    fontSize: 10,
+    fontFamily: "Poppins_600SemiBold",
+    color: Colors.textColor,
+  },
+
   backButton: {
     marginLeft: 10,
     position: "absolute",
@@ -364,5 +370,63 @@ export const styles = StyleSheet.create({
     backgroundColor: 30,
     borderRadius: 20,
     marginTop: "50%",
+  },
+
+  cryptoAbbreviationText:{
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 16,
+    color: Colors.textColor,
+    position: "absolute",
+    top: 20,
+    left: 10,
+  },
+
+  cryptoAmountText:{
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 16,
+    color: Colors.primary,
+    position: "absolute",
+    top: 20,
+    left: 55,
+    textAlign: "left",
+    width: 150,
+  },
+
+  usdAbbreviationText:{
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 12,
+    color: Colors.textColor,
+    position: "absolute",
+    top: 45,
+    left: 10,
+  },
+
+  usdAmountText:{
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 12,
+    color: Colors.textColor,
+    position: "absolute",
+    top: 45,
+    left: 55,
+    textAlign: "left",
+    width: 150,
+  },
+
+  priceChangeText:{
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 16,
+    color: Colors.textColor,
+    position: "absolute",
+    top: 20,
+    right: 20,
+  },
+
+  todayText:{
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 12,
+    color: Colors.textColor,
+    position: "absolute",
+    top: 45,
+    right: 20,
   },
 });

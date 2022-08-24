@@ -58,6 +58,9 @@ export default function HomeScreen({ navigation }) {
   const [coins, setCoins] = React.useState([]);
   const [cryptoName, setCryptoName] = React.useState("");
   const [cryptoIcon, setCryptoIcon] = React.useState("");
+  const [cryptoAmount, setCryptoAmount] = React.useState(0);
+  const [priceChange, setPriceChange] = React.useState();
+  const [usdAmount, setUsdAmount] = React.useState(0);
   const [walletOptions, setWalletOptions] = React.useState([
     { address: "", abb: "" },
   ]);
@@ -65,6 +68,8 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
+
+  const priceChangeColor = priceChange > 0 ? "#009E06" : "#C52020";
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
@@ -365,6 +370,23 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
+        <View>
+          <Text style={styles.cryptoAbbreviationText}>{walletOptions.abb}</Text>
+          <Text style={styles.cryptoAmountText} numberOfLines={1}>
+            {cryptoAmount}
+          </Text>
+          <Text style={styles.usdAbbreviationText}>USD</Text>
+          <Text style={styles.usdAmountText} numberOfLines={1}>
+            {cryptoAmount}
+          </Text>
+          <Text style={[styles.priceChangeText, {color: priceChangeColor}]} numberOfLines={1}>
+            {cryptoAmount}
+          </Text>
+          <Text style={[styles.todayText]} numberOfLines={1}>
+            {cryptoAmount}
+          </Text>
+        </View>
+
         <View style={styles.holdingsTransactionOptions}>
           <View style={styles.columnContainer}>
             <VectorButton
@@ -376,7 +398,7 @@ export default function HomeScreen({ navigation }) {
                 navigation.navigate(Strings.sendCrypto, { coins: coins })
               }
             />
-            <Text style={styles.optionText}>{Strings.send}</Text>
+            <Text style={styles.optionHoldingsText}>{Strings.send}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -391,7 +413,7 @@ export default function HomeScreen({ navigation }) {
                 })
               }
             />
-            <Text style={styles.optionText}>{Strings.receive}</Text>
+            <Text style={styles.optionHoldingsText}>{Strings.receive}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -404,7 +426,7 @@ export default function HomeScreen({ navigation }) {
                 navigation.navigate(Strings.buy, { coins: coins })
               }
             />
-            <Text style={styles.optionText}>{Strings.buy}</Text>
+            <Text style={styles.optionHoldingsText}>{Strings.buy}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -417,7 +439,7 @@ export default function HomeScreen({ navigation }) {
                 navigation.navigate(Strings.sell, { coins: coins })
               }
             />
-            <Text style={styles.optionText}>{Strings.sell}</Text>
+            <Text style={styles.optionHoldingsText}>{Strings.sell}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -430,7 +452,7 @@ export default function HomeScreen({ navigation }) {
                 navigation.navigate(Strings.swap, { coins: coins })
               }
             />
-            <Text style={styles.optionText}>{Strings.swap}</Text>
+            <Text style={styles.optionHoldingsText}>{Strings.swap}</Text>
           </View>
         </View>
       </SafeAreaView>
