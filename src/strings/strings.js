@@ -116,6 +116,7 @@ export const paymentmethod = "Payment Method";
 export const addNewCard = "Add Card";
 export const UseAnotherCard = "Use Another Card";
 export const addBankAccount = "Add Bank Account"
+export const UseAnotherBankAccount = "Use Another Bank Account"
 
 export const seeAll = "See All";
 

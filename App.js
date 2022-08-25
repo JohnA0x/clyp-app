@@ -33,6 +33,7 @@ import storage from "redux-persist/lib/storage";
 
 import { store, persistor } from "./src/redux/themeStore";
 import { PersistGate } from "redux-persist/integration/react";
+import HomeScreen from "./src/screens/HomeScreen";
 
 export default function App() {
   let [fontsLoaded, error] = useFonts({
@@ -43,16 +44,50 @@ export default function App() {
     Poppins_400Regular,
   });
 
+  const isFirstTime = async () => {
+    try {
+      const value = await AsyncStorage.getItem(Values.IS_FIRST_TIME);
+      if (value === "false") {
+        return (
+          <Provider store={store}>
+            <PersistGate
+              loading={<Text>Loading...</Text>}
+              persistor={persistor}
+            >
+              <HomeScreen />
+            </PersistGate>
+          </Provider>
+        );
+      } else {
+        return (
+          <Provider store={store}>
+            <PersistGate
+              loading={<Text>Loading...</Text>}
+              persistor={persistor}
+            >
+              <Onboarding />
+            </PersistGate>
+          </Provider>
+        );
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-        <Onboarding />
-      </PersistGate>
-    </Provider>
+    <PersistGate
+      loading={<Text>Loading...</Text>}
+      persistor={persistor}
+    >
+      <Onboarding />
+    </PersistGate>
+  </Provider>
   );
 }
 

@@ -180,4 +180,47 @@ export const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     color: Colors.white,
   },
+
+  // Use Another Card
+  inputText: {
+    height: 60,
+    margin: "5%",
+    marginTop: 40,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+  },
+
+  otherTextInputs: {
+    height: 60,
+    margin: "5%",
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+  },
+
+  roundedAddButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 40,
+    width: "85%",
+    height: 60,
+    marginTop: 40,
+    shadowOffset: { width: 0, height: 3 },
+    shadowColor: Colors.shadowColor,
+    shadowOpacity: 0.1,
+    elevation: 3,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: 'center'
+  },
+
+  roundedTextButton: {
+    color: Colors.white,
+    fontFamily: "Poppins_600SemiBold",
+  },
 });

@@ -28,10 +28,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import activityListArray from "../strings/activitylist";
 
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export default function ActivityScreen({navigation}) {
+export default function ActivityScreen({ navigation }) {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -47,9 +52,8 @@ export default function ActivityScreen({navigation}) {
 
   function TabNavigator() {
     return (
-    
-      <SafeAreaView style = {styles.container}>
-         <View style={styles.header}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
@@ -61,17 +65,17 @@ export default function ActivityScreen({navigation}) {
         </View>
 
         <Tab.Navigator
-        tabBarOptions={{
-          style: styles.tabBar,
-          labelStyle: { fontSize: 12 },
-          //   activeTintColor:Colors.primary,
-          // tabStyle: {backgroundColor: Colors.backgroundColor },
-          indicatorStyle: { backgroundColor: Colors.primary },
-        }}
-      >
-        <Tab.Screen name="History" component={History} />
-        <Tab.Screen name="Range" component={Range} />
-      </Tab.Navigator>
+          tabBarOptions={{
+            style: styles.tabBar,
+            labelStyle: { fontSize: 12 },
+            //   activeTintColor:Colors.primary,
+            // tabStyle: {backgroundColor: Colors.backgroundColor },
+            indicatorStyle: { backgroundColor: Colors.primary },
+          }}
+        >
+          <Tab.Screen name="History" component={History} />
+          <Tab.Screen name="Range" component={Range} />
+        </Tab.Navigator>
       </SafeAreaView>
     );
   }
@@ -122,6 +126,8 @@ export default function ActivityScreen({navigation}) {
           style={styles.fromInput}
           placeholder="Select Date"
           selectionColor={Colors.primary}
+          editable={false}
+          onPressIn={() => setOpen(true)}
         />
         <Text style={styles.toText}>TO:</Text>
         <TextInput
@@ -129,6 +135,8 @@ export default function ActivityScreen({navigation}) {
           placeholder="Select Date"
           selectionColor={Colors.primary}
         />
+
+        <RNDateTimePicker display="calendar" value={new Date()} />
 
         <RoundedButton
           style={styles.searchButton}

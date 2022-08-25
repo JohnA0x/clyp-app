@@ -48,6 +48,40 @@ export const ProcessingModal = ({
   );
 };
 
+export const SuccessModal = ({
+  isVisible,
+  handlePress,
+  style,
+  textStyle,
+}) => {
+
+  const animation = useRef(null);
+  useEffect(() => {
+    // You can control the ref programmatically, rather than using autoPlay
+    // animation.current?.play();
+  }, []);
+
+
+  return (
+    <ReactNativeModal isVisible={isVisible}>
+      <View style={styles.view}>
+      <LottieView
+        autoPlay loop
+        ref={animation}
+        style={{
+          width: 80,
+          height: 150,
+        }}
+        // Find more Lottie files at https://lottiefiles.com/featured
+        source={require('../lottie/check.json')}
+      />
+        <Text style={styles.title}>Processing</Text>
+        <Text style={styles.subtitle}>Please hold on a moment...</Text>
+      </View>
+    </ReactNativeModal>
+  );
+};
+
 export const styles = StyleSheet.create({
   view: {
     width: '80%',
