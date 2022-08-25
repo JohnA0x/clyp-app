@@ -43,6 +43,8 @@ import axios from '../components/axios'
 import { CustomAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ProcessingModal } from "../components/modal";
+import { getData } from "../services/storage";
+import * as Values from '../constants/values'
 
 const Stack = createNativeStackNavigator();
 
@@ -56,8 +58,9 @@ export default function Signup() {
     Poppins_400Regular,
   });
 
+  const value = AsyncStorage.getItem(Values.theme)
   // const [text, setText] = React.useState("");
-
+  getData(Values.theme)
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -91,6 +94,7 @@ function NameSignupScreen({ route }) {
 
   const [first_name, setFirstName] = React.useState("");
   const [last_name, setLastName] = React.useState("");
+  const [isVisible, setIsVisible] = React.useState(false)
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
@@ -327,7 +331,7 @@ function NameSignupScreen({ route }) {
           </Text>
           <Text
             style={styles.login}
-            onPress={() => navigation.navigate("MenuNavigation")}
+            onPress={() => navigation.navigate("Login")}
           >
             {Strings.login}
           </Text>

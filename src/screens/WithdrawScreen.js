@@ -155,7 +155,9 @@ export default function WithdrawScreen({ route }) {
     useEffect(() => {
       axiosFiat.post('/fiat-gateway/get-bank-accounts', { user_id: route.params.user.id })
       .then(banks => {
+        console.log(data.data)
         if (data.data.message === "success") {
+        
           setBanks(data.data.banks)
         }
         else {

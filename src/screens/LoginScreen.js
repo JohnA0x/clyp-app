@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Strings from "../strings/strings";
-import { styles } from "../styles/login";
+import { styles, loginButton } from "../styles/login";
 
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
@@ -52,6 +52,15 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { switchTheme } from "../redux/themeAction";
 import { lightTheme, darkTheme } from "../constants/theme";
+import { getData, storeData } from "../services/storage";
+import * as Values from "../constants/values";
+
+import themeController, {
+  primary,
+  setLayoutColor,
+} from "../services/themeController";
+
+import { styled, ThemeProvider } from "styled-components/native";
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +96,9 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false)
 
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     async function fetchStorage() {
       let email = await AsyncStorage.getItem("email").then((value) => value);
@@ -97,6 +109,7 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
     clientId: "390391096288445",
     responseType: ResponseType.Code,
   });
@@ -377,27 +390,24 @@ function LoginScreen({ navigation }) {
     return
   }
 
-  const theme = useSelector((state) => state.themeReducer.theme);
-  const dispatch = useDispatch();
-
   return (
-    <PaperProvider>
-      <SafeAreaView style={styles.container}>
-        {theme.mode === "light" ? (
+    <SafeAreaView style={styles.container} theme={theme}>
+       {/*  {theme.mode === "light" ? (
           <Button
-            title="Switch Dark theme"
             style={styles.themeButton}
+            title="Switch to Dark Theme"
             onPress={() => dispatch(switchTheme(darkTheme))}
           />
         ) : (
           <Button
-            title="Switch Light theme"
             style={styles.themeButton}
+            title="Switch to Light Theme"
             onPress={() => dispatch(switchTheme(lightTheme))}
           />
-        )}
-
-        <Text style={styles.texts}>{Strings.loginAccount}</Text>
+        )} */}
+        <Text style={[styles.texts, { color: theme.text }]}>
+          {Strings.loginAccount}
+        </Text>
         <TextInput
           value={text}
           onChangeText={(text) => setText(text.toLowerCase())}
@@ -487,6 +497,5 @@ function LoginScreen({ navigation }) {
         </View>
         <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
-    </PaperProvider>
   );
 }

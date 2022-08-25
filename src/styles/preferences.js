@@ -1,6 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Colors from "../constants/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
+import { getData, storeData } from "../services/storage";
+
 
 export const styles = StyleSheet.create({
   container: {
@@ -61,6 +66,17 @@ export const styles = StyleSheet.create({
   },
 
   otherTextInputs: {
+    height: 60,
+    margin: "5%",
+    marginTop: 10,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+  rowTextInputs: {
     height: 60,
     width: '40%',
     margin: "5%",

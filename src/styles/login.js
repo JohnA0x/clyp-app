@@ -9,6 +9,7 @@ import {
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
 import * as Colors from "../constants/colors";
+import styled from 'styled-components/native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -43,7 +44,7 @@ export const styles = StyleSheet.create({
     width: 100,
     height:100,
     position: "absolute",
-    top: 20,
+    top: 120,
   },
 
   textButton: {
@@ -108,3 +109,7 @@ export const styles = StyleSheet.create({
     color: Colors.primary,
   },
 });
+
+export const loginButton = styled.TouchableOpacity`
+background-color: ${(props) => props.theme.primary}
+`

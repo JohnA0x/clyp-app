@@ -18,7 +18,7 @@ import {
   FileImageButton,
   ImageButton,
   VectorButton,
-  RoundedButton
+  RoundedButton,
 } from "../components/button";
 import { preferencesListArray } from "../strings/preferenceslist";
 import { listSeparator } from "../components/listseparator";
@@ -33,6 +33,10 @@ import debitCardListArray from "../strings/debitcardslist";
 
 import axiosFiat from "../components/axios-fait";
 import { ProcessingModal } from "../components/modal";
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
+import { getData, storeData } from "../services/storage";
 
 const Stack = createNativeStackNavigator();
 
@@ -129,6 +133,9 @@ const Preferences = ({ navigation, route }) => {
 };
 
 export const ChangeAppearance = ({ navigation, route }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const [isEnabled, setIsEnabled] = useState(
     route.params.params.preferences.mode.indexOf("ight") != -1 ? true : false
   );
@@ -171,8 +178,21 @@ export const ChangeAppearance = ({ navigation, route }) => {
   //   console.log(route)
   // }, [])
 
+  useEffect(() => {
+    if (mode == "Dark") {
+      dispatch(switchTheme(darkTheme));
+      alert("Mode is dark");
+    }
+
+    if (mode == "Light") {
+      dispatch(switchTheme(lightTheme));
+      alert("Mode is light");
+    }
+  }, [mode]);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+    >
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
@@ -445,6 +465,15 @@ export function AddCard({ navigation, route }) {
 
       <TextInput
         style={styles.inputText}
+        placeholder="Card Name"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardName}
+        onChangeText={(value) => setCardName(value)}
+      />
+
+      <TextInput
+        style={styles.otherTextInputs}
         placeholder="Card Number"
         selectionColor={Colors.primary}
         maxLength={16}
@@ -454,7 +483,7 @@ export function AddCard({ navigation, route }) {
 
       <View style={styles.rowCardContainer}>
         <TextInput
-          style={styles.otherTextInputs}
+          style={styles.rowTextInputs}
           placeholder="Expiry Date"
           selectionColor={Colors.primary}
           maxLength={5}
@@ -463,7 +492,7 @@ export function AddCard({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={styles.rowTextInputs}
           placeholder="CVV"
           selectionColor={Colors.primary}
           maxLength={3}
