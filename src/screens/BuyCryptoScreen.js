@@ -215,6 +215,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
     const [amount, setAmount] = useState('')
     const [isVisible, setIsVisible] = useState(false)
     const [cards, setCards] = useState([])
+    const [checkmarkColor, setCheckmarkColor] = useState();
     
     const buy = () => {
       setIsVisible(true)
@@ -225,15 +226,14 @@ export default function BuyCryptoScreen({ navigation, route }) {
       }
     }
 
-    const [checkmarkColor, setCheckmarkColor] = useState(
-      debitCardListArray[1].id
-    );
-
     useEffect(() => {
-      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.params.id })
+
+      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.user.id })
         .then(data => {
           if (data.data.message === "success") {
             setCards(data.data.cards)
+            setCheckmarkColor(data.data.cards[0].id)
+            console.log(data.data.cards[0].id)
           }
           else {
             // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
@@ -250,9 +250,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
           <TouchableOpacity
             style={[
               styles.cardsContainer,
-              { backgroundColor: item.cardColour },
+              { backgroundColor: Colors.black },
             ]}
-            onPress={(item) => {
+            onPress={() => {
               setCheckmarkColor(item.id);
             }}
           >

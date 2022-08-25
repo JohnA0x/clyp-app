@@ -7,12 +7,12 @@ export const sellOptionsListArray = [
     subtitle: Strings.sellNowSubtitle,
     icon: "flash",
   },
-  {
-    id: 2,
-    title: Strings.sellwithP2P,
-    subtitle: Strings.sellwithP2PSubtitle,
-    icon: "people",
-  },
+  // {
+  //   id: 2,
+  //   title: Strings.sellwithP2P,
+  //   subtitle: Strings.sellwithP2PSubtitle,
+  //   icon: "people",
+  // },
 
 ];
 

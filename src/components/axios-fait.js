@@ -35,8 +35,8 @@ instance.interceptors.request.use(
         async (config) => {
         //   if (!config.headers.Authorization) {
             const token = await AsyncStorage.getItem("token").then(value => value)
-            console.log("ttt: " + token)
-            console.log(config)
+            // console.log("ttt: " + token)
+            // console.log(config)
             // if (token) {
               config.headers.Authorization = `Bearer ${token}`;
             // }
