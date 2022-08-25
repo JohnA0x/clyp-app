@@ -39,6 +39,10 @@ export default function WithdrawScreen({ route }) {
       <Stack.Screen name="withdrawoptions" component={withdrawOptions} />
 
       <Stack.Screen name="accountwithdraw" component={accountWithdraw} />
+
+      <Stack.Screen name={Strings.addBankAccount} component={AddBankAccount} />
+
+      <Stack.Screen name={Strings.UseAnotherBankAccount} component={UseAnotherBankAccount} />
     </Stack.Navigator>
   );
 
@@ -129,11 +133,113 @@ export default function WithdrawScreen({ route }) {
         />
 
         <View style={styles.otherOptionsView}>
-          <Text style={styles.addNewAccount}>Add New Account</Text>
-          <Text style={styles.useAnotherAccount}>
+          <Text
+            style={styles.addNewAccount}
+            onPress={() => navigation.navigate(Strings.addBankAccount)}
+          >
+            Add New Account
+          </Text>
+          <Text style={styles.useAnotherAccount}
+          onPress={() => navigation.navigate(Strings.UseAnotherBankAccount)}>
             Use Another Account Instead
           </Text>
         </View>
+      </SafeAreaView>
+    );
+  }
+
+  function AddBankAccount({navigation}) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("withdrawoptions")}
+          />
+          <Text style={styles.headerText}>{Strings.addBankAccount}</Text>
+        </View>
+
+        <TextInput
+          style={styles.inputText}
+          placeholder="Name"
+          selectionColor={Colors.primary}
+          maxLength={16}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Account Number"
+          selectionColor={Colors.primary}
+          maxLength={5}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Bank Name"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          keyboardType="numeric"
+        />
+
+        <RoundedButton
+          text="Proceed"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedAddButton}
+          handlePress={() => {
+            navigation.navigate("Complete Use Card");
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  function UseAnotherBankAccount({navigation}) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("withdrawoptions")}
+          />
+          <Text style={styles.headerText}>{Strings.UseAnotherBankAccount}</Text>
+        </View>
+
+        <TextInput
+          style={styles.inputText}
+          placeholder="Name"
+          selectionColor={Colors.primary}
+          maxLength={16}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Account Number"
+          selectionColor={Colors.primary}
+          maxLength={5}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Bank Name"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          keyboardType="numeric"
+        />
+
+        <RoundedButton
+          text="Proceed"
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedAddButton}
+          handlePress={() => {
+            navigation.navigate("Complete Use Card");
+          }}
+        />
       </SafeAreaView>
     );
   }

@@ -37,6 +37,10 @@ import { ProcessingModal } from "../components/modal";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { storeData } from "../services/storage";
+import { IS_FIRST_TIME } from "../constants/values";
+
+
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -70,6 +74,8 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
 
   const priceChangeColor = priceChange > 0 ? "#009E06" : "#C52020";
+
+  storeData(IS_FIRST_TIME, "false")
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>

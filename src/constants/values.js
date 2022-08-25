@@ -5,3 +5,4 @@ export const clyphubsvgwidth = Dimensions.get('window').width /3
 
 
 export const theme = '@theme'
+export const IS_FIRST_TIME = '@isFirstTime'
