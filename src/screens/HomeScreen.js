@@ -469,4 +469,3 @@ export default function HomeScreen({ navigation }) {
   }
 }
 
-//export default HomeScreen
