@@ -21,6 +21,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DropDownPicker from "react-native-dropdown-picker";
+import { ProcessingModal } from "../components/modal";
 import { CustomModal } from "../components/modal";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/TransactionSuccessScreen";
@@ -29,7 +30,7 @@ import SwapDetails from "./BreakdownScreens/SwapDetails/SwapDetails";
 import SwapConfirmation from "./BreakdownScreens/SwapDetails/SwapConfirmation";
 import {RechargeConfirmation} from "./BreakdownScreens/PaymentDetails/BillConfirmation";
 
-export default function SendCryptoScreen({ navigation }) {
+export default function SendCryptoScreen({ navigation, route }) {
   // States
   const [query, setQuery] = useState("");
   const [cryptoName, setCryptoName] = useState("");
@@ -108,9 +109,38 @@ export default function SendCryptoScreen({ navigation }) {
   function SendOptions() {
     const navigation = useNavigation();
     // function specific states
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" },
+    ]);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(false)
+
+    const [amount, setAmount] = useState('')
+    const [rAddress, setRAddress] = useState('')
+    const [network, setNetwork] = useState('')
+    const [walletName, setWalletName] = useState('')
+
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+    };
     //const [open, setOpen] = useState(false);
     // const [value, setValue] = useState(null);
     //const [isModalVisible, setModalVisible] = useState(false);
+
+    const send = () => {
+      setIsVisible(true)
+
+      let data = {
+        amount,
+        rAddress,
+        network,
+        walletName,
+        user_id: route.params.user.id
+      }
+    }
 
     return (
       <SafeAreaView style={styles.container}>
@@ -140,23 +170,27 @@ export default function SendCryptoScreen({ navigation }) {
               style={styles.walletAddressInput}
               placeholder={Strings.walletAddress}
               value={cryptoAddress}
-              onChangeText={(value) => setCryptoAddress(value)}
+              // onChangeText={(value) => setCryptoAddress(value)}
               selectionColor={Colors.primary}
+              onChangeText={(text) => setRAddress(text)}
             />
             <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.walletName}
               selectionColor={Colors.primary}
+              onChangeText={(text) => setWalletName()}
             />
             <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.selectNetwork}
               selectionColor={Colors.primary}
+              onChangeText={(text) => setNetwork(text)}
             />
             <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.enterAmount}
               selectionColor={Colors.primary}
+              onChangeText={(text) => setAmount(text)}
               keyboardType="numeric"
             />
 
@@ -178,6 +212,8 @@ export default function SendCryptoScreen({ navigation }) {
             setValue={setValue}
             setItems={setItems}
           /> */}
+          <ProcessingModal isVisible={isVisible} />
+
       </SafeAreaView>
     );
   }

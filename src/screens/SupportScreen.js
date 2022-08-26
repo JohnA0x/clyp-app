@@ -15,7 +15,7 @@ export default function SupportScreen({navigation, route}) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.Profile)}
           />
           <Text style={styles.headerText}>{Strings.help}</Text>
         </View>

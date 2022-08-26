@@ -17,6 +17,7 @@ import editprofileListArray from "../strings/editprofilelist";
 import * as Strings from "../strings/strings";
 import * as ImagePicker from "expo-image-picker";
 import { CustomAlert } from "../components/alert";
+import { ProcessingModal } from "../components/modal";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,64 +26,6 @@ export default function EditProfileScreen({ navigation, route }) {
 
   const [image, setImage] = useState(route.params.user.picture ? route.params.user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
   );
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-
-      let formdata = new FormData()
-
-      formdata.append("file", {
-        uri: result.uri,
-        name: `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`,
-        type: `${result.type}/${result.uri.slice(result.uri.lastIndexOf('.') - 1)}`,
-        height: result.height,
-        width: result.width
-      })
-
-      formdata.append("filename", `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`)
-
-      formdata.append("user_id", route.params.user.id)
-
-      axios.post('/user-gateway/update-user', formdata, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        }
-      })
-        .then(user_data => {
-          if (user_data.data.message == "success") {
-            setImage(result.uri);
-            route.params.user.picture = result.uri
-            navigation.navigate("editprofile")
-          }
-          else {
-            CustomAlert({
-              title: "Update failed",
-              subtitle: "Please try again...",
-              handlePress: () => { },
-            });
-          }
-        })
-        .catch(err => {
-          CustomAlert({
-            title: "Error",
-            subtitle: err,
-            handlePress: () => { },
-          });
-        })
-
-    }
-  };
 
   return (
     <Stack.Navigator
@@ -99,6 +42,68 @@ export default function EditProfileScreen({ navigation, route }) {
   );
 
   function EditProfile() {
+    const [isVisible, setIsVisisble] = useState(false)
+
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        setIsVisisble(true)
+        let formdata = new FormData()
+  
+        formdata.append("file", {
+          uri: result.uri,
+          name: `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`,
+          type: `${result.type}/${result.uri.slice(result.uri.lastIndexOf('.') - 1)}`,
+          height: result.height,
+          width: result.width
+        })
+  
+        formdata.append("filename", `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`)
+  
+        formdata.append("user_id", route.params.user.id)
+  
+        axios.post('/user-gateway/update-user', formdata, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          }
+        })
+          .then(user_data => {
+            setIsVisisble(false)
+            if (user_data.data.message == "success") {
+              setImage(result.uri);
+              route.params.user.picture = result.uri
+              navigation.navigate("editprofile")
+            }
+            else {
+              CustomAlert({
+                title: "Update failed",
+                subtitle: "Please try again...",
+                handlePress: () => { },
+              });
+            }
+          })
+          .catch(err => {
+            setIsVisisble(false)
+            CustomAlert({
+              title: "Error",
+              subtitle: err,
+              handlePress: () => { },
+            });
+          })
+  
+      }
+    };
+
     const editOptions = ({ item }) => {
       return (
         <View style={styles.rowContainer}>
@@ -127,7 +132,7 @@ export default function EditProfileScreen({ navigation, route }) {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.home, {
+          handlePress={() => navigation.navigate(Strings.Profile, {
             id: route.params.id,
             preferences: route.params.preferences,
             firstName: route.params.firstName,
@@ -150,6 +155,7 @@ export default function EditProfileScreen({ navigation, route }) {
           data={editprofileListArray}
           renderItem={editOptions}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
@@ -158,9 +164,10 @@ export default function EditProfileScreen({ navigation, route }) {
     const [first_name, setFName] = useState(route.params.user.first_name ? route.params.user.first_name : "");
     const [last_name, setLName] = useState(route.params.user.last_name ? route.params.user.last_name : "");
     const [middle_name, setMName] = useState(route.params.user.middle_name ? route.params.user.middle_name : "");
+    const [isVisible, setIsVisible] = useState(false)
 
     const submit = () => {
-
+      setIsVisible(true)
       let data = {
         first_name,
         last_name,
@@ -169,6 +176,7 @@ export default function EditProfileScreen({ navigation, route }) {
       }
       axios.post('/user-gateway/update-user', data)
         .then(user_data => {
+          setIsVisible(false)
           if (user_data.data.message == "success") {
             route.params.user.first_name = data.first_name
             route.params.user.last_name = data.last_name
@@ -183,6 +191,7 @@ export default function EditProfileScreen({ navigation, route }) {
           }
         })
         .catch(err => {
+          setIsVisible(false)
           CustomAlert({
             title: "Error",
             subtitle: err,
@@ -235,6 +244,7 @@ export default function EditProfileScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submit()}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
@@ -243,9 +253,10 @@ export default function EditProfileScreen({ navigation, route }) {
     const [state, setState] = useState(route.params.user.state ? route.params.user.state : "");
     const [city, setCity] = useState(route.params.user.city ? route.params.user.city : "");
     const [house, setHouse] = useState(route.params.user.address ? route.params.user.address : "");
+    const [isVisible, setIsVisible] = useState(false)
 
     const submit = () => {
-
+      setIsVisible(true)
       let data = {
         state,
         city,
@@ -254,6 +265,7 @@ export default function EditProfileScreen({ navigation, route }) {
       }
       axios.post('/user-gateway/update-user', data)
         .then(user_data => {
+          setIsVisible(false)
           if (user_data.data.message == "success") {
 
             route.params.user.state = data.state
@@ -271,6 +283,7 @@ export default function EditProfileScreen({ navigation, route }) {
           }
         })
         .catch(err => {
+          setIsVisible(false)
           CustomAlert({
             title: "Error",
             subtitle: err,
@@ -324,6 +337,7 @@ export default function EditProfileScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submit()}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
@@ -332,9 +346,10 @@ export default function EditProfileScreen({ navigation, route }) {
 
     const [phone, setPhone] = useState(route.params.user.email ? route.params.user.email : "");
     const [email, setEmail] = useState(route.params.user.phone ? route.params.user.phone : "");
+    const [isVisible, setIsVisible] = useState(false)
 
     const submit = () => {
-
+      setIsVisible(true)
       let data = {
         phone,
         email,
@@ -342,6 +357,7 @@ export default function EditProfileScreen({ navigation, route }) {
       }
       axios.post('/user-gateway/update-user', data)
         .then(user_data => {
+          setIsVisible(false)
           if (user_data.data.message == "success") {
 
             route.params.user.email = data.email
@@ -350,6 +366,7 @@ export default function EditProfileScreen({ navigation, route }) {
             navigation.navigate("editprofile")
           }
           else {
+            setIsVisible(false)
             CustomAlert({
               title: "Update failed",
               subtitle: "Please try again...",
@@ -403,6 +420,8 @@ export default function EditProfileScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submit()}
         />
+
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
@@ -411,9 +430,10 @@ export default function EditProfileScreen({ navigation, route }) {
 
     const [bvn, setBVN] = useState(route.params.user.bvn ? route.params.user.bvn : "");
     const [nin, setNIN] = useState(route.params.user.nin ? route.params.user.nin : "");
+    const [isVisible, setIsVisible] = useState(false)
 
     const submit = () => {
-
+      setIsVisible(true)
       let data = {
         bvn,
         nin,
@@ -422,6 +442,7 @@ export default function EditProfileScreen({ navigation, route }) {
 
       axios.post('/user-gateway/update-user', data)
         .then(user_data => {
+          setIsVisible(false)
           if (user_data.data.message == "success") {
 
             route.params.user.bvn = data.bvn
@@ -438,6 +459,7 @@ export default function EditProfileScreen({ navigation, route }) {
           }
         })
         .catch(err => {
+          setIsVisible(false)
           CustomAlert({
             title: "Error",
             subtitle: err,
@@ -483,6 +505,8 @@ export default function EditProfileScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submit()}
         />
+        <ProcessingModal isVisible={isVisible} />
+
       </SafeAreaView>
     );
   }

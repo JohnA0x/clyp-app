@@ -31,6 +31,8 @@ import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
 import debitCardListArray from "../strings/debitcardslist";
 
+import axiosFiat from "../components/axios-fait";
+import { ProcessingModal } from "../components/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { switchTheme } from "../redux/themeAction";
 import { lightTheme, darkTheme } from "../constants/theme";
@@ -71,6 +73,11 @@ export default function PreferencesScreen({ navigation, route }) {
         name={Strings.addNewCard}
         initialParams={route}
         component={AddCard}
+      />
+      <Stack.Screen
+        name={"update-card"}
+        initialParams={route}
+        component={UpdateCard}
       />
     </Stack.Navigator>
   );
@@ -154,7 +161,7 @@ export const ChangeAppearance = ({ navigation, route }) => {
           CustomAlert({
             title: "Error",
             subtitle: "Error updating mode, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
         }
       })
@@ -162,7 +169,7 @@ export const ChangeAppearance = ({ navigation, route }) => {
         CustomAlert({
           title: "Error",
           subtitle: "Error updating mode, please try again...",
-          handlePress: () => {},
+          handlePress: () => { },
         });
         console.log({ err });
       });
@@ -252,7 +259,7 @@ export const HideBalance = ({ navigation, route }) => {
           CustomAlert({
             title: "Error",
             subtitle: "Error updating private mode, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
         }
       })
@@ -260,7 +267,7 @@ export const HideBalance = ({ navigation, route }) => {
         CustomAlert({
           title: "Error",
           subtitle: "Error updating mode, please try again...",
-          handlePress: () => {},
+          handlePress: () => { },
         });
         console.log({ err });
       });
@@ -303,12 +310,15 @@ export const HideBalance = ({ navigation, route }) => {
 };
 
 export function PaymentMethod({ navigation, route }) {
-  const paymentMethods = ({ navigation, item, route }) => {
+  const [cards, setCards] = useState([])
+  const paymentMethods = ({ item, route }) => {
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.push(item.name)}
+          onPress={() => navigation.navigate("update-card", {
+            card: item
+          })}
         >
           <VectorButton
             name={item.cardIcon}
@@ -317,13 +327,30 @@ export function PaymentMethod({ navigation, route }) {
             style={styles.preferencesimage}
           />
           <View style={{ flexDirection: "column" }}>
-            <Text style={styles.preferencestext}>{item.cardType}</Text>
-            <Text style={styles.preferencestext}>{item.cardNumber}</Text>
+            <Text style={styles.preferencestext}>{item.card_type}</Text>
+            <Text style={styles.preferencestext}>{item.card_number}</Text>
           </View>
         </TouchableOpacity>
       </View>
     );
   };
+
+  useEffect(() => {
+    axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.params.id })
+      .then(data => {
+        if (data.data.message === "success") {
+          setCards(data.data.cards)
+        }
+        else {
+          CustomAlert({ title: "Failed", subtitle: "Failed to get cards...", handlePress: () => { } })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        CustomAlert({ title: "Error", subtitle: "Error fetching cards...", handlePress: () => { } })
+      })
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.preferencesHeader}>
@@ -332,7 +359,13 @@ export function PaymentMethod({ navigation, route }) {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.preferences)}
+          handlePress={() => navigation.navigate(Strings.preferences, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })}
         />
         <Text style={styles.preferencesHeaderText}>
           {Strings.paymentmethod}
@@ -342,7 +375,7 @@ export function PaymentMethod({ navigation, route }) {
       <FlatList
         contentContainerStyle={styles.flatlist}
         //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-        data={debitCardListArray}
+        data={cards}
         renderItem={paymentMethods}
       />
       <Text
@@ -356,10 +389,60 @@ export function PaymentMethod({ navigation, route }) {
 }
 
 export function AddCard({ navigation, route }) {
-  const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cvvNumber, setCVVNumber] = useState("");
   const [expiryNumber, setExpiryNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardType, setCardType] = useState("");
+  const [cardPin, setCardPin] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const submit = () => {
+    setLoading(true)
+
+    let data = {
+      card_number: cardNumber,
+      cvv: cvvNumber,
+      card_expiry: expiryNumber,
+      card_type: cardType,
+      card_name: cardName,
+      card_pin: cardPin,
+      user_id: route.params.params.id
+    }
+    
+    if(data.card_number === "" || data.cvv === "" || data.card_expiry === ""){
+      setLoading(false)
+      return false
+    }
+    axiosFiat.post('/fiat-gateway/save-card', data)
+      .then(data => {
+        if (data.data.message === "success") {
+          setLoading(false)
+          navigation.navigate(Strings.paymentmethod, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })
+        } else {
+          setLoading(false)
+          CustomAlert({
+            title: "Failed",
+            subtitle: "Problem adding card.",
+            handlePress: () => { },
+          });
+        }
+      })
+      .catch(err => {
+        setLoading(false)
+        CustomAlert({
+          title: "Failed",
+          subtitle: "Problem adding card.",
+          handlePress: () => { },
+        });
+      })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -369,7 +452,13 @@ export function AddCard({ navigation, route }) {
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.goBack()}
+          handlePress={() => navigation.goBack({
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })}
         />
         <Text style={styles.preferencesHeaderText}>{Strings.addNewCard}</Text>
       </View>
@@ -412,8 +501,185 @@ export function AddCard({ navigation, route }) {
         />
       </View>
 
+      {/* <TextInput
+        style={styles.inputText}
+        placeholder="Card Name"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardName}
+        onChangeText={(value) => setCardName(value)}
+      />
+
+      <View style={styles.rowCardContainer}>
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={cardPin}
+          onChangeText={(value) => setCardPin(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="CVV"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          value={cvvNumber}
+          onChangeText={(value) => setCVVNumber(value)}
+        />
+      </View> */}
+
       <RoundedButton
         text="Add Card"
+        textStyle={styles.roundedTextButton}
+        style={styles.roundedButton}
+        handlePress={() => submit()}
+      />
+
+      <ProcessingModal isVisible={loading} />
+    </SafeAreaView>
+  );
+}
+
+export function UpdateCard({ navigation, route }) {
+  const [cardNumber, setCardNumber] = useState();
+  const [cvvNumber, setCVVNumber] = useState("");
+  const [expiryNumber, setExpiryNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardType, setCardType] = useState("");
+  const [cardPin, setCardPin] = useState("");
+
+  useEffect(() => {
+    setCardNumber(route.params.card.card_number)
+    setExpiryNumber(route.params.card.card_expiry)
+    setCVVNumber(route.params.card.cvv)
+  }, {})
+
+  const submit = () => {
+    let data = {
+      card_number: cardNumber,
+      cvv: cvvNumber,
+      card_expiry: expiryNumber,
+      card_type: cardType,
+      card_name: cardName,
+      card_pin: cardPin,
+      user_id: route.params.params.id
+    }
+
+    if(data.card_number === "" || data.cvv === "" || data.card_expiry === ""){
+      setLoading(false)
+      return false
+    }
+    axiosFiat.post('/fiat-gateway/update-card', data)
+      .then(data => {
+        if (data.data.message === "success") {
+          setLoading(false)
+          navigation.navigate(Strings.paymentmethod, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })
+        } else {
+          setLoading(false)
+          CustomAlert({
+            title: "Failed",
+            subtitle: "Problem adding card.",
+            handlePress: () => { },
+          });
+        }
+      })
+      .catch(err => {
+        setLoading(false)
+        CustomAlert({
+          title: "Failed",
+          subtitle: "Problem adding card.",
+          handlePress: () => { },
+        });
+      })
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.preferencesHeader}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.paymentmethod, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })}
+        />
+        <Text style={styles.preferencesHeaderText}>Update Card</Text>
+      </View>
+
+      <TextInput
+        style={styles.inputText}
+        placeholder="Card Number"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardNumber}
+        onChangeText={(value) => setCardNumber(value)}
+      />
+
+      <View style={styles.rowCardContainer}>
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={expiryNumber}
+          onChangeText={(value) => setExpiryNumber(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="CVV"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          value={cvvNumber}
+          onChangeText={(value) => setCVVNumber(value)}
+        />
+      </View>
+
+      {/* <TextInput
+        style={styles.inputText}
+        placeholder="Card Name"
+        selectionColor={Colors.primary}
+        maxLength={16}
+        value={cardName}
+        onChangeText={(value) => setCardName(value)}
+      />
+
+      <View style={styles.rowCardContainer}>
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="Expiry Date"
+          selectionColor={Colors.primary}
+          maxLength={5}
+          value={cardPin}
+          onChangeText={(value) => setCardPin(value)}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          placeholder="CVV"
+          selectionColor={Colors.primary}
+          maxLength={3}
+          value={cvvNumber}
+          onChangeText={(value) => setCVVNumber(value)}
+        />
+      </View> */}
+
+      <RoundedButton
+        text="Update Card"
         textStyle={styles.roundedTextButton}
         style={styles.roundedButton}
         handlePress={() => submit()}

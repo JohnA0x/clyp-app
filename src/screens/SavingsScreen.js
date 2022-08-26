@@ -37,7 +37,7 @@ export default function SavingsScreen({ navigation }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.clyphub)}
           />
           <Text style={styles.headerText}>{Strings.savings}</Text>
         </View>

@@ -1,3 +1,4 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -52,7 +53,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-           onPress = {() => navigation.navigate(Strings.bill)}>
+           onPress = {() => navigation.navigate(Strings.bill, { user })}>
             <BILLSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -69,7 +70,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-          onPress = {() => navigation.navigate(Strings.recharge)}>
+          onPress = {() => navigation.navigate(Strings.recharge, { user })}>
             <RECHARGESVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -78,7 +79,7 @@ export default function ClypHub({navigation}) {
         </View>
 
         <View style={styles.rowContainer}>
-          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings)}>
+          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings, { user })}>
             <SAVINGSSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}

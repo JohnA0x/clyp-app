@@ -50,36 +50,36 @@ export default function ActivityScreen({ navigation }) {
       </Stack.Navigator>
     </NavigationContainer>
   );
+}
 
-  function TabNavigator() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <VectorButton
-            name="chevron-back"
-            size={24}
-            color={Colors.textColor}
-            style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
-          />
-          <Text style={styles.headerText}>{Strings.activity}</Text>
-        </View>
+export function TabNavigator({navigation}) {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.Profile)}
+        />
+        <Text style={styles.headerText}>{Strings.activity}</Text>
+      </View>
 
-        <Tab.Navigator
-          tabBarOptions={{
-            style: styles.tabBar,
-            labelStyle: { fontSize: 12 },
-            //   activeTintColor:Colors.primary,
-            // tabStyle: {backgroundColor: Colors.backgroundColor },
-            indicatorStyle: { backgroundColor: Colors.primary },
-          }}
-        >
-          <Tab.Screen name="History" component={History} />
-          <Tab.Screen name="Range" component={Range} />
-        </Tab.Navigator>
-      </SafeAreaView>
-    );
-  }
+      <Tab.Navigator
+        tabBarOptions={{
+          style: styles.tabBar,
+          labelStyle: { fontSize: 12 },
+          //   activeTintColor:Colors.primary,
+          // tabStyle: {backgroundColor: Colors.backgroundColor },
+          indicatorStyle: { backgroundColor: Colors.primary },
+        }}
+      >
+        <Tab.Screen name="History" component={History} />
+        <Tab.Screen name="Range" component={Range} />
+      </Tab.Navigator>
+    </SafeAreaView>
+  );
 
   function History() {
     const historyList = ({ item }) => {

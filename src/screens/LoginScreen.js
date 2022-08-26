@@ -42,6 +42,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuNavigation from "../navigations/MenuNavigation";
 import { CustomAlert } from "../components/alert";
 import BiometricScreen from "./BiometricScreen";
+import { ProcessingModal } from "../components/modal";
 import {
   hasHardwareAsync,
   isEnrolledAsync,
@@ -93,6 +94,7 @@ function LoginScreen({ navigation }) {
 
   const [text, setText] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isVisible, setIsVisible] = React.useState(false)
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -107,6 +109,7 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
     clientId: "390391096288445",
     responseType: ResponseType.Code,
   });
@@ -117,6 +120,7 @@ function LoginScreen({ navigation }) {
       console.log(response);
 
       const fetchData = async () => {
+        setIsVisible(true)
         const requestOptions = {
           method: "GET",
           headers: {
@@ -135,7 +139,7 @@ function LoginScreen({ navigation }) {
             console.log({
               facebook_data: data.data,
             });
-
+            setIsVisible(false)
             if (data.data.message == "success") {
               await AsyncStorage.setItem(
                 "token",
@@ -154,7 +158,7 @@ function LoginScreen({ navigation }) {
                         "email",
                         data.data.user_data.email,
                         (err) => {
-                          navigation.navigate("BiometricScreen");
+                          navigation.navigate("MenuNavigation");
                         }
                       );
                     }
@@ -165,16 +169,17 @@ function LoginScreen({ navigation }) {
               CustomAlert({
                 title: "Signup Error",
                 subtitle: data.data.details,
-                handlePress: () => {},
+                handlePress: () => { },
               });
               return false;
             }
           })
           .catch((err) => {
+            setIsVisible(false)
             CustomAlert({
               title: "Signup Error",
               subtitle: err,
-              handlePress: () => {},
+              handlePress: () => { },
             });
           });
         console.log("fetchData response: => ", body);
@@ -194,6 +199,7 @@ function LoginScreen({ navigation }) {
 
   React.useEffect(() => {
     if (gresponse?.type === "success") {
+      setIsVisible(true)
       const { authentication } = gresponse;
       console.log(gresponse);
       axios
@@ -202,6 +208,7 @@ function LoginScreen({ navigation }) {
           console.log({
             google_data: data.data,
           });
+          setIsVisible(false)
 
           if (data.data.message == "success") {
             await AsyncStorage.setItem(
@@ -232,7 +239,7 @@ function LoginScreen({ navigation }) {
             CustomAlert({
               title: "Signup Error",
               subtitle: data.data.details,
-              handlePress: () => {},
+              handlePress: () => { },
             });
             return false;
           }
@@ -243,22 +250,25 @@ function LoginScreen({ navigation }) {
 
   // Login API
   const login = () => {
+    setIsVisible(true)
     let data = {
       email: text,
       password: password,
     };
 
     if (data.email === "" || data.password === "") {
+      setIsVisible(false)
       CustomAlert({
         title: "All fields Required",
         subtitle: "Please provide your email and password",
-        handlePress: () => {},
+        handlePress: () => { },
       });
       return false;
     }
     axios
       .post("/user-gateway/login", data)
       .then(async (data) => {
+        setIsVisible(false)
         if (data.data.message == "success") {
           await AsyncStorage.setItem("token", data.data.token, async (err) => {
             console.log({ err });
@@ -284,37 +294,101 @@ function LoginScreen({ navigation }) {
           CustomAlert({
             title: "Login Error",
             subtitle: data.data.details,
-            handlePress: () => {},
+            handlePress: () => { },
           });
           return false;
         }
       })
       .catch((err) => {
+        setIsVisible(false)
         CustomAlert({
           title: "Login Error",
           subtitle: "Error making request, please try again...",
-          handlePress: () => {},
+          handlePress: () => { },
         });
         console.log({ err });
       });
   };
 
   const biometricsAuth = async (message) => {
-    const compatible = await hasHardwareAsync();
-    if (!compatible)
-      alert("This device is not compatible for biometric authentication");
-    message = "This device is not compatible for biometric authentication";
+    const compatible = await hasHardwareAsync()
+    if (!compatible) alert("This device is not compatible for biometric authentication")
+    message = 'This device is not compatible for biometric authentication'
 
-    const enrolled = await isEnrolledAsync();
-    if (!enrolled)
-      alert("This device doesn't have biometric authentication enabled");
-    message = "This device doesn't have biometric authentication enabled";
+    const enrolled = await isEnrolledAsync()
+    if (!enrolled) alert("This device doesn't have biometric authentication enabled")
+    message = "This device doesn't have biometric authentication enabled"
 
-    const result = await authenticateAsync();
-    if (result.success) navigation.navigate("MenuNavigation");
-    if (!result.success) throw `${result.error} - Authentication unsuccessful`;
-    return;
-  };
+    const result = await authenticateAsync()
+    if (result.success) {
+
+      setIsVisible(true)
+      
+      let data = {
+        email: text,
+      };
+
+      if (data.email === "" || data.password === "") {
+        setIsVisible(false)
+        CustomAlert({
+          title: "All fields Required",
+          subtitle: "Please provide your email and password",
+          handlePress: () => { },
+        });
+        return false;
+      }
+      else {
+
+        axios
+          .post("/user-gateway/bio-login", data)
+          .then(async (data) => {
+            setIsVisible(false)
+            if (data.data.message == "success") {
+              await AsyncStorage.setItem("token", data.data.token, async (err) => {
+                console.log({ err });
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                await AsyncStorage.setItem(
+                  "user_id",
+                  data.data.user.id,
+                  async (err) => {
+                    await AsyncStorage.setItem(
+                      "email",
+                      data.data.user.email,
+                      (err) => {
+                        navigation.navigate("MenuNavigation");
+                      }
+                    );
+                  }
+                );
+              });
+            } else {
+              CustomAlert({
+                title: "Login Error",
+                subtitle: data.data.details,
+                handlePress: () => { },
+              });
+              return false;
+            }
+          })
+          .catch((err) => {
+            setIsVisible(false)
+            CustomAlert({
+              title: "Login Error",
+              subtitle: "Error making request, please try again...",
+              handlePress: () => { },
+            });
+            console.log({ err });
+          });
+
+      }
+
+    }
+    if (!result.success) throw `${result.error} - Authentication unsuccessful`
+    return
+  }
 
   return (
     <SafeAreaView style={styles.container} theme={theme}>
@@ -353,18 +427,17 @@ function LoginScreen({ navigation }) {
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
-          right={
-            <TextInput.Icon
-              name="fingerprint"
-              color={Colors.primary}
-              size={24}
-              style={{ right: 10 }}
-              onPress={biometricsAuth}
-            />
-          }
+          right={<TextInput.Icon
+            name="fingerprint"
+            color={Colors.primary}
+            size={24}
+            style={{ right: 10 }}
+            onPress={biometricsAuth} />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
-        ></TextInput>
+        >
+
+        </TextInput>
 
         <TouchableOpacity style={styles.button} onPress={() => login()}>
           <Text style={styles.textButton}> {Strings.login}</Text>
@@ -422,6 +495,7 @@ function LoginScreen({ navigation }) {
             {Strings.signup}
           </Text>
         </View>
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
   );
 }

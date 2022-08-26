@@ -223,4 +223,23 @@ export const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: "Poppins_600SemiBold",
   },
+
+  list:{
+    padding: 2,
+    paddingLeft: 10,
+    flexDirection: "row",
+    borderRadius: 40,
+    width: "95%",
+    height: 40,
+    alignItems: "center",
+    alignSelf: "center",
+  },
+
+  valueText:{
+    marginRight: 10,
+    position: "absolute",
+    fontFamily: "Poppins_500Medium",
+    color: Colors.textColor,
+    zIndex: 1,
+  },
 });

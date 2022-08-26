@@ -28,7 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
 const instance = axios.create({
-    baseURL: 'https://clyp-heroku.herokuapp.com/'
+    baseURL: 'https://clyp-crypto.herokuapp.com/'
 });
 
 instance.interceptors.request.use(

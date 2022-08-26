@@ -27,6 +27,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import securityListArray from "../strings/securitylist";
 import { set } from "lodash";
+import { ProcessingModal } from "../components/modal";
 import {
   hasHardwareAsync,
   isEnrolledAsync,
@@ -108,7 +109,7 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.textColor}
             style={styles.backButton}
             handlePress={() =>
-              navigation.navigate(Strings.home, {
+              navigation.navigate(Strings.Profile, {
                 id: route.params.id,
                 preferences: route.params.preferences,
                 firstName: route.params.firstName,
@@ -282,7 +283,7 @@ export default function SecurityScreen({ navigation, route }) {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <VectorButton
-            name="chevron-back"git 
+            name="chevron-back"
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
@@ -399,28 +400,30 @@ export default function SecurityScreen({ navigation, route }) {
   function ChangePin() {
     const [formerPin, setFormerPin] = useState("");
     const [newPin, setNewPin] = useState("");
-    const [reenterPin, setReenterPin] = useState("");
+    const [reenterPin, setReenterPin] = useState('');
+    const [isVisible, setIsVisible] = useState(false)
 
     const submitPin = () => {
+      setIsVisible(true)
       if (newPin !== reenterPin) {
-        CustomAlert({
-          title: "Invalid Pin",
-          subtitle: "Please make sure your pin input matches.",
-        });
-        return false;
-      } else if (formerPin !== route.params.user.prefrence[0].pin) {
-        CustomAlert({
-          title: "Invalid Pin",
-          subtitle: "Please make sure your former pin is correct.",
-        });
-        return false;
-      } else {
-        axios
-          .post("/user-gateway/update-prefrences", {
-            pin: newPin,
-            user_id: route.params.user.id,
-          })
-          .then((data) => {
+        setIsVisible(false)
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
+        return false
+
+      } else if (formerPin !== route.params.user.prefrence[0].pin){
+        setIsVisible(false)
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
+        return false
+
+      }
+      else {
+
+        axios.post('/user-gateway/update-prefrences', {
+          pin: newPin,
+          user_id: route.params.user.id,
+        })
+          .then(data => {
+            setIsVisible(false)
             if (data.data.message === "success") {
               route.params.user.prefrence[0].pin = newPin;
               navigation.navigate("securitylist");
@@ -432,9 +435,11 @@ export default function SecurityScreen({ navigation, route }) {
               });
             }
           })
-          .catch((error) => {
-            CustomAlert({ title: "Error", subtitle: error });
-          });
+          .catch(error => {
+            setIsVisible(false)
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
       }
     };
 
@@ -486,6 +491,8 @@ export default function SecurityScreen({ navigation, route }) {
           style={styles.roundedButton}
           handlePress={() => submitPin()}
         />
+
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

@@ -40,6 +40,8 @@ import { getMarketData } from "../services/requests";
 import CoinDetailedScreen from "./CoinDetailedScreen/index";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -54,6 +56,9 @@ export default function InfoScreen({ navigation }) {
 
   const priceChangeColor = priceChange > 0 ? "#009E06" : "#C52020";
   const isFavouritedIcon = isFavourited === true ? "star" : "star-outline";
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   // ref
   const bottomSheetModalRef = useRef();
@@ -105,23 +110,23 @@ export default function InfoScreen({ navigation }) {
       fetchData()
     },[])
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
          <View>
-        <Text style={styles.headerText}>{Strings.coinStats}</Text>
+        <Text style={[styles.headerText, {color: theme.text}]}>{Strings.coinStats}</Text>
       </View>
-        <View style={styles.summaryContainer}>
-          <Text style={styles.marketCapText}>Market Cap</Text>
-          <Text style={styles.marketCapValueText}>${marketCap.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-          <Text style={styles.marketCapMovementText}>{percentageChange.toFixed(1)}%</Text>
-          <Text style={styles.volume24hText}>Volume 24h</Text>
-          <Text style={styles.volume24hValueText}>${volume.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-          <Text style={styles.volume24hMovementText}>{percentageChange.toFixed(1)}%</Text>
+        <View style={[styles.summaryContainer, { backgroundColor: theme.flatlist }]}>
+          <Text style={[styles.marketCapText, {color: theme.text}]}>Market Cap</Text>
+        <Text style={[styles.marketCapValueText, {color: theme.text}]}>${marketCap.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={[styles.marketCapMovementText, {color: theme.text}]}>{percentageChange.toFixed(1)}%</Text>
+          <Text style={[styles.volume24hText, {color: theme.text}]}>Volume 24h</Text>
+          <Text style={[styles.volume24hValueText, {color: theme.text}]}>${volume.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={[styles.volume24hMovementText, {color: theme.text}]}>{percentageChange.toFixed(1)}%</Text>
         </View>
 
         <Tab.Navigator
           tabBarOptions={{
-            style: styles.tabBar,
-            labelStyle: { fontSize: 12 },
+            style: [styles.tabBar, {backgroundColor: theme.background}],
+            labelStyle: { fontSize: 12, color: theme.text },
             //   activeTintColor:Colors.primary,
             //tabStyle: {backgroundColor: Colors.backgroundColor },
             indicatorStyle: { backgroundColor: Colors.primary },

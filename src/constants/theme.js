@@ -19,6 +19,6 @@ export const lightTheme = {
     tertiary: Colors.tertiary,
     text: Colors.textColor,
     background: Colors.backgroundColor,
-    flatlist: Colors.backgroundColor,
+    flatlist: Colors.white,
     statusbar: 'default'
 }

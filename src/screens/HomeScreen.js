@@ -37,12 +37,15 @@ import { ProcessingModal } from "../components/modal";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { storeData } from "../services/storage";
 import { IS_FIRST_TIME } from "../constants/values";
 
 import { useSelector, useDispatch } from "react-redux";
 import { switchTheme } from "../redux/themeAction";
 import { lightTheme, darkTheme } from "../constants/theme";
+
+import { TabNavigator } from "./ActivityScreen";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -158,6 +161,14 @@ export default function HomeScreen({ navigation }) {
             .then((coins_data) => {
               setCoins(coins_data.data.coins);
             });
+
+          axios
+            .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {
+              user_id: id,
+            })
+            .then((coins_data) => {
+              setCoins(coins_data.data.coins);
+            });
         })
         .catch((err) => {
           CustomAlert({
@@ -245,7 +256,9 @@ export default function HomeScreen({ navigation }) {
           >
             <View style={styles.cryptoContainer}>
               <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>0.0001 BTC</Text>
+              <Text style={styles.cryptoBalanceText}>
+                {preferences.private_mode ? "*** BTC" : "0.0001 BTC"}
+              </Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -255,7 +268,10 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sendbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sendCrypto, { coins: coins })
+                      navigation.navigate(Strings.sendCrypto, {
+                        coins: coins,
+                        user,
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.send}</Text>
@@ -270,6 +286,7 @@ export default function HomeScreen({ navigation }) {
                     handlePress={() =>
                       navigation.navigate(Strings.receiveCrypto, {
                         coins: coins,
+                        user,
                       })
                     }
                   />
@@ -283,7 +300,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.buybutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.buy, { coins: coins })
+                      navigation.navigate(Strings.buy, { coins, user })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.buy}</Text>
@@ -296,7 +313,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sellbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sell, { coins: coins })
+                      navigation.navigate(Strings.sell, { coins, user })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.sell}</Text>
@@ -309,7 +326,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.swapbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.swap, { coins: coins })
+                      navigation.navigate(Strings.swap, { coins, user })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.swap}</Text>
@@ -319,7 +336,9 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>N 35,000</Text>
+              <Text style={styles.cryptoBalanceText}>
+                {preferences.private_mode ? "***" : "N 35,000"}
+              </Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -328,7 +347,9 @@ export default function HomeScreen({ navigation }) {
                     size={20}
                     color={Colors.white}
                     style={styles.sendbutton}
-                    handlePress={() => navigation.push(Strings.deposit)}
+                    handlePress={() =>
+                      navigation.push(Strings.deposit, { user })
+                    }
                   />
                   <Text style={styles.optionText}>{Strings.deposit}</Text>
                 </View>
@@ -339,7 +360,9 @@ export default function HomeScreen({ navigation }) {
                     size={20}
                     color={Colors.white}
                     style={styles.receivebutton}
-                    handlePress={() => navigation.push(Strings.withdraw)}
+                    handlePress={() =>
+                      navigation.push(Strings.withdraw, { user })
+                    }
                   />
                   <Text style={styles.optionText}>{Strings.withdraw}</Text>
                 </View>
@@ -364,6 +387,7 @@ export default function HomeScreen({ navigation }) {
               horizontal={true}
               keyExtractor={(item, id) => id}
             />
+            {/*favouriteListArray.map(fav => favouriteList({item:fav}))*/}
           </View>
 
           <View

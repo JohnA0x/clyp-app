@@ -33,6 +33,7 @@ import {
   bankAccountList,
 } from "../strings/depositlist";
 import cryptoListArray from "../strings/cryptolist";
+import { ProcessingModal } from "../components/modal";
 import { AddCard } from "./PreferencesScreen";
 
 const Stack = createNativeStackNavigator();
@@ -209,6 +210,17 @@ export default function DepositScreen({ navigation, route }) {
   }
 
   function TransactionsOptions() {
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+
+    const fund = () => {
+      setIsVisible(true)
+      let data = {
+        amount,
+        user_id: route.params.user.id
+      }
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -236,6 +248,9 @@ export default function DepositScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText={(texx) => {
+              setAmount(text)
+            }}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
@@ -250,6 +265,7 @@ export default function DepositScreen({ navigation, route }) {
           text={Strings.deposit}
           textStyle={styles.depositText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

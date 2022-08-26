@@ -104,11 +104,12 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
       { label: "Banana", value: "banana" },
     ]);
     const [isModalVisible, setModalVisible] = useState(false);
+    // const [coin, setCoin] = useState({})
 
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     };
-    const coin = route.params.coins.filter(c => c.currency == walletOptions.abb)[0]
+    let coin = route.params.coins.filter(c => c.currency == walletOptions.abb)[0]
     console.log(coin)
     return (
       <SafeAreaView style={styles.container}>

@@ -10,7 +10,7 @@ export const depositListArray = [
   {
     id: 2,
     title: Strings.depositviaBank,
-    subtitle: 'Deposit local currency into your ClypPay Wallet',
+    subtitle: 'Deposit fiat via a P2P network',
     icon: "cash",
   },
   {
@@ -19,12 +19,12 @@ export const depositListArray = [
     subtitle: 'Deposit cash via a trusted or saved debit card',
     icon: "card",
   },
-  {
+/*   {
     id: 4,
     title: Strings.depositviaP2P,
     subtitle: 'Deposit fiat via a P2P network',
     icon: "people",
-  },
+  }, */
 ];
 
 export const depositCardList =[

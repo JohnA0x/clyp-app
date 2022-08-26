@@ -23,7 +23,10 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import axiosFiat from "../components/axios-fait";
 import { Ionicons } from "@expo/vector-icons";
+import { ProcessingModal } from "../components/modal";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -143,6 +146,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithWallet() {
+
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+    
+    const buy = () => {
+      setIsVisible(true)
+
+      let data = {
+        amount,
+        user_id: route.params.user.id
+      }
+    }
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -175,6 +190,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText={(text) => setAmount(text)}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
@@ -189,14 +205,44 @@ export default function BuyCryptoScreen({ navigation, route }) {
           text={Strings.deposit}
           textStyle={styles.depositText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
 
   function BuyWithCard() {
-    const [checkmarkColor, setCheckmarkColor] = useState(
-      debitCardListArray[1].selectedColor
-    );
+
+    const [amount, setAmount] = useState('')
+    const [isVisible, setIsVisible] = useState(false)
+    const [cards, setCards] = useState([])
+    const [checkmarkColor, setCheckmarkColor] = useState();
+    
+    const buy = () => {
+      setIsVisible(true)
+
+      let data = {
+        amount,
+        user_id: route.params.user.id
+      }
+    }
+
+    useEffect(() => {
+
+      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.user.id })
+        .then(data => {
+          if (data.data.message === "success") {
+            setCards(data.data.cards)
+            setCheckmarkColor(data.data.cards[0].id)
+            console.log(data.data.cards[0].id)
+          }
+          else {
+            // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
+          }
+        })
+        .catch(err => {
+          // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
+        })
+    }, [])
 
     const cardList = ({ item }) => {
       return (
@@ -204,10 +250,10 @@ export default function BuyCryptoScreen({ navigation, route }) {
           <TouchableOpacity
             style={[
               styles.cardsContainer,
-              { backgroundColor: item.cardColour },
+              { backgroundColor: Colors.black },
             ]}
-            onPress={(item) => {
-              setCheckmarkColor(Colors.addGoal);
+            onPress={() => {
+              setCheckmarkColor(item.id);
             }}
           >
             <VectorButton
@@ -216,18 +262,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
               color={Colors.primary}
               style={styles.preferencesimage}
             />
-            <Text style={styles.cardNameText}>{item.name}</Text>
+            <Text style={styles.cardNameText}>{item.card_name}</Text>
             <Image style={styles.cardIcon} />
-            <Text style={styles.cardNumberText}>{item.cardNumber}</Text>
+            <Text style={styles.cardNumberText}>{item.card_number}</Text>
             <Text style={styles.cardValidThruText}>VALID THRU</Text>
-            <Text style={styles.cardValidityText}>{item.validity}</Text>
+            <Text style={styles.cardValidityText}>{item.card_expiry}</Text>
             <Text style={styles.cardCVVText}>CVV</Text>
             <Text style={styles.cardCVV}>{item.cvv}</Text>
             <Ionicons
               name={"checkmark-circle"}
               size={24}
               style={styles.selectedIcon}
-              color={checkmarkColor}
+              color={checkmarkColor === item.id ? Colors.addGoal : Colors.grey}
             />
           </TouchableOpacity>
         </View>
@@ -250,7 +296,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
         <FlatList
           contentContainerStyle={styles.cardListContainer}
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={debitCardListArray}
+          data={cards}
           renderItem={cardList}
           horizontal={true}
           keyExtractor={(item) => item.id}
@@ -270,6 +316,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
+            onChangeText = {(text) => setAmount(text)}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
@@ -284,6 +331,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
           text={Strings.deposit}
           textStyle={styles.depositText}
         />
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
