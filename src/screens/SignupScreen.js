@@ -900,7 +900,7 @@ function PhoneSignupScreen({ route }) {
 
         <Text
           style={nameStyles.forgotPassword}
-          onPress={() => navigation.replace("ForgotPassword")}
+          onPress={() => navigation.replace(Strings.home)}
         >
           {Strings.forgotPassword}
         </Text>

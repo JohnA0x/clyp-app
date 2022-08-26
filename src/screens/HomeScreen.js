@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -7,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../styles/home";
@@ -40,7 +40,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { storeData } from "../services/storage";
 import { IS_FIRST_TIME } from "../constants/values";
 
-
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -74,12 +76,17 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
 
   const priceChangeColor = priceChange > 0 ? "#009E06" : "#C52020";
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
-  storeData(IS_FIRST_TIME, "false")
+  storeData(IS_FIRST_TIME, "false");
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
-      <TouchableOpacity style={styles.favouriteButton} onPress={biometricsAuth}>
+      <TouchableOpacity
+        style={[styles.favouriteButton, { backgroundColor: theme.flatlist }]}
+        onPress={biometricsAuth}
+      >
         <Ionicons
           name="star"
           size={12}
@@ -91,7 +98,9 @@ export default function HomeScreen({ navigation }) {
           style={styles.cryptoimage}
           imageStyle={styles.cryptoimage}
         />
-        <Text style={styles.textButton}>{item.name}</Text>
+        <Text style={[styles.textButton, { color: theme.text }]}>
+          {item.name}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -101,7 +110,7 @@ export default function HomeScreen({ navigation }) {
     return (
       <View style={styles.historyBaseContainer}>
         <TouchableOpacity
-          style={styles.holdingButton}
+          style={[styles.holdingButton, { backgroundColor: theme.flatlist }]}
           onPress={() => {
             navigation.push(Strings.holdings);
             setCryptoName(item.name);
@@ -114,8 +123,12 @@ export default function HomeScreen({ navigation }) {
             style={styles.holdingsCryptoimage}
             imageStyle={styles.holdingsCryptoimage}
           />
-          <Text style={styles.holdingsTextButton}>{item.name}</Text>
-          <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
+          <Text style={[styles.holdingsTextButton, { color: theme.text }]}>
+            {item.name}
+          </Text>
+          <Text style={[styles.holdingsValueButton, { color: theme.text }]}>
+            0 {item.abb}
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -181,7 +194,10 @@ export default function HomeScreen({ navigation }) {
 
   function HomeScreen() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <StatusBar barStyle={theme.statusbar} />
         <ScrollView>
           <View style={styles.topBar}>
             <ImageButton
@@ -203,7 +219,9 @@ export default function HomeScreen({ navigation }) {
                 navigation.setOptions({ tabBarVisible: false });
               }}
             />
-            <Text style={styles.nameText}>Welcome {firstName}</Text>
+            <Text style={[styles.nameText, { color: theme.text }]}>
+              Welcome {firstName}
+            </Text>
             <VectorButton
               style={styles.notificationButton}
               name="notifications-outline"
@@ -329,8 +347,15 @@ export default function HomeScreen({ navigation }) {
             </View>
           </Swiper>
 
-          <View style={styles.coinContainer}>
-            <Text style={styles.coinText}>{Strings.favourite}</Text>
+          <View
+            style={[
+              styles.coinContainer,
+              { backgroundColor: theme.backgroundColor },
+            ]}
+          >
+            <Text style={[styles.coinText, { color: theme.text }]}>
+              {Strings.favourite}
+            </Text>
             <FlatList
               contentContainerStyle={styles.flatlist}
               data={favouriteListArray}
@@ -341,8 +366,15 @@ export default function HomeScreen({ navigation }) {
             />
           </View>
 
-          <View style={styles.coinContainer}>
-            <Text style={styles.holdingText}>{Strings.holdings}</Text>
+          <View
+            style={[
+              styles.coinContainer,
+              { backgroundColor: theme.backgroundColor },
+            ]}
+          >
+            <Text style={[styles.holdingText, { color: theme.text }]}>
+              {Strings.holdings}
+            </Text>
             <FlatList
               contentContainerStyle={styles.flatlist}
               data={favouriteListArray} //coins
@@ -385,7 +417,10 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.usdAmountText} numberOfLines={1}>
             {cryptoAmount}
           </Text>
-          <Text style={[styles.priceChangeText, {color: priceChangeColor}]} numberOfLines={1}>
+          <Text
+            style={[styles.priceChangeText, { color: priceChangeColor }]}
+            numberOfLines={1}
+          >
             {cryptoAmount}
           </Text>
           <Text style={[styles.todayText]} numberOfLines={1}>

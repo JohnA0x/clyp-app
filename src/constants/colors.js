@@ -44,6 +44,6 @@ export const tertiaryDark = 'rgba(0, 0, 0, 0.25)'
 export const textColorDark = '#fff'
 
 export const qrcodeDark = '#fff'
-export const listHolderDark = 16//'#E1E1E1'
+export const listHolderDark = '#494948'//'#E1E1E1'
 
 export const backgroundColorDark = '#363636'

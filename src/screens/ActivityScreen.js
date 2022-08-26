@@ -29,6 +29,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import activityListArray from "../strings/activitylist";
 
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import RNDatePicker from "react-native-date-picker";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -119,6 +120,7 @@ export default function ActivityScreen({ navigation }) {
   }
 
   function Range() {
+
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.fromText}>FROM:</Text>
@@ -136,7 +138,7 @@ export default function ActivityScreen({ navigation }) {
           selectionColor={Colors.primary}
         />
 
-        <RNDateTimePicker display="calendar" value={new Date()} />
+        <RNDateTimePicker display="default" value={new Date()} />
 
         <RoundedButton
           style={styles.searchButton}

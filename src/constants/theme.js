@@ -6,7 +6,9 @@ export const darkTheme = {
     secondary: Colors.secondaryDark,
     tertiary: Colors.tertiaryDark,
     text: Colors.textColorDark,
-    backgroundColor: Colors.backgroundColorDark,
+    background: Colors.backgroundColorDark,
+    flatlist: Colors.listHolderDark,
+    statusbar: 'light-content'
 
 }
 
@@ -16,5 +18,7 @@ export const lightTheme = {
     secondary: Colors.secondary,
     tertiary: Colors.tertiary,
     text: Colors.textColor,
-    backgroundColor: Colors.backgroundColor,
+    background: Colors.backgroundColor,
+    flatlist: Colors.backgroundColor,
+    statusbar: 'default'
 }

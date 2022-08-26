@@ -174,12 +174,12 @@ export const ChangeAppearance = ({ navigation, route }) => {
   useEffect(() => {
     if (mode == "Dark") {
       dispatch(switchTheme(darkTheme));
-      alert("Mode is dark");
+    //  alert("Mode is dark");
     }
 
     if (mode == "Light") {
       dispatch(switchTheme(lightTheme));
-      alert("Mode is light");
+      //alert("Mode is light");
     }
   }, [mode]);
   return (

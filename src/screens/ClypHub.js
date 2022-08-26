@@ -18,17 +18,22 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import NewsScreen from "./NewsScreen";
+
+import { useSelector, useDispatch } from "react-redux";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ClypHub({navigation}) {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View>
-        <Text style={styles.hubHeaderText}>{Strings.clyphub}</Text>
+        <Text style={[styles.hubHeaderText, {color: theme.text}]}>{Strings.clyphub}</Text>
       </View>
 
-      <View style={styles.newsContainer}>
-        <Text style={styles.seeAll}
+      <View style={[styles.newsContainer, {backgroundColor: theme.background}]}>
+        <Text style={[styles.seeAll, {color: theme.text}]}
         onPress={() => navigation.navigate(Strings.News)}
         >{Strings.seeAll}</Text>
         <Swiper activeDotColor={Colors.fadedButton}>
