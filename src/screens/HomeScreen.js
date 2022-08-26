@@ -73,6 +73,7 @@ export default function HomeScreen({ navigation }) {
   const [walletOptions, setWalletOptions] = React.useState([
     { address: "", abb: "" },
   ]);
+  const [fiatWallet, setFiatWallet] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -162,13 +163,10 @@ export default function HomeScreen({ navigation }) {
               setCoins(coins_data.data.coins);
             });
 
-          axios
-            .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {
-              user_id: id,
+          axios.post('https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet', { user_id: id })
+            .then(wallet_data => {
+              setFiatWallet(wallet_data.data.wallet)
             })
-            .then((coins_data) => {
-              setCoins(coins_data.data.coins);
-            });
         })
         .catch((err) => {
           CustomAlert({
@@ -187,7 +185,7 @@ export default function HomeScreen({ navigation }) {
           console.log({ err });
         });
     }
-    fetchData();
+    fetchData()
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -339,6 +337,7 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.cryptoBalanceText}>
                 {preferences.private_mode ? "***" : "N 35,000"}
               </Text>
+              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>

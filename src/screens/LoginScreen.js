@@ -64,9 +64,12 @@ import { styled, ThemeProvider } from "styled-components/native";
 
 const Stack = createNativeStackNavigator();
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+const dispatch = useDispatch();
   let [fontsLoaded, error] = useFonts({
     Poppins_700Bold,
     Poppins_900Black,

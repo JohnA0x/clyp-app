@@ -34,7 +34,7 @@ import RNDatePicker from "react-native-date-picker";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export default function ActivityScreen({ navigation }) {
+export default function ActivityScreen({ navigation, route }) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -52,19 +52,19 @@ export default function ActivityScreen({ navigation }) {
   );
 }
 
-export function TabNavigator({navigation}) {
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <VectorButton
-          name="chevron-back"
-          size={24}
-          color={Colors.textColor}
-          style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.Profile)}
-        />
-        <Text style={styles.headerText}>{Strings.activity}</Text>
-      </View>
+  function TabNavigator() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate(Strings.Profile)}
+          />
+          <Text style={styles.headerText}>{Strings.activity}</Text>
+        </View>
 
       <Tab.Navigator
         tabBarOptions={{

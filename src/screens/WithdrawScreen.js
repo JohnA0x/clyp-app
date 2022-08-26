@@ -85,12 +85,13 @@ export default function WithdrawScreen({ route }) {
         .then((sent) => {
           console.log(sent.data);
           if (sent.data.message === "success") {
+
           } else {
             // CustomAlert({ title: "Failed", subtitle: "Failed to send transaction", handlePress: () => { } })
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(err => {
+          console.log(err)
           // CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
         });
     };
