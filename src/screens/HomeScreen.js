@@ -131,7 +131,7 @@ export default function HomeScreen({ navigation }) {
       axios
         .post("/user-gateway/get-full-user", { user_id: id })
         .then((data) => {
-          // console.log(data.data)
+          
           setID(data.data.user.id)
           setFirstName(data.data.user.first_name)
           setLastName(data.data.user.last_name)
