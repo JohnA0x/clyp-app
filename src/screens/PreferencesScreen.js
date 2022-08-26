@@ -327,7 +327,8 @@ export function PaymentMethod({ navigation, route }) {
             style={styles.preferencesimage}
           />
           <View style={{ flexDirection: "column" }}>
-            <Text style={styles.preferencestext}>{item.card_type}</Text>
+          <Text style={styles.preferencestext}>{item.card_name}</Text>
+            {/* <Text style={styles.preferencestext}>{item.card_type}</Text> */}
             <Text style={styles.preferencestext}>{item.card_number}</Text>
           </View>
         </TouchableOpacity>
@@ -467,7 +468,6 @@ export function AddCard({ navigation, route }) {
         style={styles.inputText}
         placeholder="Card Name"
         selectionColor={Colors.primary}
-        maxLength={16}
         value={cardName}
         onChangeText={(value) => setCardName(value)}
       />
@@ -619,6 +619,14 @@ export function UpdateCard({ navigation, route }) {
         />
         <Text style={styles.preferencesHeaderText}>Update Card</Text>
       </View>
+
+      <TextInput
+        style={styles.inputText}
+        placeholder="Card Name"
+        selectionColor={Colors.primary}
+        value={cardName}
+        onChangeText={(value) => setCardName(value)}
+      />
 
       <TextInput
         style={styles.inputText}

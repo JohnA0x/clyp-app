@@ -68,6 +68,7 @@ export default function HomeScreen({ navigation }) {
   const [walletOptions, setWalletOptions] = React.useState([
     { address: "", abb: "" },
   ]);
+  const [fiatWallet, setFiatWallet] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -143,8 +144,8 @@ export default function HomeScreen({ navigation }) {
             })
 
           axios.post('https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet', { user_id: id })
-            .then(coins_data => {
-              setCoins(coins_data.data.coins)
+            .then(wallet_data => {
+              setFiatWallet(wallet_data.data.wallet)
             })
         })
         .catch((err) => {
@@ -302,7 +303,7 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : "N 35,000"}</Text>
+              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>

@@ -82,13 +82,16 @@ export default function WithdrawScreen({ route }) {
         .then(sent => {
           console.log(sent.data)
           if (sent.data.message === "success") {
-
+            console.log(sent.data.message)
+            setIsVisible(false)
+            navigation.navigate("MenuNavigation")
           } else {
             // CustomAlert({ title: "Failed", subtitle: "Failed to send transaction", handlePress: () => { } })
           }
         })
         .catch(err => {
           console.log(err)
+          setIsVisible(false)
           // CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
         })
 
@@ -417,7 +420,7 @@ export default function WithdrawScreen({ route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("withdrawoptions")}
           />
-          <Text style={styles.headerText}>{Strings.addBankAccount}</Text>
+          <Text style={styles.headerText}>{Strings.UseAnotherBankAccount}</Text>
         </View>
 
         <Text

@@ -33,7 +33,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export default function ActivityScreen({ navigation }) {
+export default function ActivityScreen({ navigation, route }) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -59,7 +59,13 @@ export default function ActivityScreen({ navigation }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.Profile)}
+            handlePress={() => navigation.navigate(Strings.Profile, {
+              id: route.params.id,
+              firstName: route.params.firstName,
+              lastName: route.params.lastName,
+              preferences: route.params.preferences,
+              user: route.params.user,
+            })}
           />
           <Text style={styles.headerText}>{Strings.activity}</Text>
         </View>
