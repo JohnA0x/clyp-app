@@ -334,9 +334,7 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>
-                {preferences.private_mode ? "***" : "N 35,000"}
-              </Text>
+          
               <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
 
               <View style={styles.transactionOptions}>
@@ -524,4 +522,3 @@ export default function HomeScreen({ navigation }) {
   }
 }
 
-//export default HomeScreen

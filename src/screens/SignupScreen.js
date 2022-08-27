@@ -46,6 +46,9 @@ import { ProcessingModal } from "../components/modal";
 import { getData } from "../services/storage";
 import * as Values from '../constants/values'
 
+import { useSelector, useDispatch } from "react-redux";
+import { theme } from "native-base";
+
 const Stack = createNativeStackNavigator();
 
 WebBrowser.maybeCompleteAuthSession();
@@ -57,6 +60,9 @@ export default function Signup() {
     Poppins_600SemiBold,
     Poppins_400Regular,
   });
+
+  
+
 
   const value = AsyncStorage.getItem(Values.theme)
   // const [text, setText] = React.useState("");
@@ -95,6 +101,9 @@ function NameSignupScreen({ route }) {
   const [first_name, setFirstName] = React.useState("");
   const [last_name, setLastName] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false)
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
@@ -217,8 +226,8 @@ function NameSignupScreen({ route }) {
 
   return (
     <PaperProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.texts}>{Strings.createAccount}</Text>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
         <TextInput
           value={first_name}
           onChangeText={(text) => setFirstName(text)}
@@ -346,6 +355,9 @@ function EmailSignupScreen({ route }) {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false)
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
@@ -543,8 +555,8 @@ function EmailSignupScreen({ route }) {
 
   return (
     <PaperProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.texts}>{Strings.createAccount}</Text>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
 
         <TextInput
           value={email}
@@ -683,6 +695,8 @@ function PhoneSignupScreen({ route }) {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false)
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
@@ -877,8 +891,8 @@ function PhoneSignupScreen({ route }) {
 
   return (
     <PaperProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.texts}>{Strings.createAccount}</Text>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
 
         <TextInput
           value={phone}

@@ -41,6 +41,7 @@ import { getData, storeData } from "../services/storage";
 const Stack = createNativeStackNavigator();
 
 export default function PreferencesScreen({ navigation, route }) {
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -84,10 +85,12 @@ export default function PreferencesScreen({ navigation, route }) {
 }
 
 const Preferences = ({ navigation, route }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
   const preferencesList = ({ item }) => (
-    <View style={styles.rowContainer}>
+    <View style={[styles.rowContainer]}>
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, {backgroundColor: theme.flatlist}]}
         onPress={() => navigation.push(item.name)}
       >
         <VectorButton
@@ -96,18 +99,18 @@ const Preferences = ({ navigation, route }) => {
           color={Colors.primary}
           style={styles.preferencesimage}
         />
-        <Text style={styles.preferencestext}>{item.name}</Text>
+        <Text style={[styles.preferencestext, {color: theme.text}]}>{item.name}</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.preferencesHeader}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <View style={[styles.preferencesHeader]}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() =>
             navigation.navigate(Strings.Profile, {
@@ -119,7 +122,7 @@ const Preferences = ({ navigation, route }) => {
             })
           }
         />
-        <Text style={styles.preferencesHeaderText}>{Strings.preferences}</Text>
+        <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>{Strings.preferences}</Text>
       </View>
 
       <FlatList

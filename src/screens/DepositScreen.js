@@ -35,6 +35,7 @@ import {
 import cryptoListArray from "../strings/cryptolist";
 import { ProcessingModal } from "../components/modal";
 import { AddCard } from "./PreferencesScreen";
+import { useSelector, useDispatch } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,8 @@ export default function DepositScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [priceChange, setPriceChange] = useState("");
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
@@ -296,32 +299,65 @@ export default function DepositScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.goBack()}
           />
-          <Text style={styles.headerText}>{Strings.depositviaBank}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.depositviaBank}</Text>
         </View>
 
-        <FlatList
-          contentContainerStyle={styles.cardFlatlist}
-          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={bankAccountList}
-          renderItem={accountList}
-        />
-        <View style={styles.otherOptionsView}>
-          <Text
-            style={styles.addNewAccount}
-            onPress={() => navigation.navigate(Strings.addBankAccount)}
-          >
-            Add Bank Account
-          </Text>
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NUMBER</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>900992222</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
         </View>
+
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NAME</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>CLYPPAY USER</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>BANK</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>WEMA BANK</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>SORT CODE</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>1778272</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+       
+        <RoundedButton
+          style={[styles.roundedButton, {top: 40,}]}
+          text='Share Account Details'
+          textStyle={styles.roundedTextButton}
+        />
+       
       </SafeAreaView>
     );
   }

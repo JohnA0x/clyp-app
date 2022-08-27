@@ -28,9 +28,14 @@ import { listSeparator } from "../components/listseparator";
 import { useState } from "react";
 import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function ProfileScreen({ navigation, route }) {
   const [isEnabled, setIsEnabled] = useState(route.params.preferences.merchant_mode);
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const toggleSwitch = () => {
     let data = {
       user_id: route.params.id,
@@ -58,7 +63,7 @@ export default function ProfileScreen({ navigation, route }) {
   const profileList = ({ item }) => (
     <View style={styles.rowContainer}>
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, { backgroundColor: theme.flatlist }]}
         onPress={() => navigation.navigate(item.name, {
           id: route.params.id,
           preferences: route.params.preferences,
@@ -73,13 +78,13 @@ export default function ProfileScreen({ navigation, route }) {
           color={Colors.primary}
           style={styles.preferencesimage}
         />
-        <Text style={styles.preferencestext}>{item.name}</Text>
+        <Text style={[styles.preferencestext, { color: theme.text }]}>{item.name}</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.profileContainer}>
         <ImageButton
           image={
@@ -89,7 +94,7 @@ export default function ProfileScreen({ navigation, route }) {
           imageStyle={styles.profileImage}
         />
         <Text
-          style={styles.profileName}
+          style={[styles.profileName, { color: theme.text }]}
           onPress={() => navigation.navigate("Home")}
         >
           {route.params.user.first_name} {route.params.user.last_name}
@@ -110,7 +115,7 @@ export default function ProfileScreen({ navigation, route }) {
       </View>
 
       <View style={styles.merchantContainer}>
-        <Text style={styles.merchantText}>{Strings.merchantmode}</Text>
+        <Text style={[styles.merchantText, {color: theme.text}]}>{Strings.merchantmode}</Text>
         <Switch
           style={styles.merchantSwitch}
           trackColor={{ false: Colors.black, true: Colors.primary }}

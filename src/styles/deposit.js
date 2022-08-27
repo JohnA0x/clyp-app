@@ -385,4 +385,30 @@ export const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: "Poppins_600SemiBold",
   },
+
+  // Deposit via Bank Transfer
+  accountDetailsView:{
+
+  },
+
+  titleText:{
+    fontFamily: "Poppins_700Bold",
+    fontSize: 20,
+    marginLeft: 20,
+    marginTop: 20,
+
+  },
+
+  detailsText:{
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 20,
+    marginLeft: 20,
+
+  },
+
+  copyButton:{
+    position: "absolute",
+    right: "8%",
+    top: "50%",
+  },
 });

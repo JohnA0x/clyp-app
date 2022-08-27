@@ -394,7 +394,7 @@ function LoginScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container} theme={theme}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} theme={theme}>
        {/*  {theme.mode === "light" ? (
           <Button
             style={styles.themeButton}
