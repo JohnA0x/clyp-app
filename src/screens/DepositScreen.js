@@ -74,7 +74,7 @@ export default function DepositScreen({ navigation, route }) {
       }}
     >
       <Stack.Screen
-        name={Strings.deposit}
+        name='depositscreen'
         initialParams={route}
         component={DepositOptions}
       />
@@ -133,7 +133,7 @@ export default function DepositScreen({ navigation, route }) {
     const depositOptions = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-          style={styles.button}
+        style={[styles.button, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate(item.title)}
         >
           <VectorButton
@@ -142,23 +142,23 @@ export default function DepositScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.headerImage}
           />
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.subtitle}>{item.subtitle}</Text>
+          <Text style={[styles.title, {color: theme.text}]}>{item.title}</Text>
+          <Text style={[styles.subtitle, {color: theme.text}]}>{item.subtitle}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.fund}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.fund}</Text>
         </View>
         <FlatList
           //contentContainerStyle={styles.flatlist}
@@ -196,7 +196,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.fund}</Text>
         </View>
@@ -225,14 +225,14 @@ export default function DepositScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.depositviaCrypto)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.fund}</Text>
         </View>
@@ -306,7 +306,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.goBack()}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={[styles.headerText, {color: theme.text}]}>{Strings.depositviaBank}</Text>
         </View>
@@ -364,7 +364,7 @@ export default function DepositScreen({ navigation, route }) {
 
   function AddBankAccount() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -443,7 +443,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.depositviaDebit}</Text>
         </View>

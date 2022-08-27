@@ -393,15 +393,15 @@ export const styles = StyleSheet.create({
 
   titleText:{
     fontFamily: "Poppins_700Bold",
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 20,
-    marginTop: 20,
+    marginTop: 30,
 
   },
 
   detailsText:{
     fontFamily: "Poppins_600SemiBold",
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 20,
 
   },
