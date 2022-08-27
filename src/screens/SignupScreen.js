@@ -336,6 +336,7 @@ function NameSignupScreen({ route }) {
             {Strings.login}
           </Text>
         </View>
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     </PaperProvider>
   );

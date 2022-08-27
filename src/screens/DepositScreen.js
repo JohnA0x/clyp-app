@@ -493,7 +493,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.UseAnotherCard)}
+            handlePress={() => navigation.navigate(Strings.depositviaDebit)}
           />
           <Text style={styles.headerText}>{Strings.UseAnotherCard}</Text>
         </View>

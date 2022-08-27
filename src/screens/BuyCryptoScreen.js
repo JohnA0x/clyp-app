@@ -149,7 +149,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
 
     const [amount, setAmount] = useState('')
     const [isVisible, setIsVisible] = useState(false)
-    
+
     const buy = () => {
       setIsVisible(true)
 
@@ -216,14 +216,93 @@ export default function BuyCryptoScreen({ navigation, route }) {
     const [isVisible, setIsVisible] = useState(false)
     const [cards, setCards] = useState([])
     const [checkmarkColor, setCheckmarkColor] = useState();
-    
-    const buy = () => {
+    const [card, setCard] = useState();
+    const [pin, setPin] = useState();
+    const [flw, setFLW] = useState();
+    const [otp, setOTP] = useState();
+
+    const start_charge = () => {
       setIsVisible(true)
 
-      let data = {
+      let card_data = {
+
+        card_number: card.card_number,
+        cvv: card.cvv,
+        card_expiry: card.card_expiry,
+        card_name: card.card_name,
         amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
         user_id: route.params.user.id
+
       }
+
+      axiosFiat.post('/fiat-gateway/charge-card', card_data)
+        .then(resp => {
+          setIsVisible(false)
+          if (resp.data.auth_mode === 'pin') {
+
+          } else if (resp.data.auth_mode === 'redirect') {
+
+          } else if (resp.data.transaction) {
+
+          }
+
+        })
+        .catch(err => {
+          setIsVisible(false)
+        })
+    }
+
+    const charge_pin = () => {
+      setIsVisible(true)
+
+      let card_data = {
+
+        card_number: card.card_number,
+        cvv: card.cvv,
+        card_expiry: card.card_expiry,
+        card_name: card.card_name,
+        amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        pin: pin
+      }
+
+      axiosFiat.post('/fiat-gateway/card-pin', card_data)
+        .then(data => {
+
+          setIsVisible(false)
+          if (data.data.message === "otp required") {
+            setFLW(data.data.flw_ref)
+          }
+
+        })
+        .catch(err => {
+          setIsVisible(false)
+        })
+
+    }
+
+    const charge_otp = () => {
+
+      setIsVisible(true)
+      let otp_data = {
+        otp,
+        flw_ref: flw
+      }
+
+      axiosFiat.post('/fiat-gateway/card-otp', otp_data)
+        .then(fianl => {
+          setIsVisible(false)
+          if (fianl.data.message === "success") {
+
+          }
+        })
+        .catch(err => {
+          setIsVisible(false)
+        })
     }
 
     useEffect(() => {
@@ -254,6 +333,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             ]}
             onPress={() => {
               setCheckmarkColor(item.id);
+              setCard(item)
             }}
           >
             <VectorButton
@@ -316,7 +396,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
             maxLength={12}
             placeholder="Amount"
             selectionColor={Colors.primary}
-            onChangeText = {(text) => setAmount(text)}
+            onChangeText={(text) => setAmount(text)}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
