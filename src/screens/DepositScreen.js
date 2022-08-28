@@ -6,7 +6,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../styles/deposit";
 import * as Colors from "../constants/colors";
@@ -35,6 +35,10 @@ import {
 import cryptoListArray from "../strings/cryptolist";
 import { ProcessingModal } from "../components/modal";
 import { AddCard } from "./PreferencesScreen";
+import { useSelector, useDispatch } from "react-redux";
+import { CustomAlert } from "../components/alert";
+
+import axiosFiat from "../components/axios-fait";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +46,8 @@ export default function DepositScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [priceChange, setPriceChange] = useState("");
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
@@ -71,7 +77,7 @@ export default function DepositScreen({ navigation, route }) {
       }}
     >
       <Stack.Screen
-        name={Strings.deposit}
+        name='depositscreen'
         initialParams={route}
         component={DepositOptions}
       />
@@ -130,7 +136,7 @@ export default function DepositScreen({ navigation, route }) {
     const depositOptions = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-          style={styles.button}
+        style={[styles.button, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate(item.title)}
         >
           <VectorButton
@@ -139,23 +145,23 @@ export default function DepositScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.headerImage}
           />
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.subtitle}>{item.subtitle}</Text>
+          <Text style={[styles.title, {color: theme.text}]}>{item.title}</Text>
+          <Text style={[styles.subtitle, {color: theme.text}]}>{item.subtitle}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.fund}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.fund}</Text>
         </View>
         <FlatList
           //contentContainerStyle={styles.flatlist}
@@ -193,7 +199,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.fund}</Text>
         </View>
@@ -222,14 +228,14 @@ export default function DepositScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.depositviaCrypto)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.fund}</Text>
         </View>
@@ -296,39 +302,72 @@ export default function DepositScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.goBack()}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
-          <Text style={styles.headerText}>{Strings.depositviaBank}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.depositviaBank}</Text>
         </View>
 
-        <FlatList
-          contentContainerStyle={styles.cardFlatlist}
-          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={bankAccountList}
-          renderItem={accountList}
-        />
-        <View style={styles.otherOptionsView}>
-          <Text
-            style={styles.addNewAccount}
-            onPress={() => navigation.navigate(Strings.addBankAccount)}
-          >
-            Add Bank Account
-          </Text>
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NUMBER</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.number}</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
         </View>
+
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NAME</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.name}</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>BANK</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.bank_name}</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+
+        <View>
+          <Text style={[styles.titleText, {color: theme.primary}]}>SORT CODE</Text>
+          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.bank_code}</Text>
+          <Ionicons
+          name="copy"
+          size={20}
+          color={theme.primary}
+          style ={styles.copyButton}/>
+        </View>
+       
+        <RoundedButton
+          style={[styles.roundedButton, {top: 40,}]}
+          text='Share Account Details'
+          textStyle={styles.roundedTextButton}
+        />
+       
       </SafeAreaView>
     );
   }
 
   function AddBankAccount() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -375,6 +414,7 @@ export default function DepositScreen({ navigation, route }) {
   }
 
   function DepositviaDebitCard() {
+    const [cards, setCards] = useState([])
     //Withdrawal FlatList Design
     const cardList = ({ item }) => (
       <View style={styles.cardRowContainer}>
@@ -382,22 +422,32 @@ export default function DepositScreen({ navigation, route }) {
           style={styles.cardButton}
           onPress={() => {
             navigation.navigate("accountwithdraw");
-            setCardOptions({
-              cardName: item.cardName,
-              cardType: item.cardType,
-              cardNumber: item.cardNumber,
-              securityCode: item.securityCode,
-              expiry: item.expiry,
-            });
+            setCardOptions(item);
           }}
         >
           <Image style={styles.bankIcon} source={{ uri: item.cardImage }} />
-          <Text style={styles.nameText}>{item.cardName}</Text>
-          <Text style={styles.bankNameText}>{item.cardType}</Text>
-          <Text style={styles.accountNameText}>{item.cardNumber}</Text>
+          <Text style={styles.nameText}>{item.card_name}</Text>
+          <Text style={styles.bankNameText}>{item.card_type}</Text>
+          <Text style={styles.accountNameText}>{item.card_number}</Text>
         </TouchableOpacity>
       </View>
     );
+
+    useEffect(() => {
+      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.user.id })
+        .then(data => {
+          if (data.data.message === "success") {
+            setCards(data.data.cards)
+          }
+          else {
+            CustomAlert({ title: "Failed", subtitle: "Failed to get cards...", handlePress: () => { } })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          CustomAlert({ title: "Error", subtitle: "Error fetching cards...", handlePress: () => { } })
+        })
+    }, [])
 
     return (
       <SafeAreaView style={styles.container}>
@@ -407,7 +457,7 @@ export default function DepositScreen({ navigation, route }) {
             size={24}
             color={Colors.textColor}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate('depositscreen')}
           />
           <Text style={styles.headerText}>{Strings.depositviaDebit}</Text>
         </View>
@@ -415,7 +465,7 @@ export default function DepositScreen({ navigation, route }) {
         <FlatList
           contentContainerStyle={styles.cardFlatlist}
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
-          data={depositCardList}
+          data={cards}
           renderItem={cardList}
         />
         <View style={styles.otherOptionsView}>
@@ -425,12 +475,12 @@ export default function DepositScreen({ navigation, route }) {
           >
             Add New Card
           </Text>
-          <Text
+          {/* <Text
             style={styles.useAnotherAccount}
             onPress={() => navigation.navigate(Strings.UseAnotherCard)}
           >
             Use Another Card
-          </Text>
+          </Text> */}
         </View>
       </SafeAreaView>
     );
@@ -523,4 +573,130 @@ export default function DepositScreen({ navigation, route }) {
       </SafeAreaView>
     );
   }
+
+  // function AddCardd({ navigation, route }) {
+  //   const [cardNumber, setCardNumber] = useState("");
+  //   const [cvvNumber, setCVVNumber] = useState("");
+  //   const [expiryNumber, setExpiryNumber] = useState("");
+  //   const [cardName, setCardName] = useState("");
+  //   const [cardType, setCardType] = useState("");
+  //   const [cardPin, setCardPin] = useState("");
+  //   const [loading, setLoading] = useState(false);
+  
+  //   const submit = () => {
+  //     setLoading(true)
+  
+  //     let data = {
+  //       card_number: cardNumber,
+  //       cvv: cvvNumber,
+  //       card_expiry: expiryNumber,
+  //       card_type: cardType,
+  //       card_name: cardName,
+  //       card_pin: cardPin,
+  //       user_id: route.params.params.id
+  //     }
+      
+  //     if(data.card_number === "" || data.cvv === "" || data.card_expiry === ""){
+  //       setLoading(false)
+  //       return false
+  //     }
+  //     axiosFiat.post('/fiat-gateway/save-card', data)
+  //       .then(data => {
+  //         if (data.data.message === "success") {
+  //           setLoading(false)
+  //           navigation.navigate(Strings.paymentmethod, {
+  //             id: route.params.params.id,
+  //             firstName: route.params.params.firstName,
+  //             lastName: route.params.params.lastName,
+  //             preferences: route.params.params.preferences,
+  //             user: route.params.params.user,
+  //           })
+  //         } else {
+  //           setLoading(false)
+  //           CustomAlert({
+  //             title: "Failed",
+  //             subtitle: "Problem adding card.",
+  //             handlePress: () => { },
+  //           });
+  //         }
+  //       })
+  //       .catch(err => {
+  //         setLoading(false)
+  //         CustomAlert({
+  //           title: "Failed",
+  //           subtitle: "Problem adding card.",
+  //           handlePress: () => { },
+  //         });
+  //       })
+  //   }
+  
+  //   return (
+  //     <SafeAreaView style={styles.container}>
+  //       <View style={styles.preferencesHeader}>
+  //         <VectorButton
+  //           name="chevron-back"
+  //           size={24}
+  //           color={Colors.textColor}
+  //           style={styles.backButton}
+  //           handlePress={() => navigation.goBack({
+  //             id: route.params.params.id,
+  //             firstName: route.params.params.firstName,
+  //             lastName: route.params.params.lastName,
+  //             preferences: route.params.params.preferences,
+  //             user: route.params.params.user,
+  //           })}
+  //         />
+  //         <Text style={styles.headerText}>{Strings.addNewCard}</Text>
+  //       </View>
+  
+  //       <TextInput
+  //         style={styles.inputText2}
+  //         placeholder="Card Name"
+  //         selectionColor={Colors.primary}
+  //         value={cardName}
+  //         onChangeText={(value) => setCardName(value)}
+  //       />
+  
+  //       <TextInput
+  //         style={styles.otherTextInputs2}
+  //         placeholder="Card Number"
+  //         selectionColor={Colors.primary}
+  //         maxLength={16}
+  //         value={cardNumber}
+  //         onChangeText={(value) => setCardNumber(value)}
+  //       />
+  
+  //       <View style={styles.rowCardContainer}>
+  //         <TextInput
+  //           style={styles.rowTextInputs}
+  //           placeholder="Expiry Date"
+  //           selectionColor={Colors.primary}
+  //           maxLength={5}
+  //           value={expiryNumber}
+  //           onChangeText={(value) => setExpiryNumber(value)}
+  //         />
+  
+  //         <TextInput
+  //           style={styles.rowTextInputs}
+  //           placeholder="CVV"
+  //           selectionColor={Colors.primary}
+  //           maxLength={3}
+  //           value={cvvNumber}
+  //           onChangeText={(value) => setCVVNumber(value)}
+  //         />
+  //       </View>
+  
+        
+  
+  //       <RoundedButton
+  //         text="Add Card"
+  //         textStyle={styles.roundedTextButton}
+  //         style={styles.roundedButton}
+  //         handlePress={() => submit()}
+  //       />
+  
+  //       <ProcessingModal isVisible={loading} />
+  //     </SafeAreaView>
+  //   );
+  // }
 }

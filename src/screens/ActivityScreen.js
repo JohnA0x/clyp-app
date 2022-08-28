@@ -1,4 +1,4 @@
-import { React, useState, useCallback, useMemo, useRef } from "react";
+import { React, useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   FlatList,
@@ -29,6 +29,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import activityListArray from "../strings/activitylist";
 
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import RNDatePicker from "react-native-date-picker";
+import axiosFiat from "../components/axios-fait";
+import { CustomAlert } from "../components/alert";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -45,12 +48,12 @@ export default function ActivityScreen({ navigation, route }) {
           backgroundColor: Colors.backgroundColor,
         }}
       >
-        <Stack.Screen name="Tabs" component={TabNavigator} />
+        <Stack.Screen name="Tabs" initialParams={route} component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 
-  function TabNavigator() {
+  function TabNavigator({ route }) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -60,16 +63,16 @@ export default function ActivityScreen({ navigation, route }) {
             color={Colors.textColor}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.Profile, {
-              id: route.params.id,
-              firstName: route.params.firstName,
-              lastName: route.params.lastName,
-              preferences: route.params.preferences,
-              user: route.params.user,
+              id: route.params.params.id,
+              firstName: route.params.params.firstName,
+              lastName: route.params.params.lastName,
+              preferences: route.params.params.preferences,
+              user: route.params.params.user,
             })}
           />
           <Text style={styles.headerText}>{Strings.activity}</Text>
         </View>
-
+  
         <Tab.Navigator
           tabBarOptions={{
             style: styles.tabBar,
@@ -84,72 +87,91 @@ export default function ActivityScreen({ navigation, route }) {
         </Tab.Navigator>
       </SafeAreaView>
     );
-  }
-
-  function History() {
-    const historyList = ({ item }) => {
+  
+    function History() {
+      const [transactions, setTransactions] = useState([])
+  
+      useEffect(() => {
+        axiosFiat.post('/fiat-gateway/get-wallet-transactions', { user_id: route.params.params.user.id })
+          .then(data => {
+            if (data.data.message === "success") {
+              setTransactions(data.data.transactions)
+            } else {
+              CustomAlert({ title: "failed", subtitle: "failed to fetch transactions", handlePress: () => { } })
+            }
+          })
+          .catch(err => {
+            CustomAlert({ title: "failed", subtitle: "failed to fetch transactions", handlePress: () => { } })
+            console.log(err)
+          })
+      }, [])
+      const historyList = ({ item }) => {
+        return (
+          <View style={styles.rowContainer}>
+            <TouchableOpacity style={styles.list}>
+              <VectorButton
+                name={item.icon}
+                size={15}
+                style={styles.statusIcon}
+                color={Colors.white}
+              />
+              <Text style={styles.time}>{item.createdAt}</Text>
+              <Text style={styles.title}>{item.transaction_type.toUpperCase()}</Text>
+              <Text style={styles.description} numberOfLines={1}>
+                {item.transaction_type} {item.amount}
+              </Text>
+              <Text style={styles.date} numberOfLines={1}>
+                {item.createdAt}
+              </Text>
+              <Text style={styles.status} numberOfLines={1}>
+                {item.status}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        );
+      };
+  
       return (
-        <View style={styles.rowContainer}>
-          <TouchableOpacity style={styles.list}>
-            <VectorButton
-              name={item.icon}
-              size={15}
-              style={styles.statusIcon}
-              color={Colors.white}
-            />
-            <Text style={styles.time}>{item.time}</Text>
-            <Text style={styles.title}>{item.title.toUpperCase()}</Text>
-            <Text style={styles.description} numberOfLines={1}>
-              {item.description}
-            </Text>
-            <Text style={styles.date} numberOfLines={1}>
-              {item.date}
-            </Text>
-            <Text style={styles.status} numberOfLines={1}>
-              {item.status}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={transactions}
+            //ListHeaderComponent={renderHeader}
+            renderItem={historyList}
+          />
+        </SafeAreaView>
       );
-    };
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={activityListArray}
-          //ListHeaderComponent={renderHeader}
-          renderItem={historyList}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  function Range() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.fromText}>FROM:</Text>
-        <TextInput
-          style={styles.fromInput}
-          placeholder="Select Date"
-          selectionColor={Colors.primary}
-          editable={false}
-          onPressIn={() => setOpen(true)}
-        />
-        <Text style={styles.toText}>TO:</Text>
-        <TextInput
-          style={styles.fromInput}
-          placeholder="Select Date"
-          selectionColor={Colors.primary}
-        />
-
-        <RNDateTimePicker display="calendar" value={new Date()} />
-
-        <RoundedButton
-          style={styles.searchButton}
-          text="Search"
-          textStyle={styles.searchText}
-        />
-      </SafeAreaView>
-    );
+    }
+  
+    function Range() {
+  
+      return (
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.fromText}>FROM:</Text>
+          <TextInput
+            style={styles.fromInput}
+            placeholder="Select Date"
+            selectionColor={Colors.primary}
+            editable={false}
+            onPressIn={() => setOpen(true)}
+          />
+          <Text style={styles.toText}>TO:</Text>
+          <TextInput
+            style={styles.fromInput}
+            placeholder="Select Date"
+            selectionColor={Colors.primary}
+          />
+  
+          <RNDateTimePicker display="default" value={new Date()} />
+  
+          <RoundedButton
+            style={styles.searchButton}
+            text="Search"
+            textStyle={styles.searchText}
+          />
+        </SafeAreaView>
+      );
+    }
   }
 }
+
+

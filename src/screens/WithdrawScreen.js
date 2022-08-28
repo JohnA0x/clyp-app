@@ -27,15 +27,18 @@ import { ProcessingModal } from "../components/modal";
 import axiosFiat from "../components/axios-fait";
 import axios from "axios";
 import { CustomAlert } from "../components/alert";
+import PaymentConfirmation from "./BreakdownScreens/PaymentDetails/PaymentConfirmation";
+import TransactionFailedScreen from "./BreakdownScreens/PaymentDetails/TransactionFailedScreen";
+import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/TransactionSuccessScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function WithdrawScreen({ route }) {
   const [accountName, setAccountName] = useState("");
-  const [bank, setBank] = useState({})
+  const [bank, setBank] = useState({});
   const [bankName, setBankName] = useState("Choose Bank");
   const [bankCode, setBankCode] = useState("");
-  const [bank_id, setBankId] = useState("")
+  const [bank_id, setBankId] = useState("");
   // Return for Main Function
   return (
     <Stack.Navigator
@@ -49,7 +52,10 @@ export default function WithdrawScreen({ route }) {
 
       <Stack.Screen name={Strings.addBankAccount} component={AddBankAccount} />
 
-      <Stack.Screen name={Strings.UseAnotherBankAccount} component={UseAnotherBankAccount} />
+      <Stack.Screen
+        name={Strings.UseAnotherBankAccount}
+        component={UseAnotherBankAccount}
+      />
 
       <Stack.Screen name={"chooseBank"} component={banks} />
     </Stack.Navigator>
@@ -58,13 +64,13 @@ export default function WithdrawScreen({ route }) {
   function accountWithdraw({ navigation, route }) {
     const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
-
-    const [amount, setAmount] = useState(0)
-    const [isVisible, setIsVisible] = useState(false)
+    const [page, setPage] = useState("main")
+    const [amount, setAmount] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    const [message, setMessage] = useState(false)
 
     const withdraw = () => {
-
-      setIsVisible(true)
+      setIsVisible(true);
       let data = {
         amount: Number(amount),
         user_id: route.params.account.user_id,
@@ -73,33 +79,50 @@ export default function WithdrawScreen({ route }) {
         account_number: route.params.account.account_number,
         bank_id: route.params.account.bank_id,
         transaction_type: "send",
-        bank_name: route.params.account.bank_name
-      }
+        bank_name: route.params.account.bank_name,
+      };
 
-      console.log(data)
+      console.log(data);
 
-      axiosFiat.post('/fiat-gateway/send', data)
-        .then(sent => {
-          console.log(sent.data)
+      axiosFiat
+        .post("/fiat-gateway/send", data)
+        .then((sent) => {
+          console.log(sent.data);
+          setIsVisible(false);
           if (sent.data.message === "success") {
-            console.log(sent.data.message)
-            setIsVisible(false)
-            navigation.navigate("MenuNavigation")
+
           } else {
-            // CustomAlert({ title: "Failed", subtitle: "Failed to send transaction", handlePress: () => { } })
+            setMessage(sent.data.details)
+            setPage("failed")
+
+            // CustomAlert({ title: "Failed", subtitle: sent.data.details, handlePress: () => { } })
           }
         })
         .catch(err => {
           console.log(err)
-          setIsVisible(false)
-          // CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
-        })
-
-    }
+          CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
+        });
+    };
 
     useEffect(() => {
-      console.log(route.params)
-    }, [])
+      console.log(route.params);
+    }, []);
+
+    if (page === "confirm") {
+      return (
+        <PaymentConfirmation amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} isVisible={isVisible}/>
+      )
+    }
+
+    if (page === "failed") {
+      return(
+        <TransactionFailedScreen amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} message={message} status={"Not Submited"} />
+      )
+    }
+
+    if (page === "success") {
+      <TransactionSuccessScreen />
+    }
 
     return (
       <SafeAreaView style={styles.container}>
@@ -122,8 +145,12 @@ export default function WithdrawScreen({ route }) {
             style={styles.bankIcon}
             source={require("../drawables/bitcoin.png")}
           />
-          <Text style={styles.nameText}>{route.params.account.account_name}</Text>
-          <Text style={styles.bankNameText}>{route.params.account.account_number}</Text>
+          <Text style={styles.nameText}>
+            {route.params.account.account_name}
+          </Text>
+          <Text style={styles.bankNameText}>
+            {route.params.account.account_number}
+          </Text>
         </TouchableOpacity>
 
         <TextInput
@@ -131,7 +158,7 @@ export default function WithdrawScreen({ route }) {
           placeholder={Strings.inputAmount}
           selectionColor={Colors.primary}
           onChangeText={(text) => {
-            setAmount(text)
+            setAmount(text);
           }}
         />
 
@@ -140,7 +167,7 @@ export default function WithdrawScreen({ route }) {
           text={Strings.withdraw}
           textStyle={styles.roundedButtonText}
           handlePress={() => {
-            withdraw()
+            setPage("confirm");
           }}
         />
         <ProcessingModal isVisible={isVisible} />
@@ -153,7 +180,7 @@ export default function WithdrawScreen({ route }) {
     const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
 
-    const [banks, setBanks] = useState([])
+    const [banks, setBanks] = useState([]);
 
     const withdrawalFlatList = ({ item }) => (
       <View style={styles.rowContainer}>
@@ -161,9 +188,9 @@ export default function WithdrawScreen({ route }) {
           style={styles.button}
           onPress={() => {
             navigation.navigate("accountwithdraw", {
-              account: item
+              account: item,
             });
-            setBank(item)
+            setBank(item);
             setAccountName(item.name);
             setAccountNumber(item.accountNumber);
           }}
@@ -180,21 +207,21 @@ export default function WithdrawScreen({ route }) {
     );
 
     useEffect(() => {
-      axiosFiat.post('/fiat-gateway/get-bank-accounts', { user_id: route.params.user.id })
-        .then(banks => {
-          
+      axiosFiat
+        .post("/fiat-gateway/get-bank-accounts", {
+          user_id: route.params.user.id,
+        })
+        .then((banks) => {
           if (banks.data.message === "success") {
-            
-            setBanks(banks.data.banks)
-          }
-          else {
+            setBanks(banks.data.banks);
+          } else {
             // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
-        })
-    }, [])
+        });
+    }, []);
 
     return (
       <SafeAreaView style={styles.container}>
@@ -225,8 +252,10 @@ export default function WithdrawScreen({ route }) {
           >
             Add New Account
           </Text>
-          <Text style={styles.useAnotherAccount}
-            onPress={() => navigation.navigate(Strings.UseAnotherBankAccount)}>
+          <Text
+            style={styles.useAnotherAccount}
+            onPress={() => navigation.navigate(Strings.UseAnotherBankAccount)}
+          >
             Use Another Account Instead
           </Text>
         </View>
@@ -238,30 +267,29 @@ export default function WithdrawScreen({ route }) {
     // const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [accountName, setAccountName] = useState("");
-    const [isVisible, setIsVisible] = useState(false)
+    const [isVisible, setIsVisible] = useState(false);
 
     const resolve = (text) => {
       let data = {
         bank_code: bankCode,
-        account_number: text
-      }
-      console.log(text)
-      setAccountNumber(text)
+        account_number: text,
+      };
+      console.log(text);
+      setAccountNumber(text);
       if (text.length === 10 && bankName !== "Choose Bank") {
-
-        axiosFiat.post('/fiat-gateway/resolve-account', data)
-          .then(data => {
-            console.log(data.data)
-            setAccountName(data.data.account_name)
+        axiosFiat
+          .post("/fiat-gateway/resolve-account", data)
+          .then((data) => {
+            console.log(data.data);
+            setAccountName(data.data.account_name);
           })
-          .catch(err => {
-            console.log(err)
-          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        return;
       }
-      else {
-        return
-      }
-    }
+    };
 
     const save = () => {
       let data = {
@@ -270,29 +298,27 @@ export default function WithdrawScreen({ route }) {
         bank_name: bankName,
         bank_code: bankCode,
         bank_id: bank_id,
-        user_id: route.params.user.id
-      }
-      setIsVisible(true)
+        user_id: route.params.user.id,
+      };
+      setIsVisible(true);
       // console.log(data.account_number)
 
       if (accountName === "") {
-        return false
+        return false;
       } else {
-
-        axiosFiat.post('/fiat-gateway/save-bank-account', data)
-          .then(bank => {
-            console.log(bank.data)
-            navigation.goBack()
-            setIsVisible(false)
+        axiosFiat
+          .post("/fiat-gateway/save-bank-account", data)
+          .then((bank) => {
+            console.log(bank.data);
+            navigation.goBack();
+            setIsVisible(false);
           })
-          .catch(err => {
-            setIsVisible(false)
-            console.log(err)
-          })
-
+          .catch((err) => {
+            setIsVisible(false);
+            console.log(err);
+          });
       }
-
-    }
+    };
 
     return (
       <SafeAreaView style={styles.container}>
@@ -307,13 +333,16 @@ export default function WithdrawScreen({ route }) {
           <Text style={styles.headerText}>{Strings.addBankAccount}</Text>
         </View>
 
-        <Text
+        <TextInput
           style={styles.otherTextInputs}
           placeholder="Bank Name"
-          selectionColor={Colors.primary}
-          onPress={() => navigation.navigate("chooseBank")}
+          // selectionColor={Colors.primary}
+          editable={false}
+          onPressIn={() => navigation.navigate("chooseBank")}
         // maxLength={3}
-        >{bankName}</Text>
+        >
+          {bankName}
+        </TextInput>
 
         <TextInput
           style={styles.otherTextInputs}
@@ -324,7 +353,7 @@ export default function WithdrawScreen({ route }) {
           keyboardType="numeric"
           onChangeText={(text) => {
             // setAccountNumber(text)
-            resolve(text)
+            resolve(text);
           }}
         />
 
@@ -342,7 +371,7 @@ export default function WithdrawScreen({ route }) {
           textStyle={styles.roundedTextButton}
           style={styles.roundedAddButton}
           handlePress={() => {
-            save()
+            save();
           }}
         />
         <ProcessingModal isVisible={isVisible} />
@@ -351,33 +380,31 @@ export default function WithdrawScreen({ route }) {
   }
 
   function UseAnotherBankAccount({ navigation }) {
-
     const [accountNumber, setAccountNumber] = useState("");
     const [accountName, setAccountName] = useState("");
-    const [isVisible, setIsVisible] = useState(false)
+    const [isVisible, setIsVisible] = useState(false);
 
     const resolve = (text) => {
       let data = {
         bank_code: bankCode,
-        account_number: text
-      }
-      console.log(text)
-      setAccountNumber(text)
+        account_number: text,
+      };
+      console.log(text);
+      setAccountNumber(text);
       if (text.length === 10 && bankName !== "Choose Bank") {
-
-        axiosFiat.post('/fiat-gateway/resolve-account', data)
-          .then(data => {
-            console.log(data.data)
-            setAccountName(data.data.account_name)
+        axiosFiat
+          .post("/fiat-gateway/resolve-account", data)
+          .then((data) => {
+            console.log(data.data);
+            setAccountName(data.data.account_name);
           })
-          .catch(err => {
-            console.log(err)
-          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        return;
       }
-      else {
-        return
-      }
-    }
+    };
 
     const save = () => {
       let data = {
@@ -386,29 +413,27 @@ export default function WithdrawScreen({ route }) {
         bank_name: bankName,
         bank_code: bankCode,
         bank_id: bank_id,
-        user_id: route.params.user.id
-      }
-      setIsVisible(true)
+        user_id: route.params.user.id,
+      };
+      setIsVisible(true);
       // console.log(data.account_number)
 
       if (accountName === "") {
-        return false
+        return false;
       } else {
-
-        axiosFiat.post('/fiat-gateway/save-bank-account', data)
-          .then(bank => {
-            console.log(bank.data)
-            navigation.goBack()
-            setIsVisible(false)
+        axiosFiat
+          .post("/fiat-gateway/save-bank-account", data)
+          .then((bank) => {
+            console.log(bank.data);
+            navigation.goBack();
+            setIsVisible(false);
           })
-          .catch(err => {
-            setIsVisible(false)
-            console.log(err)
-          })
-
+          .catch((err) => {
+            setIsVisible(false);
+            console.log(err);
+          });
       }
-
-    }
+    };
 
     return (
       <SafeAreaView style={styles.container}>
@@ -423,13 +448,16 @@ export default function WithdrawScreen({ route }) {
           <Text style={styles.headerText}>{Strings.UseAnotherBankAccount}</Text>
         </View>
 
-        <Text
+        <TextInput
           style={styles.otherTextInputs}
           placeholder="Bank Name"
           selectionColor={Colors.primary}
-          onPress={() => navigation.navigate("chooseBank")}
+          editable={false}
+          onPressIn={() => navigation.navigate("chooseBank")}
         // maxLength={3}
-        >{bankName}</Text>
+        >
+          {bankName}
+        </TextInput>
 
         <TextInput
           style={styles.otherTextInputs}
@@ -440,7 +468,7 @@ export default function WithdrawScreen({ route }) {
           keyboardType="numeric"
           onChangeText={(text) => {
             // setAccountNumber(text)
-            resolve(text)
+            resolve(text);
           }}
         />
 
@@ -458,7 +486,7 @@ export default function WithdrawScreen({ route }) {
           textStyle={styles.roundedTextButton}
           style={styles.roundedAddButton}
           handlePress={() => {
-            save()
+            save();
           }}
         />
         <ProcessingModal isVisible={isVisible} />
@@ -467,25 +495,24 @@ export default function WithdrawScreen({ route }) {
   }
 
   function banks({ navigation }) {
-
-    const [banks, setBanks] = useState([])
-
+    const [banks, setBanks] = useState([]);
 
     useEffect(() => {
-      axios.get('https://api.getbrass.co/banking/banks?page=1&limit=89', {
-        headers: {
-          Authorization: `Bearer 6099|pat-NSY7IMOQm9zwUAqVTLkLwkebwc72mW15Vj4BYDOM`
-        }
-      })
-        .then(data => {
+      axios
+        .get("https://api.getbrass.co/banking/banks?page=1&limit=89", {
+          headers: {
+            Authorization: `Bearer 6099|pat-NSY7IMOQm9zwUAqVTLkLwkebwc72mW15Vj4BYDOM`,
+          },
+        })
+        .then((data) => {
           // console.log(data.data.data)
-          setBanks(data.data.data)
-          console.log(data.data.data[0])
+          setBanks(data.data.data);
+          console.log(data.data.data[0]);
         })
-        .catch(err => {
-          console.log(err)
-        })
-    }, [])
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
 
     const bankList = ({ item }) => {
       return (
@@ -494,21 +521,19 @@ export default function WithdrawScreen({ route }) {
             style={styles.list}
             onPress={() => {
               navigation.goBack();
-              setBankName(item.name)
-              setBankId(item.id)
-              setBankCode(item.code)
+              setBankName(item.name);
+              setBankId(item.id);
+              setBankCode(item.code);
             }}
           >
             <Text style={styles.valueText}>{item.name} </Text>
-
           </TouchableOpacity>
         </View>
-      )
-    }
+      );
+    };
 
     return (
       <SafeAreaView style={styles.container}>
-
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -526,8 +551,7 @@ export default function WithdrawScreen({ route }) {
           data={banks}
           renderItem={bankList}
         />
-
       </SafeAreaView>
-    )
+    );
   }
 }

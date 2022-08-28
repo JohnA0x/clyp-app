@@ -8,7 +8,7 @@ import * as Strings from "../../../strings/strings";
 import FAILEDSVG from "../../../drawables/vector/breakdown/transactionfailed.svg";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
-export default function TransactionFailedScreen({amount, usdAmount, source, destination, date, txid, status, fee  }) {
+export default function TransactionFailedScreen({amount, usdAmount, source, destination, date, txid, status, fee, message  }) {
   const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
@@ -18,7 +18,7 @@ export default function TransactionFailedScreen({amount, usdAmount, source, dest
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.home)}
+          handlePress={() => navigation.goBack()}
         />
 
         <Text style={styles.headerText}>{Strings.paymentDetails}</Text>
@@ -27,9 +27,9 @@ export default function TransactionFailedScreen({amount, usdAmount, source, dest
       <ScrollView>
         <FAILEDSVG width={200} height={200} style={styles.svg} />
 
-        <Text style={styles.failedText}>Transaction Failed</Text>
+        <Text style={styles.failedText}>Transaction Failed: {message}</Text>
         <Text style={styles.valueText}>
-          {amount}
+         N {Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
         </Text>
         <Text style={styles.dollarText}>{usdAmount}</Text>
 
@@ -55,12 +55,12 @@ export default function TransactionFailedScreen({amount, usdAmount, source, dest
             </Text>
           </View>
 
-          <View style={styles.breakDownSubview}>
+          {/* <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>TxId</Text>
             <Text style={styles.breakdownDescription} numberOfLines={1}>
             {txid}
             </Text>
-          </View>
+          </View> */}
 
           <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>Status</Text>

@@ -156,7 +156,7 @@ export default function SellCryptoScreen({ navigation, route }) {
 
         <View style={styles.walletBalanceContainer}>
           <Text style={styles.walletBalanceText}>Wallet Balance</Text>
-          <Text style={styles.walletBalanceValueText}>N35,000</Text>
+          <Text style={styles.walletBalanceValueText}>N {route.params.wallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
         </View>
 
         <View style={styles.transactionCryptoContainer}>

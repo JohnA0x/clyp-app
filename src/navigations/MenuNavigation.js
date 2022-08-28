@@ -35,10 +35,13 @@ import BillPayScreen from "../screens/BillPayScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SavingsScreen from "../screens/SavingsScreen";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const InfoStack = createNativeStackNavigator();
 const HubStack = createNativeStackNavigator();
+
 
 export const HomeStackScreen = () => {
   return (
@@ -100,6 +103,9 @@ function ClypHubStackScreen() {
 }
 
 export default function MenuNavigation() {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -120,7 +126,7 @@ export default function MenuNavigation() {
       },
       headerShown: false,
       tabBarActiveTintColor: Colors.primary,
-      tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0, backgroundColor: Colors.backgroundColor },
+      tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0, backgroundColor: theme.background },
       tabBarShowLabel: false,
     })}
   >

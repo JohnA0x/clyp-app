@@ -19,66 +19,23 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import NewsScreen from "./NewsScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "../components/axios";
+
+import { useSelector, useDispatch } from "react-redux";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ClypHub({navigation}) {
-
-  const [id, setID] = React.useState("")
-  const [firstName, setFirstName] = React.useState("")
-  const [lastName, setLastName] = React.useState("")
-  const [preferences, setPrefrences] = React.useState("")
-  const [user, setUser] = React.useState({})
-  const [token, setToken] = React.useState("")
-  const [coins, setCoins] = React.useState([])
-
-  React.useEffect(() => {
-    async function fetchData() {
-      let id = await AsyncStorage.getItem("user_id").then((value) => value);
-      let token = await AsyncStorage.getItem("token").then((value) => value);
-
-      setToken(token)
-      axios.post('/user-gateway/get-full-user', { user_id: id })
-        .then(data => {
-          // console.log(data.data)
-          setID(data.data.user.id)
-          setFirstName(data.data.user.first_name)
-          setLastName(data.data.user.last_name)
-          setPrefrences(data.data.user.prefrence[0])
-          setUser(data.data.user)
-          console.log(data.data.user)
-          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
-            .then(coins_data => {
-              setCoins(coins_data.data.coins)
-            })
-        })
-        .catch(err => {
-          CustomAlert({ title: "Error", subtitle: "Error making request, please try again...", handlePress: () => { } })
-          console.log({ err })
-        })
-        .catch((err) => {
-          CustomAlert({
-            title: "Error",
-            subtitle: "Error making request, please try again...",
-            handlePress: () => {},
-          });
-          console.log({ err });
-        });
-    }
-    fetchData();
-  }, []);
-
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View>
-        <Text style={styles.hubHeaderText}>{Strings.clyphub}</Text>
+        <Text style={[styles.hubHeaderText, {color: theme.text}]}>{Strings.clyphub}</Text>
       </View>
 
-      <View style={styles.newsContainer}>
-        <Text style={styles.seeAll}
-        onPress={() => navigation.navigate(Strings.News, { user })}
+      <View style={[styles.newsContainer, {backgroundColor: theme.background}]}>
+        <Text style={[styles.seeAll, {color: theme.text}]}
+        onPress={() => navigation.navigate(Strings.News)}
         >{Strings.seeAll}</Text>
         <Swiper activeDotColor={Colors.fadedButton}>
           <FileImageButton style={styles.newsImage} />

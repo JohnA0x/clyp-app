@@ -34,8 +34,10 @@ import storage from "redux-persist/lib/storage";
 import { store, persistor } from "./src/redux/themeStore";
 import { PersistGate } from "redux-persist/integration/react";
 import HomeScreen from "./src/screens/HomeScreen";
+import { useState } from "react";
 
 export default function App() {
+  const [firstTime, setFirstTime] = useState("");
   let [fontsLoaded, error] = useFonts({
     Poppins_700Bold,
     Poppins_900Black,
@@ -48,27 +50,11 @@ export default function App() {
     try {
       const value = await AsyncStorage.getItem(Values.IS_FIRST_TIME);
       if (value === "false") {
-        return (
-          <Provider store={store}>
-            <PersistGate
-              loading={<Text>Loading...</Text>}
-              persistor={persistor}
-            >
-              <HomeScreen />
-            </PersistGate>
-          </Provider>
-        );
+        setFirstTime("false");
+        alert("yes");
       } else {
-        return (
-          <Provider store={store}>
-            <PersistGate
-              loading={<Text>Loading...</Text>}
-              persistor={persistor}
-            >
-              <Onboarding />
-            </PersistGate>
-          </Provider>
-        );
+        setFirstTime("true");
+        alert("yes");
       }
     } catch (e) {
       // error reading value
@@ -81,13 +67,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-    <PersistGate
-      loading={<Text>Loading...</Text>}
-      persistor={persistor}
-    >
-      <Onboarding />
-    </PersistGate>
-  </Provider>
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <View onLayout={isFirstTime} />
+        <Onboarding />
+      </PersistGate>
+    </Provider>
   );
 }
 

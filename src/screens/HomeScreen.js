@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -7,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../styles/home";
@@ -37,10 +37,16 @@ import { ProcessingModal } from "../components/modal";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { storeData } from "../services/storage";
 import { IS_FIRST_TIME } from "../constants/values";
 
+import { useSelector, useDispatch } from "react-redux";
+import { switchTheme } from "../redux/themeAction";
+import { lightTheme, darkTheme } from "../constants/theme";
 
+import { TabNavigator } from "./ActivityScreen";
+import CoinDetailedScreen from "./CoinDetailedScreen_copy/index";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -75,12 +81,17 @@ export default function HomeScreen({ navigation }) {
   // const [lastName, setLastName] = React.useState("")
 
   const priceChangeColor = priceChange > 0 ? "#009E06" : "#C52020";
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
-  storeData(IS_FIRST_TIME, "false")
+  storeData(IS_FIRST_TIME, "false");
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
-      <TouchableOpacity style={styles.favouriteButton} onPress={biometricsAuth}>
+      <TouchableOpacity
+        style={[styles.favouriteButton, { backgroundColor: theme.flatlist }]}
+        onPress={biometricsAuth}
+      >
         <Ionicons
           name="star"
           size={12}
@@ -92,7 +103,9 @@ export default function HomeScreen({ navigation }) {
           style={styles.cryptoimage}
           imageStyle={styles.cryptoimage}
         />
-        <Text style={styles.textButton}>{item.name}</Text>
+        <Text style={[styles.textButton, { color: theme.text }]}>
+          {item.name}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -102,9 +115,10 @@ export default function HomeScreen({ navigation }) {
     return (
       <View style={styles.historyBaseContainer}>
         <TouchableOpacity
-          style={styles.holdingButton}
+          style={[styles.holdingButton, { backgroundColor: theme.flatlist }]}
           onPress={() => {
-            navigation.push(Strings.holdings);
+            navigation.navigate(Strings.holdings, { coinId: item.name.toLowerCase() });
+
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
             setWalletOptions({ abb: item.abb });
@@ -115,8 +129,12 @@ export default function HomeScreen({ navigation }) {
             style={styles.holdingsCryptoimage}
             imageStyle={styles.holdingsCryptoimage}
           />
-          <Text style={styles.holdingsTextButton}>{item.name}</Text>
-          <Text style={styles.holdingsValueButton}>0 {item.abb}</Text>
+          <Text style={[styles.holdingsTextButton, { color: theme.text }]}>
+            {item.name}
+          </Text>
+          <Text style={[styles.holdingsValueButton, { color: theme.text }]}>
+            0 {item.abb}
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -131,17 +149,21 @@ export default function HomeScreen({ navigation }) {
       axios
         .post("/user-gateway/get-full-user", { user_id: id })
         .then((data) => {
-          
-          setID(data.data.user.id)
-          setFirstName(data.data.user.first_name)
-          setLastName(data.data.user.last_name)
-          setPrefrences(data.data.user.prefrence[0])
-          setUser(data.data.user)
-          console.log(data.data.user)
-          axios.post('https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins', { user_id: id })
-            .then(coins_data => {
-              setCoins(coins_data.data.coins)
-            })
+          // console.log(data.data)
+          setID(data.data.user.id);
+          setFirstName(data.data.user.first_name);
+          setLastName(data.data.user.last_name);
+          setPrefrences(data.data.user.prefrence[0]);
+          setUser(data.data.user);
+          console.log(data.data.user);
+          axios
+            .post(
+              "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
+              { user_id: id }
+            )
+            .then((coins_data) => {
+              setCoins(coins_data.data.coins);
+            });
 
           axios.post('https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet', { user_id: id })
             .then(wallet_data => {
@@ -152,7 +174,7 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
           console.log({ err });
         })
@@ -165,7 +187,7 @@ export default function HomeScreen({ navigation }) {
           console.log({ err });
         });
     }
-    fetchData();
+    fetchData()
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -183,7 +205,10 @@ export default function HomeScreen({ navigation }) {
 
   function HomeScreen() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <StatusBar barStyle={theme.statusbar} />
         <ScrollView>
           <View style={styles.topBar}>
             <ImageButton
@@ -205,7 +230,9 @@ export default function HomeScreen({ navigation }) {
                 navigation.setOptions({ tabBarVisible: false });
               }}
             />
-            <Text style={styles.nameText}>Welcome {firstName}</Text>
+            <Text style={[styles.nameText, { color: theme.text }]}>
+              Welcome {firstName}
+            </Text>
             <VectorButton
               style={styles.notificationButton}
               name="notifications-outline"
@@ -229,7 +256,9 @@ export default function HomeScreen({ navigation }) {
           >
             <View style={styles.cryptoContainer}>
               <Text style={styles.balanceText}>{Strings.cryptoBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "*** BTC" : "0.0001 BTC"}</Text>
+              <Text style={styles.cryptoBalanceText}>
+                {preferences.private_mode ? "*** BTC" : "0.0001 BTC"}
+              </Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -239,7 +268,11 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sendbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sendCrypto, { coins: coins, user })
+                      navigation.navigate(Strings.sendCrypto, {
+                        coins: coins,
+                        user,
+                        wallet: fiatWallet
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.send}</Text>
@@ -253,7 +286,9 @@ export default function HomeScreen({ navigation }) {
                     style={styles.receivebutton}
                     handlePress={() =>
                       navigation.navigate(Strings.receiveCrypto, {
-                        coins: coins, user
+                        coins: coins,
+                        user,
+                        wallet: fiatWallet
                       })
                     }
                   />
@@ -267,7 +302,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.buybutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.buy, { coins, user })
+                      navigation.navigate(Strings.buy, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.buy}</Text>
@@ -280,7 +315,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sellbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sell, { coins, user })
+                      navigation.navigate(Strings.sell, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.sell}</Text>
@@ -293,7 +328,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.swapbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.swap, { coins, user })
+                      navigation.navigate(Strings.swap, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.swap}</Text>
@@ -303,7 +338,8 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
+
+              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance ? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -312,7 +348,9 @@ export default function HomeScreen({ navigation }) {
                     size={20}
                     color={Colors.white}
                     style={styles.sendbutton}
-                    handlePress={() => navigation.push(Strings.deposit, { user })}
+                    handlePress={() =>
+                      navigation.push(Strings.deposit, { user, wallet: fiatWallet })
+                    }
                   />
                   <Text style={styles.optionText}>{Strings.deposit}</Text>
                 </View>
@@ -323,7 +361,9 @@ export default function HomeScreen({ navigation }) {
                     size={20}
                     color={Colors.white}
                     style={styles.receivebutton}
-                    handlePress={() => navigation.push(Strings.withdraw, { user })}
+                    handlePress={() =>
+                      navigation.push(Strings.withdraw, { user })
+                    }
                   />
                   <Text style={styles.optionText}>{Strings.withdraw}</Text>
                 </View>
@@ -331,8 +371,15 @@ export default function HomeScreen({ navigation }) {
             </View>
           </Swiper>
 
-          <View style={styles.coinContainer}>
-            <Text style={styles.coinText}>{Strings.favourite}</Text>
+          <View
+            style={[
+              styles.coinContainer,
+              { backgroundColor: theme.backgroundColor },
+            ]}
+          >
+            <Text style={[styles.coinText, { color: theme.text }]}>
+              {Strings.favourite}
+            </Text>
             <FlatList
               contentContainerStyle={styles.flatlist}
               data={favouriteListArray}
@@ -341,18 +388,25 @@ export default function HomeScreen({ navigation }) {
               horizontal={true}
               keyExtractor={(item, id) => id}
             />
+            {/*favouriteListArray.map(fav => favouriteList({item:fav}))*/}
           </View>
 
-          <View style={styles.coinContainer}>
-            <Text style={styles.holdingText}>{Strings.holdings}</Text>
-            {/* <FlatList
+          <View
+            style={[
+              styles.coinContainer,
+              { backgroundColor: theme.backgroundColor },
+            ]}
+          >
+            <Text style={[styles.holdingText, { color: theme.text }]}>
+              {Strings.holdings}
+            </Text>
+            <FlatList
               contentContainerStyle={styles.flatlist}
               data={favouriteListArray} //coins
               renderItem={holdingsList}
               //numColumns={2}
               keyExtractor={(item, id) => id}
-            /> */}
-            {favouriteListArray.map(fav => holdingsList({item:fav}))}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -388,12 +442,18 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.usdAmountText} numberOfLines={1}>
             {cryptoAmount}
           </Text>
-          <Text style={[styles.priceChangeText, {color: priceChangeColor}]} numberOfLines={1}>
+          <Text
+            style={[styles.priceChangeText, { color: priceChangeColor }]}
+            numberOfLines={1}
+          >
             {cryptoAmount}
           </Text>
           <Text style={[styles.todayText]} numberOfLines={1}>
             {cryptoAmount}
           </Text>
+        </View>
+        <View>
+          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} />
         </View>
 
         <View style={styles.holdingsTransactionOptions}>

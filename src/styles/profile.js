@@ -47,7 +47,6 @@ export const styles = StyleSheet.create({
       paddingLeft: 2,
       paddingHorizontal: 20,
       flexDirection: 'row',
-      justifyContent: 'center',
     },
 
     merchantContainer:{
@@ -75,14 +74,15 @@ export const styles = StyleSheet.create({
       width:40,
       height:40,
       marginTop: 5,
-      marginRight: 10,
+      marginLeft: '3%',
+      marginRight: '2%',
       alignSelf:'flex-start',
       borderRadius:50,
     },
 
     profileName:{
       fontSize: 16, 
-      marginRight: 5,
+      marginRight: "10%",
       marginTop: 20,
       fontFamily: 'Poppins_700Bold',
       alignItems: 'flex-start',
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     editProfileButton:{
       width:24,
       height:24,
-      marginLeft: '45%',
+      marginLeft: '30%',
       marginTop: 12,
     },
 

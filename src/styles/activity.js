@@ -122,6 +122,7 @@ export const styles = StyleSheet.create({
     borderColor: Colors.primary,
     backgroundColor: 10,
     padding: 20,
+    justifyContent: "center",
   },
 
   toText: {
@@ -141,6 +142,7 @@ export const styles = StyleSheet.create({
     borderColor: Colors.primary,
     backgroundColor: 10,
     padding: 20,
+    justifyContent: "center",
   },
 
   searchButton:{

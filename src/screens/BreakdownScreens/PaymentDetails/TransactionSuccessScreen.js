@@ -19,7 +19,7 @@ export default function TransactionSuccessScreen({amount, usdAmount, source, des
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate("editprofile")}
+          handlePress={() => navigation.goBack()}
         />
 
         <Text style={styles.headerText}>{Strings.paymentDetails}</Text>
@@ -30,7 +30,7 @@ export default function TransactionSuccessScreen({amount, usdAmount, source, des
 
         <Text style={styles.successText}>Transaction Successful</Text>
         <Text style={styles.valueText}>
-          {amount}
+          N {Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
         </Text>
         <Text style={styles.dollarText}>{usdAmount}</Text>
 

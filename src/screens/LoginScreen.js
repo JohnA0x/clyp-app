@@ -64,9 +64,12 @@ import { styled, ThemeProvider } from "styled-components/native";
 
 const Stack = createNativeStackNavigator();
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+const dispatch = useDispatch();
   let [fontsLoaded, error] = useFonts({
     Poppins_700Bold,
     Poppins_900Black,
@@ -391,7 +394,7 @@ function LoginScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container} theme={theme}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} theme={theme}>
        {/*  {theme.mode === "light" ? (
           <Button
             style={styles.themeButton}

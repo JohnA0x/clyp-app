@@ -385,4 +385,82 @@ export const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: "Poppins_600SemiBold",
   },
+
+  // Deposit via Bank Transfer
+  accountDetailsView:{
+
+  },
+
+  titleText:{
+    fontFamily: "Poppins_700Bold",
+    fontSize: 18,
+    marginLeft: 20,
+    marginTop: 30,
+
+  },
+
+  detailsText:{
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 18,
+    marginLeft: 20,
+
+  },
+
+  copyButton:{
+    position: "absolute",
+    right: "8%",
+    top: "50%",
+  },
+
+  preferencesHeader: {
+    color: Colors.textColor,
+    marginTop: 20,
+  },
+
+  preferencesHeaderText: {
+    color: Colors.textColor,
+    fontFamily: "Poppins_700Bold",
+    textAlign: "center",
+    fontSize: 20,
+  },
+
+  rowCardContainer:{
+    flexDirection: "row",
+    alignSelf: "center",
+  },
+
+  rowTextInputs: {
+    height: 60,
+    width: '40%',
+    margin: "5%",
+    marginTop: 10,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+    textAlign:'center'
+  },
+
+  inputText2: {
+    height: 60,
+    margin: "5%",
+    marginTop: 40,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+  otherTextInputs2: {
+    height: 60,
+    margin: "5%",
+    marginTop: 10,
+    borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: 10,
+    padding: 20,
+    fontFamily: "Poppins_600SemiBold",
+  },
 });
