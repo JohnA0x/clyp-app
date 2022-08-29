@@ -26,6 +26,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axiosFiat from "../components/axios-fait";
 import { Ionicons } from "@expo/vector-icons";
 import { ProcessingModal } from "../components/modal";
+import { AsyncStorage } from 'react-native';
+
+import {PINCode, hasUserSetPinCode, deleteUserPinCode,resetPinCodeInternalStates} from '@haskkor/react-native-pincode'
 
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +39,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
+
+  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -334,5 +339,11 @@ export default function BuyCryptoScreen({ navigation, route }) {
         <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
+  }
+
+  function CardPin(){
+    return(
+      <PINCode status={'choose'}/>
+    )
   }
 }

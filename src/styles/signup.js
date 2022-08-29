@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
 
   emailinput: {
     alignSelf: "center",
-    backgroundColor: Colors.inputLight,
+  
     width: "90%",
     height: 55,
     borderRadius: 15,

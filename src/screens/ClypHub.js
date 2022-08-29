@@ -53,7 +53,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-           onPress = {() => navigation.navigate(Strings.bill, { user })}>
+           onPress = {() => navigation.navigate(Strings.bill)}>
             <BILLSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -70,7 +70,7 @@ export default function ClypHub({navigation}) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
-          onPress = {() => navigation.navigate(Strings.recharge, { user })}>
+          onPress = {() => navigation.navigate(Strings.recharge)}>
             <RECHARGESVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
@@ -79,7 +79,7 @@ export default function ClypHub({navigation}) {
         </View>
 
         <View style={styles.rowContainer}>
-          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings, { user })}>
+          <TouchableOpacity onPress = {() => navigation.navigate(Strings.savings)}>
             <SAVINGSSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}
