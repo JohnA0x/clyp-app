@@ -453,7 +453,7 @@ export default function HomeScreen({ navigation }) {
           </Text>
         </View>
         <View>
-          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} />
+          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} style={{top: 120}}/>
         </View>
 
         <View style={styles.holdingsTransactionOptions}>

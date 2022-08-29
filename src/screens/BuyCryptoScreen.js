@@ -26,21 +26,22 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axiosFiat from "../components/axios-fait";
 import { Ionicons } from "@expo/vector-icons";
 import { ProcessingModal } from "../components/modal";
-import { AsyncStorage } from 'react-native';
 
-import {PINCode, hasUserSetPinCode, deleteUserPinCode,resetPinCodeInternalStates} from '@haskkor/react-native-pincode'
+import { KeycodeInput } from "react-native-keycode";
 
+import {SuccessModal} from "../components/modal"
 
 const Stack = createNativeStackNavigator();
 
 export default function BuyCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
+  const [otpPhonenumber, setOTPPhoneNumber] = useState("");
+  const [success, setSuccess] = useState(false);
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
 
-  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -57,6 +58,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
         name={Strings.buywithdebitcardTitle}
         component={BuyWithCard}
       />
+      <Stack.Screen name="cardpin" component={CardPin} />
+      <Stack.Screen name="inputotp" component={InputOTP} />
     </Stack.Navigator>
   );
 
@@ -151,18 +154,17 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithWallet() {
-
-    const [amount, setAmount] = useState('')
-    const [isVisible, setIsVisible] = useState(false)
+    const [amount, setAmount] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
 
     const buy = () => {
-      setIsVisible(true)
+      setIsVisible(true);
 
       let data = {
         amount,
-        user_id: route.params.user.id
-      }
-    }
+        user_id: route.params.user.id,
+      };
+    };
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -178,7 +180,12 @@ export default function BuyCryptoScreen({ navigation, route }) {
 
         <View style={styles.walletBalanceContainer}>
           <Text style={styles.walletBalanceText}>Wallet Balance</Text>
-          <Text style={styles.walletBalanceValueText}>N {route.params.wallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={styles.walletBalanceValueText}>
+            N{" "}
+            {route.params.wallet.available_balance
+              .toFixed(2)
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+          </Text>
         </View>
 
         <View style={styles.transactionCryptoContainer}>
@@ -216,10 +223,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function BuyWithCard() {
-
-    const [amount, setAmount] = useState('')
-    const [isVisible, setIsVisible] = useState(false)
-    const [cards, setCards] = useState([])
+    const [amount, setAmount] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
+    const [cards, setCards] = useState([]);
     const [checkmarkColor, setCheckmarkColor] = useState();
     const [card, setCard] = useState();
     const [pin, setPin] = useState();
@@ -227,43 +233,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
     const [otp, setOTP] = useState();
 
     const start_charge = () => {
-      setIsVisible(true)
+      setIsVisible(true);
 
       let card_data = {
-
-        card_number: card.card_number,
-        cvv: card.cvv,
-        card_expiry: card.card_expiry,
-        card_name: card.card_name,
-        amount,
-        email: route.params.user.email,
-        phone: route.params.user.phone,
-        user_id: route.params.user.id
-
-      }
-
-      axiosFiat.post('/fiat-gateway/charge-card', card_data)
-        .then(resp => {
-          setIsVisible(false)
-          if (resp.data.auth_mode === 'pin') {
-
-          } else if (resp.data.auth_mode === 'redirect') {
-
-          } else if (resp.data.transaction) {
-
-          }
-
-        })
-        .catch(err => {
-          setIsVisible(false)
-        })
-    }
-
-    const charge_pin = () => {
-      setIsVisible(true)
-
-      let card_data = {
-
         card_number: card.card_number,
         cvv: card.cvv,
         card_expiry: card.card_expiry,
@@ -272,73 +244,94 @@ export default function BuyCryptoScreen({ navigation, route }) {
         email: route.params.user.email,
         phone: route.params.user.phone,
         user_id: route.params.user.id,
-        pin: pin
-      }
+      };
 
-      axiosFiat.post('/fiat-gateway/card-pin', card_data)
-        .then(data => {
-
-          setIsVisible(false)
-          if (data.data.message === "otp required") {
-            setFLW(data.data.flw_ref)
+      axiosFiat
+        .post("/fiat-gateway/charge-card", card_data)
+        .then((resp) => {
+          setIsVisible(false);
+          if (resp.data.auth_mode === "pin") {
+          } else if (resp.data.auth_mode === "redirect") {
+          } else if (resp.data.transaction) {
           }
-
         })
-        .catch(err => {
-          setIsVisible(false)
-        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
 
-    }
+    const charge_pin = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: card.card_number,
+        cvv: card.cvv,
+        card_expiry: card.card_expiry,
+        card_name: card.card_name,
+        amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        pin: pin,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-pin", card_data)
+        .then((data) => {
+          setIsVisible(false);
+          if (data.data.message === "otp required") {
+            setFLW(data.data.flw_ref);
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
 
     const charge_otp = () => {
-
-      setIsVisible(true)
+      setIsVisible(true);
       let otp_data = {
         otp,
-        flw_ref: flw
-      }
+        flw_ref: flw,
+      };
 
-      axiosFiat.post('/fiat-gateway/card-otp', otp_data)
-        .then(fianl => {
-          setIsVisible(false)
+      axiosFiat
+        .post("/fiat-gateway/card-otp", otp_data)
+        .then((fianl) => {
+          setIsVisible(false);
           if (fianl.data.message === "success") {
-
           }
         })
-        .catch(err => {
-          setIsVisible(false)
-        })
-    }
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
 
     useEffect(() => {
-
-      axiosFiat.post('/fiat-gateway/get-cards', { user_id: route.params.user.id })
-        .then(data => {
+      axiosFiat
+        .post("/fiat-gateway/get-cards", { user_id: route.params.user.id })
+        .then((data) => {
           if (data.data.message === "success") {
-            setCards(data.data.cards)
-            setCheckmarkColor(data.data.cards[0].id)
-            console.log(data.data.cards[0].id)
-          }
-          else {
+            setCards(data.data.cards);
+            setCheckmarkColor(data.data.cards[0].id);
+            console.log(data.data.cards[0].id);
+          } else {
             // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
-        })
-    }, [])
+        });
+    }, []);
 
     const cardList = ({ item }) => {
       return (
         <View style={styles.cardViewContainer}>
           <TouchableOpacity
-            style={[
-              styles.cardsContainer,
-              { backgroundColor: Colors.black },
-            ]}
+            style={[styles.cardsContainer, { backgroundColor: Colors.black }]}
             onPress={() => {
               setCheckmarkColor(item.id);
-              setCard(item)
+              setCard(item);
             }}
           >
             <VectorButton
@@ -383,6 +376,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
           data={cards}
           renderItem={cardList}
+          ListEmptyComponent={<Text>No debit cards added yet</Text>}
           horizontal={true}
           keyExtractor={(item) => item.id}
         />
@@ -415,15 +409,88 @@ export default function BuyCryptoScreen({ navigation, route }) {
           style={styles.cardDepositButton}
           text={Strings.deposit}
           textStyle={styles.depositText}
+          handlePress={() => {
+            navigation.navigate("cardpin");
+          }}
         />
         <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
 
-  function CardPin(){
-    return(
-      <PINCode status={'choose'}/>
-    )
+  function CardPin() {
+    return (
+      <SafeAreaView>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("buyoptions")}
+          />
+          <Text style={styles.headerText}>Card Pin</Text>
+        </View>
+
+        <Text style={styles.enterPinText}>Enter Your Card Pin</Text>
+        <KeycodeInput
+          tintColor={Colors.primary}
+          textColor={Colors.textColor}
+          style={styles.pin}
+          onComplete={(value) => {
+            setCode(value);
+          }}
+        />
+
+        <RoundedButton
+          style={styles.nextButton}
+          text={Strings.next}
+          textStyle={styles.depositText}
+          handlePress={() => {
+            navigation.navigate("inputotp");
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  function InputOTP() {
+    return (
+      <SafeAreaView>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("buyoptions")}
+          />
+          <Text style={styles.headerText}>Input OTP</Text>
+        </View>
+
+        <Text style={styles.enterPinText}>An OTP has been sent to {otpPhonenumber}</Text>
+        <KeycodeInput
+          tintColor={Colors.primary}
+          textColor={Colors.textColor}
+          style={styles.pin}
+          numeric={true}
+          alphaNumeric={false}
+          onComplete={(value) => {
+            setCode(value);
+          }}
+        />
+
+        <RoundedButton
+          style={styles.nextButton}
+          text={Strings.next}
+          textStyle={styles.depositText}
+          handlePress={() => {
+           setSuccess(true);
+          }}
+        />
+
+        <SuccessModal isVisible={success}/>
+      </SafeAreaView>
+    );
   }
 }

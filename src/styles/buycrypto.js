@@ -415,4 +415,28 @@ export const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     color: Colors.white,
   },
+
+  // Card  Pin
+  enterPinText:{
+    fontFamily: 'Poppins_500Medium',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+
+  pin:{
+    alignSelf: 'center',
+    marginTop: '20%',
+  },
+
+  nextButton:{
+    width: "90%",
+    height: 50,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.primary,
+    borderRadius: 50,
+    marginTop: '90%',
+    marginBottom: 20,
+  }
 });

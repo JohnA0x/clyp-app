@@ -13,6 +13,7 @@ import ReactNativeModal from "react-native-modal";
 import { Button } from "react-native";
 import * as Colors from '../constants/colors'
 import LottieView from 'lottie-react-native';
+import { RoundedButton } from "./button";
 
 export const ProcessingModal = ({
   isVisible,
@@ -70,13 +71,21 @@ export const SuccessModal = ({
         ref={animation}
         style={{
           width: 80,
-          height: 150,
+          height: 200,
         }}
         // Find more Lottie files at https://lottiefiles.com/featured
         source={require('../lottie/check.json')}
       />
-        <Text style={styles.title}>Processing</Text>
-        <Text style={styles.subtitle}>Please hold on a moment...</Text>
+        <Text style={styles.successTitle}>Success!</Text>
+        <Text style={styles.subtitle}>Successfully done</Text>
+        <RoundedButton
+          style={styles.okButton}
+          text='Done'
+          textStyle={styles.okText}
+          handlePress={() => {
+           handlePress
+          }}
+        />
       </View>
     </ReactNativeModal>
   );
@@ -98,9 +107,32 @@ export const styles = StyleSheet.create({
     color: Colors.primary,
   },
 
+  successTitle:{
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 20,
+    color: Colors.addGoal,
+    marginTop: -20,
+  },
+
   subtitle:{
     fontFamily: 'Poppins_500Medium',
     fontSize: 12,
     color: Colors.textColor,
-  }
+  },
+
+  okButton:{
+    width: "90%",
+    height: 50,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.addGoal,
+    borderRadius: 50,
+    marginTop: 10,
+  },
+
+  okText: {
+    fontFamily: "Poppins_600SemiBold",
+    color: Colors.white,
+  },
 });
