@@ -27,6 +27,9 @@ import { ProcessingModal } from "../components/modal";
 import axiosFiat from "../components/axios-fait";
 import axios from "axios";
 import { CustomAlert } from "../components/alert";
+import PaymentConfirmation from "./BreakdownScreens/PaymentDetails/PaymentConfirmation";
+import TransactionFailedScreen from "./BreakdownScreens/PaymentDetails/TransactionFailedScreen";
+import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/TransactionSuccessScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -61,9 +64,10 @@ export default function WithdrawScreen({ route }) {
   function accountWithdraw({ navigation, route }) {
     const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
-
+    const [page, setPage] = useState("main")
     const [amount, setAmount] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
+    const [message, setMessage] = useState(false)
 
     const withdraw = () => {
       setIsVisible(true);
@@ -84,21 +88,41 @@ export default function WithdrawScreen({ route }) {
         .post("/fiat-gateway/send", data)
         .then((sent) => {
           console.log(sent.data);
+          setIsVisible(false);
           if (sent.data.message === "success") {
 
           } else {
-            // CustomAlert({ title: "Failed", subtitle: "Failed to send transaction", handlePress: () => { } })
+            setMessage(sent.data.details)
+            setPage("failed")
+
+            // CustomAlert({ title: "Failed", subtitle: sent.data.details, handlePress: () => { } })
           }
         })
         .catch(err => {
           console.log(err)
-          // CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
+          CustomAlert({ title: "Error", subtitle: err, handlePress: () => { } })
         });
     };
 
     useEffect(() => {
       console.log(route.params);
     }, []);
+
+    if (page === "confirm") {
+      return (
+        <PaymentConfirmation amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} isVisible={isVisible}/>
+      )
+    }
+
+    if (page === "failed") {
+      return(
+        <TransactionFailedScreen amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} message={message} status={"Not Submited"} />
+      )
+    }
+
+    if (page === "success") {
+      <TransactionSuccessScreen />
+    }
 
     return (
       <SafeAreaView style={styles.container}>
@@ -143,7 +167,7 @@ export default function WithdrawScreen({ route }) {
           text={Strings.withdraw}
           textStyle={styles.roundedButtonText}
           handlePress={() => {
-            withdraw();
+            setPage("confirm");
           }}
         />
         <ProcessingModal isVisible={isVisible} />
@@ -315,7 +339,7 @@ export default function WithdrawScreen({ route }) {
           // selectionColor={Colors.primary}
           editable={false}
           onPressIn={() => navigation.navigate("chooseBank")}
-          // maxLength={3}
+        // maxLength={3}
         >
           {bankName}
         </TextInput>
@@ -339,7 +363,7 @@ export default function WithdrawScreen({ route }) {
           selectionColor={Colors.primary}
           editable={false}
           value={accountName}
-          // maxLength={16}
+        // maxLength={16}
         />
 
         <RoundedButton
@@ -430,7 +454,7 @@ export default function WithdrawScreen({ route }) {
           selectionColor={Colors.primary}
           editable={false}
           onPressIn={() => navigation.navigate("chooseBank")}
-          // maxLength={3}
+        // maxLength={3}
         >
           {bankName}
         </TextInput>
@@ -454,7 +478,7 @@ export default function WithdrawScreen({ route }) {
           selectionColor={Colors.primary}
           editable={false}
           value={accountName}
-          // maxLength={16}
+        // maxLength={16}
         />
 
         <RoundedButton

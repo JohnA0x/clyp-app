@@ -8,8 +8,9 @@ import * as Strings from "../../../strings/strings";
 import CONSVG from '../../../drawables/vector/breakdown/confirmationicon.svg'
 import {Ionicons} from '@expo/vector-icons'
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { ProcessingModal } from '../../../components/modal';
 
-export default function PaymentConfirmation ({amount, usdAmount, screenName, source, destination, date, txid, status, fee, swapCoin1, swapCoin2 }) {
+export default function PaymentConfirmation ({amount, usdAmount, screenName, source, destination, date, txid, status, fee, swapCoin1, swapCoin2, withdraw, isVisible }) {
   const navigation = useNavigation()
     return (
     <SafeAreaView style={styles.container}>
@@ -19,21 +20,21 @@ export default function PaymentConfirmation ({amount, usdAmount, screenName, sou
           size={24}
           color={Colors.textColor}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.home)}
+          handlePress={() => navigation.goBack()}
         />
 
-        <Text style={styles.headerText}>{Strings.swapDetails}</Text>
+        <Text style={styles.headerText}>{Strings.paymentDetails}</Text>
       </View>
 
       <ScrollView>
-        <CONSVG width={90} height={90} style={styles.consvg} />
+        {/* <CONSVG width={90} height={90} style={styles.consvg} /> */}
 
-        <Text style={styles.confirmText}>Confirm {screenName} Details</Text>
-        <Image style={styles.swapImage} source={{uri: swapCoin1}}/>
+        {/* <Text style={styles.confirmText}>Confirm {screenName} Details</Text> */}
+        {/* <Image style={styles.swapImage} source={{uri: swapCoin1}}/> */}
         <Text style={styles.valueText}>
-          {amount}
+          N {Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
         </Text>
-        <Text style={styles.dollarText}>{usdAmount}</Text>
+        {/* <Text style={styles.dollarText}>{usdAmount}</Text> */}
 
         <View style={styles.breakDownView}>
           <View style={styles.topBreakDownSubview}>
@@ -57,19 +58,19 @@ export default function PaymentConfirmation ({amount, usdAmount, screenName, sou
             </Text>
           </View>
 
-          <View style={styles.breakDownSubview}>
+          {/* <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>TxId</Text>
             <Text style={styles.breakdownDescription} numberOfLines={1}>
             {txid}
             </Text>
-          </View>
+          </View> */}
 
-          <View style={styles.breakDownSubview}>
+          {/* <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>Status</Text>
             <Text style={styles.breakdownDescription} numberOfLines={1}>
             {status}
             </Text>
-          </View>
+          </View> */}
 
           <View style={styles.breakDownSubview}>
             <Text style={styles.breakdownTitle}>Fee</Text>
@@ -77,8 +78,18 @@ export default function PaymentConfirmation ({amount, usdAmount, screenName, sou
             {fee}
             </Text>
           </View>
+
+          <RoundedButton
+          style={styles.roundedButton}
+          text={Strings.withdraw}
+          textStyle={styles.roundedButtonText}
+          handlePress={() => {
+            withdraw()
+          }}
+        />
         </View>
       </ScrollView>
+      <ProcessingModal isVisible={isVisible} />
     </SafeAreaView>
   )
 }

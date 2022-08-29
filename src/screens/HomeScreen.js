@@ -46,6 +46,7 @@ import { switchTheme } from "../redux/themeAction";
 import { lightTheme, darkTheme } from "../constants/theme";
 
 import { TabNavigator } from "./ActivityScreen";
+import CoinDetailedScreen from "./CoinDetailedScreen_copy/index";
 
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -116,7 +117,8 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity
           style={[styles.holdingButton, { backgroundColor: theme.flatlist }]}
           onPress={() => {
-            navigation.push(Strings.holdings);
+            navigation.navigate(Strings.holdings, { coinId: item.name.toLowerCase() });
+
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
             setWalletOptions({ abb: item.abb });
@@ -172,7 +174,7 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
           console.log({ err });
         })
@@ -180,7 +182,7 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
           console.log({ err });
         });
@@ -269,6 +271,7 @@ export default function HomeScreen({ navigation }) {
                       navigation.navigate(Strings.sendCrypto, {
                         coins: coins,
                         user,
+                        wallet: fiatWallet
                       })
                     }
                   />
@@ -285,6 +288,7 @@ export default function HomeScreen({ navigation }) {
                       navigation.navigate(Strings.receiveCrypto, {
                         coins: coins,
                         user,
+                        wallet: fiatWallet
                       })
                     }
                   />
@@ -298,7 +302,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.buybutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.buy, { coins, user })
+                      navigation.navigate(Strings.buy, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.buy}</Text>
@@ -311,7 +315,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sellbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sell, { coins, user })
+                      navigation.navigate(Strings.sell, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.sell}</Text>
@@ -324,7 +328,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.swapbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.swap, { coins, user })
+                      navigation.navigate(Strings.swap, { coins, user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.swap}</Text>
@@ -334,8 +338,8 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
-          
-              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
+
+              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance ? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -345,7 +349,7 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sendbutton}
                     handlePress={() =>
-                      navigation.push(Strings.deposit, { user })
+                      navigation.push(Strings.deposit, { user, wallet: fiatWallet })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.deposit}</Text>
@@ -447,6 +451,9 @@ export default function HomeScreen({ navigation }) {
           <Text style={[styles.todayText]} numberOfLines={1}>
             {cryptoAmount}
           </Text>
+        </View>
+        <View>
+          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} />
         </View>
 
         <View style={styles.holdingsTransactionOptions}>
