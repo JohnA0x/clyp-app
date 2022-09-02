@@ -335,7 +335,8 @@ function NameSignupScreen({ route }) {
         </View>
 
         <View style={styles.rowContainer}>
-          <Text style={styles.alreadyHaveAccount}>
+          <Text style={styles.alreadyHaveAccount}
+          onPress={() => navigation.navigate('MenuNavigation')}>
             {Strings.alreadyHaveAccount}
           </Text>
           <Text

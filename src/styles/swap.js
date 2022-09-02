@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: -5,
     bottom: -1,
-    zIndex: 80,
+    zIndex: 600,
   },
 
 
@@ -304,7 +304,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: 50,
     marginTop: '20%',
-    zIndex: 0,
+    zIndex: -1,
   },
 
   swapText:{

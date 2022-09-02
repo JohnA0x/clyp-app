@@ -59,11 +59,22 @@ export default function SwapCryptoScreen({ navigation, route }) {
 
   //value for drop down
   const [fromInstantOpen, setFromInstantOpen] = useState(false);
+  const [fromInstantOpenLimit, setFromInstantOpenLimit] = useState(false);
+
   const [fromInstantValue, setFromInstantValue] = useState(null);
+  const [fromInstantValueLimit, setFromInstantValueLimit] = useState(null);
+
   const [toInstantOpen, setToInstantOpen] = useState(false);
+  const [toInstantOpenLimit, setToInstantOpenLimit] = useState(false);
+
   const [toInstantValue, setToInstantValue] = useState(null);
+  const [toInstantValueLimit, setToInstantValueLimit] = useState(null);
+
   const [fromInstantItems, setFromInstantItems] = useState(cryptoDropDownArray);
+  const [fromInstantItemsLimit, setFromInstantItemsLimit] = useState(cryptoDropDownArray);
+
   const [toInstantItems, setToInstantItems] = useState(cryptoDropDownArray);
+  const [toInstantItemsLimit, setToInstantItemsLimit] = useState(cryptoDropDownArray);
   // end of States
 
   return (
@@ -286,7 +297,8 @@ export default function SwapCryptoScreen({ navigation, route }) {
               <DropDownPicker
                 style={styles.dropDownToPicker}
                 dropDownContainerStyle={styles.dropDownToContainerPicker}
-                zIndex={200}
+                zIndex={6000}
+                stickyHeader={true}
                 open={toInstantOpen}
                 value={toInstantValue}
                 items={toInstantItems}
@@ -334,9 +346,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 zIndex={600}
                 dropDownDirection="AUTO"
                 stickyHeader={true}
-                open={fromInstantOpen}
-                value={fromInstantValue}
-                items={fromInstantItems}
+                open={fromInstantOpenLimit}
+                value={fromInstantValueLimit}
+                items={fromInstantItemsLimit}
                 setOpen={setFromInstantOpen}
                 setValue={setFromInstantValue}
                 setItems={setFromInstantItems}
@@ -368,9 +380,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 style={styles.dropDownToPicker}
                 dropDownContainerStyle={styles.dropDownToContainerPicker}
                 zIndex={200}
-                open={toInstantOpen}
-                value={toInstantValue}
-                items={toInstantItems}
+                open={toInstantOpenLimit}
+                value={toInstantValueLimit}
+                items={toInstantItemsLimit}
                 setOpen={setToInstantOpen}
                 setValue={setToInstantValue}
                 setItems={setToInstantItems}

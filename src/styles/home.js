@@ -429,4 +429,77 @@ export const styles = StyleSheet.create({
     top: 45,
     right: 20,
   },
+
+    // History 
+    historyText:{
+      marginLeft: 20,
+      marginTop: 30,
+      fontFamily: 'Poppins_600SemiBold',
+      fontSize: 20,
+    },
+
+    list: {
+      padding: 2,
+      paddingLeft: 10,
+      borderRadius: 20,
+      width: "95%",
+      height: 90,
+      alignSelf: "center",
+      backgroundColor: Colors.listHolder,
+    },
+  
+    flatlist: {
+      display: "flex",
+      paddingVertical: 10,
+      backgroundColor: Colors.listHolder,
+      margin: 10,
+      marginTop: 30,
+      height: "100%",
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+  
+    title:{
+      marginTop: 15,
+      fontFamily: 'Poppins_600SemiBold',
+    },
+  
+    description:{
+      marginTop: 5,
+      width: 200,
+      fontFamily: 'Poppins_500Medium',
+      fontSize: 12,
+    },
+  
+    date:{
+      marginTop: 1,
+      width: 200,
+      fontFamily: 'Poppins_500Medium',
+      fontSize: 10,
+    },
+  
+    status:{
+      position: 'absolute',
+      fontFamily: 'Poppins_500Medium',
+      fontSize: 10,
+      top: 50,
+      right: 20,
+    },
+  
+  
+    statusIcon:{
+      backgroundColor: Colors.primary,
+      borderRadius: 100,
+      position: 'absolute',
+      right: 70,
+      top: 10,
+    },
+  
+    time:{
+      position: 'absolute',
+      right: 20,
+      top: 12,
+      fontSize: 10,
+      fontFamily: 'Poppins_500Medium'
+    },
 });

@@ -79,6 +79,8 @@ export default function SecurityScreen({ navigation, route }) {
       />
       <Stack.Screen name={Strings.transactionPin} component={TransactionPin} />
       <Stack.Screen name={Strings.changePin} component={ChangePin} />
+      <Stack.Screen name={Strings.forgotPin} component={ForgotPin} />
+      <Stack.Screen name='inputotp' component={InputOTP} />
     </Stack.Navigator>
   );
 
@@ -384,7 +386,8 @@ export default function SecurityScreen({ navigation, route }) {
           <Text style={styles.flatlistText}>{Strings.changePin}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsContainer}>
+        <TouchableOpacity style={styles.optionsContainer}
+          onPress={() => navigation.navigate(Strings.forgotPin)}>
           <VectorButton
             name="shield"
             size={24}
@@ -461,6 +464,7 @@ export default function SecurityScreen({ navigation, route }) {
           placeholder={Strings.enterFormerPassword}
           secureTextEntry={true}
           value={formerPin}
+          maxLength={4}
           onChangeText={(text) => setFormerPin(text)}
           selectionColor={Colors.primary}
         />
@@ -470,6 +474,7 @@ export default function SecurityScreen({ navigation, route }) {
           secureTextEntry={true}
           onChangeText={(text) => setNewPin(text)}
           value={newPin}
+          maxLength={4}
           placeholder={Strings.enterNewPassword}
           selectionColor={Colors.primary}
         />
@@ -477,6 +482,7 @@ export default function SecurityScreen({ navigation, route }) {
         <TextInput
           style={styles.otherTextInputs}
           value={reenterPin}
+          maxLength={4}
           onChangeText={(text) => setReenterPin(text)}
           placeholder={Strings.reenterNewPassword}
           secureTextEntry={true}
@@ -493,6 +499,150 @@ export default function SecurityScreen({ navigation, route }) {
         />
 
         <ProcessingModal isVisible={isVisible} />
+      </SafeAreaView>
+    );
+  }
+
+  // Forget Pin
+  function ForgotPin() {
+    const [formerPin, setFormerPin] = useState("");
+    const [newPin, setNewPin] = useState("");
+    const [reenterPin, setReenterPin] = useState('');
+    const [isVisible, setIsVisible] = useState(false)
+
+    const submitPin = () => {
+      setIsVisible(true)
+      if (newPin !== reenterPin) {
+        setIsVisible(false)
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
+        return false
+
+      } else if (formerPin !== route.params.user.prefrence[0].pin){
+        setIsVisible(false)
+        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
+        return false
+
+      }
+      else {
+
+        axios.post('/user-gateway/update-prefrences', {
+          pin: newPin,
+          user_id: route.params.user.id,
+        })
+          .then(data => {
+            setIsVisible(false)
+            if (data.data.message === "success") {
+              route.params.user.prefrence[0].pin = newPin;
+              navigation.navigate("securitylist");
+            } else {
+              CustomAlert({
+                title: "Failed",
+                subtitle:
+                  "Failed to change your transaction pin, please try again",
+              });
+            }
+          })
+          .catch(error => {
+            setIsVisible(false)
+            CustomAlert({ title: "Error", subtitle: error })
+          })
+
+      }
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("securitylist")}
+          />
+          <Text style={styles.headerText}>{Strings.forgotPin}</Text>
+        </View>
+
+        <TextInput
+          style={styles.addressInput}
+          placeholder={Strings.enterFormerPassword}
+          secureTextEntry={true}
+          value={formerPin}
+          maxLength={4}
+          onChangeText={(text) => setFormerPin(text)}
+          selectionColor={Colors.primary}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          secureTextEntry={true}
+          onChangeText={(text) => setNewPin(text)}
+          value={newPin}
+          maxLength={4}
+          placeholder={Strings.enterNewPassword}
+          selectionColor={Colors.primary}
+        />
+
+        <TextInput
+          style={styles.otherTextInputs}
+          value={reenterPin}
+          maxLength={4}
+          onChangeText={(text) => setReenterPin(text)}
+          placeholder={Strings.reenterNewPassword}
+          secureTextEntry={true}
+          selectionColor={Colors.primary}
+        />
+        {/* <Ionicons />
+        </TextInput> */}
+
+        <RoundedButton
+          text={Strings.confirm}
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => navigation.navigate('inputotp')}
+        />
+
+        <ProcessingModal isVisible={isVisible} />
+      </SafeAreaView>
+    );
+  }
+
+  function InputOTP() {
+    return (
+      <SafeAreaView>
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("buyoptions")}
+          />
+          <Text style={styles.headerText}>Input OTP</Text>
+        </View>
+
+        <Text style={styles.enterPinText}>An OTP has been sent to {otpPhonenumber}</Text>
+        <KeycodeInput
+          tintColor={Colors.primary}
+          textColor={Colors.textColor}
+          style={styles.pin}
+          numeric={true}
+          alphaNumeric={false}
+          onComplete={(value) => {
+            setCode(value);
+          }}
+        />
+
+        <RoundedButton
+          style={styles.nextButton}
+          text={Strings.next}
+          textStyle={styles.depositText}
+          handlePress={() => {
+           setSuccess(true);
+          }}
+        />
+
+        <SuccessModal isVisible={success}/>
       </SafeAreaView>
     );
   }

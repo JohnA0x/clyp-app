@@ -117,8 +117,8 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderRadius: 40,
-    borderColor: Colors.listHolder,
-    backgroundColor: 10,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.listHolder,
     padding: 20,
   },
 
