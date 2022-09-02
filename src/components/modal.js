@@ -82,9 +82,7 @@ export const SuccessModal = ({
           style={styles.okButton}
           text='Done'
           textStyle={styles.okText}
-          handlePress={() => {
-           handlePress
-          }}
+          handlePress={() => handlePress()}
         />
       </View>
     </ReactNativeModal>

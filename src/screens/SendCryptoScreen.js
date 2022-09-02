@@ -174,18 +174,18 @@ export default function SendCryptoScreen({ navigation, route }) {
               selectionColor={Colors.primary}
               onChangeText={(text) => setRAddress(text)}
             />
-            <TextInput
+            {/* <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.walletName}
               selectionColor={Colors.primary}
               onChangeText={(text) => setWalletName()}
-            />
-            <TextInput
+            /> */}
+            {/* <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.selectNetwork}
               selectionColor={Colors.primary}
               onChangeText={(text) => setNetwork(text)}
-            />
+            /> */}
             <TextInput
               style={styles.otherTextInputs}
               placeholder={Strings.enterAmount}
