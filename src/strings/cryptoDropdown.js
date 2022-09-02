@@ -33,6 +33,18 @@ export const cryptoDropDownArray = [
           />
         ),
       },
+      {
+        label: "ETH",
+        value: 2,
+        icon: () => (
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/4125/4125334.png",
+            }}
+            style={styles.iconStyle}
+          />
+        ),
+      },
 ]
 
 export default cryptoDropDownArray

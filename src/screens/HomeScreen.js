@@ -8,6 +8,13 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../styles/home";
 import * as Colors from "../constants/colors";
@@ -74,7 +81,7 @@ export default function HomeScreen({ navigation }) {
   const [walletOptions, setWalletOptions] = React.useState([
     { address: "", abb: "" },
   ]);
-  const [fiatWallet, setFiatWallet] = React.useState("")
+  const [fiatWallet, setFiatWallet] = React.useState("");
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -117,7 +124,9 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity
           style={[styles.holdingButton, { backgroundColor: theme.flatlist }]}
           onPress={() => {
-            navigation.navigate(Strings.holdings, { coinId: item.name.toLowerCase() });
+            navigation.navigate(Strings.holdings, {
+              coinId: item.name.toLowerCase(),
+            });
 
             setCryptoName(item.name);
             setCryptoIcon(item.icon);
@@ -165,16 +174,19 @@ export default function HomeScreen({ navigation }) {
               setCoins(coins_data.data.coins);
             });
 
-          axios.post('https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet', { user_id: id })
-            .then(wallet_data => {
-              setFiatWallet(wallet_data.data.wallet)
+          axios
+            .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {
+              user_id: id,
             })
+            .then((wallet_data) => {
+              setFiatWallet(wallet_data.data.wallet);
+            });
         })
         .catch((err) => {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => { },
+            handlePress: () => {},
           });
           console.log({ err });
         })
@@ -182,12 +194,12 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => { },
+            handlePress: () => {},
           });
           console.log({ err });
         });
     }
-    fetchData()
+    fetchData();
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -271,7 +283,7 @@ export default function HomeScreen({ navigation }) {
                       navigation.navigate(Strings.sendCrypto, {
                         coins: coins,
                         user,
-                        wallet: fiatWallet
+                        wallet: fiatWallet,
                       })
                     }
                   />
@@ -288,7 +300,7 @@ export default function HomeScreen({ navigation }) {
                       navigation.navigate(Strings.receiveCrypto, {
                         coins: coins,
                         user,
-                        wallet: fiatWallet
+                        wallet: fiatWallet,
                       })
                     }
                   />
@@ -302,7 +314,11 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.buybutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.buy, { coins, user, wallet: fiatWallet })
+                      navigation.navigate(Strings.buy, {
+                        coins,
+                        user,
+                        wallet: fiatWallet,
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.buy}</Text>
@@ -315,7 +331,11 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sellbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.sell, { coins, user, wallet: fiatWallet })
+                      navigation.navigate(Strings.sell, {
+                        coins,
+                        user,
+                        wallet: fiatWallet,
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.sell}</Text>
@@ -328,7 +348,11 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.swapbutton}
                     handlePress={() =>
-                      navigation.navigate(Strings.swap, { coins, user, wallet: fiatWallet })
+                      navigation.navigate(Strings.swap, {
+                        coins,
+                        user,
+                        wallet: fiatWallet,
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.swap}</Text>
@@ -339,7 +363,17 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.fiatContainer}>
               <Text style={styles.balanceText}>{Strings.fiatBalance}</Text>
 
-              <Text style={styles.cryptoBalanceText}>{preferences.private_mode ? "***" : `N ${(fiatWallet.available_balance ? fiatWallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : "0.00")}`}</Text>
+              <Text style={styles.cryptoBalanceText}>
+                {preferences.private_mode
+                  ? "***"
+                  : `N ${
+                      fiatWallet.available_balance
+                        ? fiatWallet.available_balance
+                            .toFixed(2)
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                        : "0.00"
+                    }`}
+              </Text>
 
               <View style={styles.transactionOptions}>
                 <View style={styles.columnContainer}>
@@ -349,7 +383,10 @@ export default function HomeScreen({ navigation }) {
                     color={Colors.white}
                     style={styles.sendbutton}
                     handlePress={() =>
-                      navigation.push(Strings.deposit, { user, wallet: fiatWallet })
+                      navigation.push(Strings.deposit, {
+                        user,
+                        wallet: fiatWallet,
+                      })
                     }
                   />
                   <Text style={styles.optionText}>{Strings.deposit}</Text>
@@ -414,6 +451,36 @@ export default function HomeScreen({ navigation }) {
   }
 
   function HoldingsDetail() {
+    const [transactions, setTransactions] = useState([]);
+
+    const historyList = ({ item }) => {
+      return (
+        <View style={styles.rowContainer}>
+          <TouchableOpacity style={styles.list}>
+            <VectorButton
+              name={item.icon}
+              size={15}
+              style={styles.statusIcon}
+              color={Colors.white}
+            />
+            <Text style={styles.time}>{item.createdAt}</Text>
+            <Text style={styles.title}>
+              {item.transaction_type.toUpperCase()}
+            </Text>
+            <Text style={styles.description} numberOfLines={1}>
+              {item.transaction_type} {item.amount}
+            </Text>
+            <Text style={styles.date} numberOfLines={1}>
+              {item.createdAt}
+            </Text>
+            <Text style={styles.status} numberOfLines={1}>
+              {item.status}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -452,8 +519,8 @@ export default function HomeScreen({ navigation }) {
             {cryptoAmount}
           </Text>
         </View>
-        <View>
-          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} style={{top: 120}}/>
+        <View style={{ top: 120 }}>
+          <CoinDetailedScreen coinId={cryptoName.toLowerCase()} />
         </View>
 
         <View style={styles.holdingsTransactionOptions}>
@@ -524,8 +591,17 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.optionHoldingsText}>{Strings.swap}</Text>
           </View>
         </View>
+
+        <View>
+          <Text style={styles.historyText}>History</Text>
+
+          <FlatList
+            data={transactions}
+            //ListHeaderComponent={renderHeader}
+            renderItem={historyList}
+          />
+        </View>
       </SafeAreaView>
     );
   }
 }
-

@@ -10,31 +10,31 @@ import {
 
 export const rechargeDropDownArray = [
   {
-    label: "MTN",
     value: 0,
+    label: "MTN",
   },
   {
+    value: 1,
     label: "Airtel",
-    value: 1,
   },
   {
+    value: 2,
     label: "Glo",
-    value: 1,
   },
   {
+    value: 3,
     label: "9Mobile",
-    value: 1,
   },
 ];
 
 export const internetServicesDropDownArray = [
   {
-    label: "Paystack",
     value: 0,
+    label: "Paystack",
   },
   {
-    label: "Flutterwave",
     value: 1,
+    label: "Flutterwave",
   },
 ];
 

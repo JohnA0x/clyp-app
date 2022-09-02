@@ -13,11 +13,6 @@ export const securityListArray = [
   },
   {
     id: 3,
-    name: Strings.changePassword,
-    icon: "lock-closed",
-  },
-  {
-    id: 4,
     name: Strings.resetPassword,
     icon: "lock-open",
   },
