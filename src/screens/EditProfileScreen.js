@@ -18,6 +18,8 @@ import * as Strings from "../strings/strings";
 import * as ImagePicker from "expo-image-picker";
 import { CustomAlert } from "../components/alert";
 import { ProcessingModal } from "../components/modal";
+import { theme } from "native-base";
+import { useSelector, useDispatch } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,10 @@ export default function EditProfileScreen({ navigation, route }) {
 
   const [image, setImage] = useState(route.params.user.picture ? route.params.user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
   );
+
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator
@@ -108,7 +114,7 @@ export default function EditProfileScreen({ navigation, route }) {
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: theme.flatlist}]}
             onPress={() => navigation.navigate(item.name)}
           >
             <VectorButton
@@ -118,19 +124,19 @@ export default function EditProfileScreen({ navigation, route }) {
               style={styles.flatlistImage}
               handlePress={() => navigation.navigate(item.name)}
             />
-            <Text style={styles.flatlistText}>{item.name}</Text>
+            <Text style={[styles.flatlistText, {color: theme.text}]}>{item.name}</Text>
           </TouchableOpacity>
         </View>
       );
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
 
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.Profile, {
             id: route.params.id,
@@ -148,7 +154,7 @@ export default function EditProfileScreen({ navigation, route }) {
           handlePress={pickImage}
         />
 
-        <Text style={styles.profileName}>{route.params.user.first_name} {route.params.user.last_name}</Text>
+        <Text style={[styles.profileName, {color: theme.text}]}>{route.params.user.first_name} {route.params.user.last_name}</Text>
 
         <FlatList
           contentContainerStyle={styles.flatlist}
@@ -207,11 +213,11 @@ export default function EditProfileScreen({ navigation, route }) {
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("editprofile")}
           />
-          <Text style={styles.headerText}>{Strings.username}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.username}</Text>
         </View>
 
         <TextInput
@@ -295,7 +301,7 @@ export default function EditProfileScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style ={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -386,7 +392,7 @@ export default function EditProfileScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style = {[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -471,7 +477,7 @@ export default function EditProfileScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style ={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"

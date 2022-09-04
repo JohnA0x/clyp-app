@@ -34,6 +34,8 @@ import {
   authenticateAsync,
 } from "expo-local-authentication";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function SecurityScreen({ navigation, route }) {
@@ -43,6 +45,10 @@ export default function SecurityScreen({ navigation, route }) {
   const [mode, setMode] = useState();
 
   const [isBiometrics, setBiometrics] = useState(false);
+
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const toggleBiometricsSwitch = () =>
     setIsEnabled((previousState) => !previousState);
@@ -88,7 +94,7 @@ export default function SecurityScreen({ navigation, route }) {
     const securityList = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate(item.name)}
         >
           <VectorButton
@@ -97,18 +103,18 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>{item.name}</Text>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() =>
               navigation.navigate(Strings.Profile, {
@@ -120,7 +126,7 @@ export default function SecurityScreen({ navigation, route }) {
               })
             }
           />
-          <Text style={styles.headerText}>{Strings.security}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.security}</Text>
         </View>
 
         <FlatList
@@ -282,26 +288,26 @@ export default function SecurityScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={styles.headerText}>{Strings.authentication}</Text>
+          <Text style={[styles.headerText,{color: theme.text}]}>{Strings.authentication}</Text>
         </View>
 
-        <TouchableOpacity style={styles.optionsContainer}>
+        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
           <VectorButton
             name="chatbox-ellipses"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>{Strings.smsAuthentication}</Text>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.smsAuthentication}</Text>
 
           <Switch
             style={styles.switch}
@@ -314,14 +320,14 @@ export default function SecurityScreen({ navigation, route }) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsContainer}>
+        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
           <VectorButton
             name="mail"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>{Strings.emailAuthentication}</Text>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.emailAuthentication}</Text>
 
           <Switch
             style={styles.switch}
@@ -334,14 +340,14 @@ export default function SecurityScreen({ navigation, route }) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsContainer}>
+        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
           <VectorButton
             name="finger-print"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>
             {Strings.biometricAuthentication}
           </Text>
 
@@ -361,20 +367,20 @@ export default function SecurityScreen({ navigation, route }) {
 
   function TransactionPin() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={styles.headerText}>{Strings.transactionPin}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.transactionPin}</Text>
         </View>
 
         <TouchableOpacity
-          style={styles.optionsContainer}
+          style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate(Strings.changePin)}
         >
           <VectorButton
@@ -383,10 +389,10 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>{Strings.changePin}</Text>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.changePin}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsContainer}
+        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate(Strings.forgotPin)}>
           <VectorButton
             name="shield"
@@ -394,7 +400,7 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={styles.flatlistText}>{Strings.forgotPin}</Text>
+          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.forgotPin}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );

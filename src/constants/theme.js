@@ -8,6 +8,7 @@ export const darkTheme = {
     text: Colors.textColorDark,
     background: Colors.backgroundColorDark,
     flatlist: Colors.listHolderDark,
+    coinlist: Colors.listHolderDark,
     statusbar: 'light-content'
 
 }
@@ -20,5 +21,6 @@ export const lightTheme = {
     text: Colors.textColor,
     background: Colors.backgroundColor,
     flatlist: Colors.white,
+    coinlist: Colors.listHolder,
     statusbar: 'default'
 }

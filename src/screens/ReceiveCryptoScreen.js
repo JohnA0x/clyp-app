@@ -28,6 +28,8 @@ import QRCode from "react-native-qrcode-svg";
 import * as Clipboard from 'expo-clipboard';
 import { CustomAlert } from "../components/alert";
 
+import { useSelector, useDispatch } from "react-redux";
+
 export default function ReceiveCryptoScreen({ navigation, route }) {
   const [query, setQuery] = useState("");
   const [cryptoName, setCryptoName] = useState("");
@@ -38,6 +40,9 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
   const [data, setData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const ReceiveStack = createNativeStackNavigator();
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
     <ReceiveStack.Navigator

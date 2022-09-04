@@ -12,14 +12,20 @@ import {
 } from "../components/button";
 import * as Colors from "../constants/colors";
 
-const AboutUs = ({ navigation, route }) => {
+import { useSelector, useDispatch } from "react-redux";
+
+function AboutUs ({ navigation, route }) {
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View style={styles.header}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.Profile, {
             id: route.params.id, 
@@ -29,7 +35,7 @@ const AboutUs = ({ navigation, route }) => {
             user: route.params.user
           })}
         />
-        <Text style={styles.headerText}>{Strings.about}</Text>
+        <Text style={[styles.headerText, {color: theme.text}]}>{Strings.about}</Text>
       </View>
 
       <ClypPayLogo width={200} height={200} style={styles.svgLogo} />
@@ -44,7 +50,7 @@ const AboutUs = ({ navigation, route }) => {
         Read More
       </Text>
 
-      <Text style={styles.privacyText}>{Strings.showPrivacyPolicy}</Text>
+      <Text style={[styles.privacyText, {color: theme.text}]}>{Strings.showPrivacyPolicy}</Text>
 
     </SafeAreaView>
   );
