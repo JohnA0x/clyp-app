@@ -117,7 +117,7 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
     let coin = route.params.coins.filter(c => c.currency == walletOptions.abb)[0]
     console.log(coin)
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <VectorButton
           name="chevron-back"
           size={24}

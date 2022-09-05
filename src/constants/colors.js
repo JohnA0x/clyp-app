@@ -34,6 +34,8 @@ export const addGoal = '#4CAF50'
 export const successColor = '#4CAF50'
 export const failedColor = '#C52020'
 
+export const textInput = 10.
+
 
 
 // dark mode
@@ -47,3 +49,4 @@ export const qrcodeDark = '#fff'
 export const listHolderDark = '#494948'//'#E1E1E1'
 
 export const backgroundColorDark = '#363636'
+export const textInputDark = '#494948'

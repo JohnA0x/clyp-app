@@ -28,7 +28,7 @@ import TransactionSuccessScreen from "./BreakdownScreens/PaymentDetails/Transact
 import TransactionFailedScreen from "./BreakdownScreens/PaymentDetails/TransactionFailedScreen";
 import SwapDetails from "./BreakdownScreens/SwapDetails/SwapDetails";
 import SwapConfirmation from "./BreakdownScreens/SwapDetails/SwapConfirmation";
-import {RechargeConfirmation} from "./BreakdownScreens/PaymentDetails/BillConfirmation";
+import { RechargeConfirmation } from "./BreakdownScreens/PaymentDetails/BillConfirmation";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -107,7 +107,7 @@ export default function SendCryptoScreen({ navigation, route }) {
   };
 
   function TransactionFailed() {
-    return <RechargeConfirmation/>;
+    return <RechargeConfirmation />;
   }
 
   // When a crypto is clicked from the list, it takes you to the send options screen
@@ -121,12 +121,12 @@ export default function SendCryptoScreen({ navigation, route }) {
       { label: "Banana", value: "banana" },
     ]);
     const [isModalVisible, setModalVisible] = useState(false);
-    const [isVisible, setIsVisible] = useState(false)
+    const [isVisible, setIsVisible] = useState(false);
 
-    const [amount, setAmount] = useState('')
-    const [rAddress, setRAddress] = useState('')
-    const [network, setNetwork] = useState('')
-    const [walletName, setWalletName] = useState('')
+    const [amount, setAmount] = useState("");
+    const [rAddress, setRAddress] = useState("");
+    const [network, setNetwork] = useState("");
+    const [walletName, setWalletName] = useState("");
 
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -136,19 +136,21 @@ export default function SendCryptoScreen({ navigation, route }) {
     //const [isModalVisible, setModalVisible] = useState(false);
 
     const send = () => {
-      setIsVisible(true)
+      setIsVisible(true);
 
       let data = {
         amount,
         rAddress,
         network,
         walletName,
-        user_id: route.params.user.id
-      }
-    }
+        user_id: route.params.user.id,
+      };
+    };
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <VectorButton
           name="chevron-back"
           size={24}
@@ -163,8 +165,10 @@ export default function SendCryptoScreen({ navigation, route }) {
           style={styles.optionsScanButton}
           handlePress={() => navigation.navigate("scan")}
         />
-        <Text style={[styles.optionHeaderText, {color: theme.text}]}>Send {cryptoName}</Text>
-        <Text style={[styles.optionSubtitleText, {color: theme.text}]}>
+        <Text style={[styles.optionHeaderText, { color: theme.text }]}>
+          Send {cryptoName}
+        </Text>
+        <Text style={[styles.optionSubtitleText, { color: theme.text }]}>
           Transfer Crypto from your Clyp Wallet
         </Text>
         <Image style={styles.optionsimage} source={{ uri: cryptoIcon }} />
@@ -172,7 +176,11 @@ export default function SendCryptoScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <TextInput
-              style={styles.walletAddressInput}
+              style={[
+                styles.walletAddressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
+              placeholderTextColor={theme.text}
               placeholder={Strings.walletAddress}
               value={cryptoAddress}
               // onChangeText={(value) => setCryptoAddress(value)}
@@ -180,20 +188,31 @@ export default function SendCryptoScreen({ navigation, route }) {
               onChangeText={(text) => setRAddress(text)}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholderTextColor={theme.text}
               placeholder={Strings.walletName}
               selectionColor={Colors.primary}
               onChangeText={(text) => setWalletName()}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
+              placeholderTextColor={theme.text}
               placeholder={Strings.selectNetwork}
               selectionColor={Colors.primary}
               onChangeText={(text) => setNetwork(text)}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
+              placeholderTextColor={theme.text}
               placeholder={Strings.enterAmount}
               selectionColor={Colors.primary}
               onChangeText={(text) => setAmount(text)}
@@ -218,8 +237,7 @@ export default function SendCryptoScreen({ navigation, route }) {
             setValue={setValue}
             setItems={setItems}
           /> */}
-          <ProcessingModal isVisible={isVisible} />
-
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
@@ -241,15 +259,18 @@ export default function SendCryptoScreen({ navigation, route }) {
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={[styles.valueText, {color: theme.text}]}>{item.value}</Text>
-          <Text style={[styles.text, {color: theme.text}]}>{item.name}</Text>
+          <Text style={[styles.valueText, { color: theme.text }]}>
+            {item.value}
+          </Text>
+          <Text style={[styles.text, { color: theme.text }]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style ={[styles.container, { backgroundColor: theme.background }]} >
-
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -258,11 +279,13 @@ export default function SendCryptoScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.sendCrypto}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.sendCrypto}
+          </Text>
           <VectorButton />
         </View>
 
-        <View style={[styles.flatlist, {backgroundColor: theme.coinlist}]}>
+        <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}

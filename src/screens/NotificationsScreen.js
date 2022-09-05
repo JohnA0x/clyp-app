@@ -13,30 +13,35 @@ import {
 } from "../components/button";
 import { listSeparator } from "../components/listseparator";
 
+import { useSelector, useDispatch } from "react-redux";
 
-const notificationList = ({ item }) => (
-  <TouchableOpacity style={styles.rowContainer}>
-    <VectorButton
-      name='notifications-outline'
-      size={24}
-      color={Colors.primary}
-      style={styles.notificationimage}
-    />
-    <Text style={styles.notificationtext}>{item.name}</Text>
-  </TouchableOpacity>
-);
 
 export default function NotificationScreen({navigation}){
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
+  const notificationList = ({ item }) => (
+    <TouchableOpacity style={styles.rowContainer}>
+      <VectorButton
+        name='notifications-outline'
+        size={24}
+        color={theme.primary}
+        style={styles.notificationimage}
+      />
+      <Text style={[styles.notificationtext, {color: theme.text}]}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <SafeAreaView style = {styles.container}>
+    <SafeAreaView style = {[styles.container, { backgroundColor: theme.background }]}>
        <View style={styles.notificationHeader}>
         <VectorButton
         name='chevron-back'
         size={24}
-        color={Colors.textColor}
+        color={theme.primary}
         style={styles.backButton}
         handlePress={() => navigation.navigate(Strings.home)}/>
-        <Text style={styles.notificationHeaderText}>{Strings.notifications}</Text>
+        <Text style={[styles.notificationHeaderText, {color: theme.text}]}>{Strings.notifications}</Text>
       </View>
       <FlatList
         //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
