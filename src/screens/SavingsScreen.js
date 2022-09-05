@@ -134,4 +134,19 @@ export default function SavingsScreen({ navigation }) {
       </SafeAreaView>
     );
   }
+
+  function AddNewGoal() {
+    <SafeAreaView>
+      <View style={styles.header}>
+        <VectorButton
+          name="chevron-back"
+          size={24}
+          color={Colors.textColor}
+          style={styles.backButton}
+          handlePress={() => navigation.navigate(Strings.home)}
+        />
+        <Text style={styles.headerText}>{Strings.savings}</Text>
+      </View>
+    </SafeAreaView>;
+  }
 }
