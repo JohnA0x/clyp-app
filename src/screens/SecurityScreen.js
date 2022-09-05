@@ -46,7 +46,6 @@ export default function SecurityScreen({ navigation, route }) {
 
   const [isBiometrics, setBiometrics] = useState(false);
 
-
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
 
@@ -86,7 +85,8 @@ export default function SecurityScreen({ navigation, route }) {
       <Stack.Screen name={Strings.transactionPin} component={TransactionPin} />
       <Stack.Screen name={Strings.changePin} component={ChangePin} />
       <Stack.Screen name={Strings.forgotPin} component={ForgotPin} />
-      <Stack.Screen name='inputotp' component={InputOTP} />
+      <Stack.Screen name={Strings.resetPassword} component={ResetPassword} />
+      <Stack.Screen name="inputotp" component={InputOTP} />
     </Stack.Navigator>
   );
 
@@ -94,7 +94,7 @@ export default function SecurityScreen({ navigation, route }) {
     const securityList = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-          style={[styles.button, {backgroundColor: theme.flatlist}]}
+          style={[styles.button, { backgroundColor: theme.flatlist }]}
           onPress={() => navigation.navigate(item.name)}
         >
           <VectorButton
@@ -103,13 +103,17 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>{item.name}</Text>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
+            {item.name}
+          </Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -126,7 +130,9 @@ export default function SecurityScreen({ navigation, route }) {
               })
             }
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.security}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.security}
+          </Text>
         </View>
 
         <FlatList
@@ -288,7 +294,9 @@ export default function SecurityScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -297,17 +305,23 @@ export default function SecurityScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={[styles.headerText,{color: theme.text}]}>{Strings.authentication}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.authentication}
+          </Text>
         </View>
 
-        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
+        <TouchableOpacity
+          style={[styles.optionsContainer, { backgroundColor: theme.flatlist }]}
+        >
           <VectorButton
             name="chatbox-ellipses"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.smsAuthentication}</Text>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
+            {Strings.smsAuthentication}
+          </Text>
 
           <Switch
             style={styles.switch}
@@ -320,14 +334,18 @@ export default function SecurityScreen({ navigation, route }) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
+        <TouchableOpacity
+          style={[styles.optionsContainer, { backgroundColor: theme.flatlist }]}
+        >
           <VectorButton
             name="mail"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.emailAuthentication}</Text>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
+            {Strings.emailAuthentication}
+          </Text>
 
           <Switch
             style={styles.switch}
@@ -340,14 +358,16 @@ export default function SecurityScreen({ navigation, route }) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
+        <TouchableOpacity
+          style={[styles.optionsContainer, { backgroundColor: theme.flatlist }]}
+        >
           <VectorButton
             name="finger-print"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
             {Strings.biometricAuthentication}
           </Text>
 
@@ -367,7 +387,9 @@ export default function SecurityScreen({ navigation, route }) {
 
   function TransactionPin() {
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -376,11 +398,13 @@ export default function SecurityScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.transactionPin}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.transactionPin}
+          </Text>
         </View>
 
         <TouchableOpacity
-          style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}
+          style={[styles.optionsContainer, { backgroundColor: theme.flatlist }]}
           onPress={() => navigation.navigate(Strings.changePin)}
         >
           <VectorButton
@@ -389,18 +413,24 @@ export default function SecurityScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.changePin}</Text>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
+            {Strings.changePin}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}
-          onPress={() => navigation.navigate(Strings.forgotPin)}>
+        <TouchableOpacity
+          style={[styles.optionsContainer, { backgroundColor: theme.flatlist }]}
+          onPress={() => navigation.navigate(Strings.forgotPin)}
+        >
           <VectorButton
             name="shield"
             size={24}
             color={Colors.primary}
             style={styles.flatlistImage}
           />
-          <Text style={[styles.flatlistText, {color: theme.text}]}>{Strings.forgotPin}</Text>
+          <Text style={[styles.flatlistText, { color: theme.text }]}>
+            {Strings.forgotPin}
+          </Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -409,30 +439,33 @@ export default function SecurityScreen({ navigation, route }) {
   function ChangePin() {
     const [formerPin, setFormerPin] = useState("");
     const [newPin, setNewPin] = useState("");
-    const [reenterPin, setReenterPin] = useState('');
-    const [isVisible, setIsVisible] = useState(false)
+    const [reenterPin, setReenterPin] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
 
     const submitPin = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       if (newPin !== reenterPin) {
-        setIsVisible(false)
-        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
-        return false
-
-      } else if (formerPin !== route.params.user.prefrence[0].pin){
-        setIsVisible(false)
-        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
-        return false
-
-      }
-      else {
-
-        axios.post('/user-gateway/update-prefrences', {
-          pin: newPin,
-          user_id: route.params.user.id,
-        })
-          .then(data => {
-            setIsVisible(false)
+        setIsVisible(false);
+        CustomAlert({
+          title: "Invalid Pin",
+          subtitle: "Please make sure your pin input matches.",
+        });
+        return false;
+      } else if (formerPin !== route.params.user.prefrence[0].pin) {
+        setIsVisible(false);
+        CustomAlert({
+          title: "Invalid Pin",
+          subtitle: "Please make sure your former pin is correct.",
+        });
+        return false;
+      } else {
+        axios
+          .post("/user-gateway/update-prefrences", {
+            pin: newPin,
+            user_id: route.params.user.id,
+          })
+          .then((data) => {
+            setIsVisible(false);
             if (data.data.message === "success") {
               route.params.user.prefrence[0].pin = newPin;
               navigation.navigate("securitylist");
@@ -444,30 +477,33 @@ export default function SecurityScreen({ navigation, route }) {
               });
             }
           })
-          .catch(error => {
-            setIsVisible(false)
-            CustomAlert({ title: "Error", subtitle: error })
-          })
-
+          .catch((error) => {
+            setIsVisible(false);
+            CustomAlert({ title: "Error", subtitle: error });
+          });
       }
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={styles.headerText}>{Strings.changePin}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.changePin}</Text>
         </View>
 
         <TextInput
-          style={styles.addressInput}
-          placeholder={Strings.enterFormerPassword}
+            style={[
+              styles.addressInput,
+              { backgroundColor: theme.textinput, color: theme.text },
+            ]}
+          placeholder={Strings.enterFormerPin}
+          placeholderTextColor={theme.text}
           secureTextEntry={true}
           value={formerPin}
           maxLength={4}
@@ -476,21 +512,29 @@ export default function SecurityScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+           style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           secureTextEntry={true}
           onChangeText={(text) => setNewPin(text)}
           value={newPin}
           maxLength={4}
-          placeholder={Strings.enterNewPassword}
+          placeholder={Strings.enterNewPin}
+          placeholderTextColor={theme.text}
           selectionColor={Colors.primary}
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+           style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           value={reenterPin}
           maxLength={4}
           onChangeText={(text) => setReenterPin(text)}
-          placeholder={Strings.reenterNewPassword}
+          placeholder={Strings.reenterNewPin}
+          placeholderTextColor={theme.text}
           secureTextEntry={true}
           selectionColor={Colors.primary}
         />
@@ -513,30 +557,33 @@ export default function SecurityScreen({ navigation, route }) {
   function ForgotPin() {
     const [formerPin, setFormerPin] = useState("");
     const [newPin, setNewPin] = useState("");
-    const [reenterPin, setReenterPin] = useState('');
-    const [isVisible, setIsVisible] = useState(false)
+    const [reenterPin, setReenterPin] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
 
     const submitPin = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       if (newPin !== reenterPin) {
-        setIsVisible(false)
-        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your pin input matches." })
-        return false
-
-      } else if (formerPin !== route.params.user.prefrence[0].pin){
-        setIsVisible(false)
-        CustomAlert({ title: "Invalid Pin", subtitle: "Please make sure your former pin is correct." })
-        return false
-
-      }
-      else {
-
-        axios.post('/user-gateway/update-prefrences', {
-          pin: newPin,
-          user_id: route.params.user.id,
-        })
-          .then(data => {
-            setIsVisible(false)
+        setIsVisible(false);
+        CustomAlert({
+          title: "Invalid Pin",
+          subtitle: "Please make sure your pin input matches.",
+        });
+        return false;
+      } else if (formerPin !== route.params.user.prefrence[0].pin) {
+        setIsVisible(false);
+        CustomAlert({
+          title: "Invalid Pin",
+          subtitle: "Please make sure your former pin is correct.",
+        });
+        return false;
+      } else {
+        axios
+          .post("/user-gateway/update-prefrences", {
+            pin: newPin,
+            user_id: route.params.user.id,
+          })
+          .then((data) => {
+            setIsVisible(false);
             if (data.data.message === "success") {
               route.params.user.prefrence[0].pin = newPin;
               navigation.navigate("securitylist");
@@ -548,30 +595,37 @@ export default function SecurityScreen({ navigation, route }) {
               });
             }
           })
-          .catch(error => {
-            setIsVisible(false)
-            CustomAlert({ title: "Error", subtitle: error })
-          })
-
+          .catch((error) => {
+            setIsVisible(false);
+            CustomAlert({ title: "Error", subtitle: error });
+          });
       }
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("securitylist")}
           />
-          <Text style={styles.headerText}>{Strings.forgotPin}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.forgotPin}
+          </Text>
         </View>
 
         <TextInput
-          style={styles.addressInput}
-          placeholder={Strings.enterFormerPassword}
+          style={[
+            styles.addressInput,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholder={Strings.enterFormerPin}
+          placeholderTextColor={theme.text}
           secureTextEntry={true}
           value={formerPin}
           maxLength={4}
@@ -580,21 +634,29 @@ export default function SecurityScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           secureTextEntry={true}
           onChangeText={(text) => setNewPin(text)}
           value={newPin}
           maxLength={4}
-          placeholder={Strings.enterNewPassword}
+          placeholder={Strings.enterNewPin}
+          placeholderTextColor={theme.text}
           selectionColor={Colors.primary}
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           value={reenterPin}
           maxLength={4}
           onChangeText={(text) => setReenterPin(text)}
-          placeholder={Strings.reenterNewPassword}
+          placeholder={Strings.reenterNewPin}
+          placeholderTextColor={theme.text}
           secureTextEntry={true}
           selectionColor={Colors.primary}
         />
@@ -605,7 +667,7 @@ export default function SecurityScreen({ navigation, route }) {
           text={Strings.confirm}
           textStyle={styles.roundedTextButton}
           style={styles.roundedButton}
-          handlePress={() => navigation.navigate('inputotp')}
+          handlePress={() => navigation.navigate("inputotp")}
         />
 
         <ProcessingModal isVisible={isVisible} />
@@ -615,7 +677,9 @@ export default function SecurityScreen({ navigation, route }) {
 
   function InputOTP() {
     return (
-      <SafeAreaView>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -627,7 +691,9 @@ export default function SecurityScreen({ navigation, route }) {
           <Text style={styles.headerText}>Input OTP</Text>
         </View>
 
-        <Text style={styles.enterPinText}>An OTP has been sent to {otpPhonenumber}</Text>
+        <Text style={styles.enterPinText}>
+          An OTP has been sent to {otpPhonenumber}
+        </Text>
         <KeycodeInput
           tintColor={Colors.primary}
           textColor={Colors.textColor}
@@ -644,11 +710,75 @@ export default function SecurityScreen({ navigation, route }) {
           text={Strings.next}
           textStyle={styles.depositText}
           handlePress={() => {
-           setSuccess(true);
+            setSuccess(true);
           }}
         />
 
-        <SuccessModal isVisible={success}/>
+        <SuccessModal isVisible={success} />
+      </SafeAreaView>
+    );
+  }
+
+  function ResetPassword() {
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
+
+    return (
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <View style={styles.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={theme.primary}
+            style={styles.backButton}
+            handlePress={() => navigation.navigate("securitylist")}
+          />
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.resetPassword}
+          </Text>
+        </View>
+
+        <TextInput
+          style={[
+            styles.addressInput,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          secureTextEntry={true}
+          onChangeText={(text) => setNewPassword(text)}
+          value={newPassword}
+          maxLength={4}
+          placeholder={Strings.enterNewPassword}
+          placeholderTextColor={theme.text}
+          selectionColor={Colors.primary}
+        />
+
+        <TextInput
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          value={confirmPassword}
+          maxLength={4}
+          onChangeText={(text) => setConfirmPassword(text)}
+          placeholder={Strings.confirmPassword}
+          placeholderTextColor={theme.text}
+          secureTextEntry={true}
+          selectionColor={Colors.primary}
+        />
+        {/* <Ionicons />
+        </TextInput> */}
+
+        <RoundedButton
+          text={Strings.confirm}
+          textStyle={styles.roundedTextButton}
+          style={styles.roundedButton}
+          handlePress={() => navigation.navigate("inputotp")}
+        />
+
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }

@@ -55,6 +55,7 @@ import { lightTheme, darkTheme } from "../constants/theme";
 import { TabNavigator } from "./ActivityScreen";
 import CoinDetailedScreen from "./CoinDetailedScreen_copy/index";
 
+
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 /* export default function Home(){
@@ -216,10 +217,13 @@ export default function HomeScreen({ navigation }) {
   );
 
   function HomeScreen() {
+    const saveWidth = () => {
+      storeData('tabWidth', "60")
+    }
     return (
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.background }]}
-      >
+      onLayout={saveWidth()}>
         <StatusBar barStyle={theme.statusbar} />
         <ScrollView>
           <View style={styles.topBar}>

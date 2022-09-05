@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -35,6 +42,8 @@ import BillPayScreen from "../screens/BillPayScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SavingsScreen from "../screens/SavingsScreen";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useSelector, useDispatch } from "react-redux";
 
 const Tab = createBottomTabNavigator();
@@ -70,7 +79,6 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.News} component={NewsScreen} />
       <HomeStack.Screen name={Strings.security} component={SecurityScreen} />
       <HomeStack.Screen name={Strings.help} component={SupportScreen} />
-      <HomeStack.Screen name={Strings.savings} component={SavingsScreen} />
       
     </HomeStack.Navigator>
   );
@@ -98,6 +106,7 @@ function ClypHubStackScreen() {
       <HubStack.Screen name={Strings.clyphub} component={ClypHub} />
       <HubStack.Screen name={Strings.recharge} component={RechargeScreen} />
       <HubStack.Screen name={Strings.bill} component={BillPayScreen} />
+      <HubStack.Screen name={Strings.savings} component={SavingsScreen} />
     </HubStack.Navigator>
   );
 }
@@ -105,6 +114,28 @@ function ClypHubStackScreen() {
 export default function MenuNavigation() {
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
+
+  const [tabWidth, setTabWidth] = useState(60)
+
+  useEffect(() =>{
+    getWidth()
+  
+  }, [tabWidth])
+
+
+const getWidth = async () => {
+  try {
+    const value = await AsyncStorage.getItem('tabWidth')
+    if(value !== null) {
+      // value previously stored
+      setTabWidth(Number(value));
+      return value
+    }
+  } catch(e) {
+    // error reading value
+  }
+  
+}
 
   return (
     <Tab.Navigator
@@ -126,7 +157,7 @@ export default function MenuNavigation() {
       },
       headerShown: false,
       tabBarActiveTintColor: Colors.primary,
-      tabBarStyle: { height: 60, elevation: 0, borderTopWidth: 0, backgroundColor: theme.background },
+      tabBarStyle: { height: tabWidth, elevation: 0, borderTopWidth: 0, backgroundColor: theme.background },
       tabBarShowLabel: false,
     })}
   >

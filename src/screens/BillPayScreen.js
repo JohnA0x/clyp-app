@@ -25,6 +25,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as DropDownList from "../strings/hublist";
 import DropDownPicker from "react-native-dropdown-picker";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function BillPayScreen({ navigation, route }) {
@@ -33,6 +35,9 @@ export default function BillPayScreen({ navigation, route }) {
   const [networkList, setNetworkList] = useState(
     DropDownList.rechargeDropDownArray
   );
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator
@@ -54,16 +59,16 @@ export default function BillPayScreen({ navigation, route }) {
   function BillPay() {
     const [open, setOpen] = useState(null);
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.clyphub)}
           />
-          <Text style={styles.headerText}>{Strings.bill}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.bill}</Text>
         </View>
         <View style={styles.optionsContainer}>
           <View style={styles.rowContainer}>
@@ -151,16 +156,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.internet}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.internet}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -241,16 +246,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.cable}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.cable}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -331,16 +336,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.utility}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.utility}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -421,16 +426,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.education}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.education}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -511,16 +516,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.flight}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.flight}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -601,16 +606,16 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />
-          <Text style={styles.headerText}>{Strings.insurance}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.insurance}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -691,12 +696,12 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate('bill')}
           />

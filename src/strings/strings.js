@@ -183,6 +183,9 @@ export const forgotPin = "Forgot PIN";
 export const enterFormerPassword = "Enter Former Password";
 export const enterNewPassword = "Enter New Password";
 export const reenterNewPassword = "Re-enter New Password";
+export const enterFormerPin = "Enter Former Pin";
+export const enterNewPin = "Enter New Pin";
+export const reenterNewPin = "Re-enter New Pin";
 export const confirm = "Confirm";
 
 
