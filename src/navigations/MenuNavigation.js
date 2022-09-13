@@ -45,6 +45,7 @@ import SavingsScreen from "../screens/SavingsScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSelector, useDispatch } from "react-redux";
+import P2PScreen from "../screens/P2PScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -76,9 +77,10 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.swap} component={SwapCryptoScreen} />
       <HomeStack.Screen name={Strings.activity} component={ActivityScreen} />
       <HomeStack.Screen name={Strings.editprofile} component={EditProfileScreen} />
-      <HomeStack.Screen name={Strings.News} component={NewsScreen} />
       <HomeStack.Screen name={Strings.security} component={SecurityScreen} />
       <HomeStack.Screen name={Strings.help} component={SupportScreen} />
+      <HomeStack.Screen name={Strings.depositviaP2P} component={P2PScreen} />
+      
       
     </HomeStack.Navigator>
   );
@@ -107,6 +109,7 @@ function ClypHubStackScreen() {
       <HubStack.Screen name={Strings.recharge} component={RechargeScreen} />
       <HubStack.Screen name={Strings.bill} component={BillPayScreen} />
       <HubStack.Screen name={Strings.savings} component={SavingsScreen} />
+      <HubStack.Screen name={Strings.News} component={NewsScreen} />
     </HubStack.Navigator>
   );
 }

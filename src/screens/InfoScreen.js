@@ -202,12 +202,12 @@ export default function InfoScreen({ navigation }) {
 
     return (
       <BottomSheetModalProvider>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
           <View style={styles.infoContainer}>
-            <Text style={styles.nameinfoOptions}>{Strings.name}</Text>
-            <Text style={styles.infoOptions}>{Strings.change}</Text>
-            <Text style={styles.infoOptions}>${Strings.price}</Text>
-            <Text style={styles.infoOptions}>{Strings.marketCap}</Text>
+            <Text style={[styles.nameinfoOptions, {color: theme.text}]}>{Strings.name}</Text>
+            <Text style={[styles.infoOptions, {color: theme.text}]}>{Strings.change}</Text>
+            <Text style={[styles.infoOptions, {color: theme.text}]}>${Strings.price}</Text>
+            <Text style={[styles.infoOptions, {color: theme.text}]}>{Strings.marketCap}</Text>
           </View>
           {/* <FlatList
             contentContainerStyle={styles.flatlist}
@@ -295,8 +295,7 @@ export default function InfoScreen({ navigation }) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
-        <Text>Favourites</Text>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <FlatList
             data={coins}
             renderItem={({ item }) => <CoinItem marketCoin={item} />}

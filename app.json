@@ -23,6 +23,8 @@
       "bundleIdentifier": "com.clyppay"
     },
     "android": {
+      "package": "com.clyppay",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"

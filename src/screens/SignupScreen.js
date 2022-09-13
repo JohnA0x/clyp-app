@@ -175,8 +175,8 @@ function NameSignupScreen({ route }) {
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    iosClientId: '322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com',
+    androidClientId: '322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com',
     // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
   });
 
@@ -431,8 +431,8 @@ function EmailSignupScreen({ route }) {
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+      iosClientId: '322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com',
+      androidClientId: '322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com',
     // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
   });
 
@@ -770,8 +770,8 @@ function PhoneSignupScreen({ route }) {
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+      iosClientId: '322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com',
+      androidClientId: '322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com',
     // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
   });
 

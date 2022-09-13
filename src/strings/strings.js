@@ -169,6 +169,13 @@ export const sellNowSubtitle =
 export const sellwithP2P = "Sell via P2P";
 export const sellwithP2PSubtitle = "Select your preferred offers to sell \ncrypto in a peer to peer service ";
 
+// Deposit
+export const depositCash = "Deposit Cash"
+export const paymentOptions = "Payment Options"
+export const offers = "Offers"
+
+export const finaliseOffer = "Finalise Offer"
+
 // Security
 export const authentication = "Authentication";
 export const transactionPin = "Transaction Pin";
