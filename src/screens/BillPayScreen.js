@@ -59,7 +59,9 @@ export default function BillPayScreen({ navigation, route }) {
   function BillPay() {
     const [open, setOpen] = useState(null);
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -68,7 +70,9 @@ export default function BillPayScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.clyphub)}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.bill}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.bill}
+          </Text>
         </View>
         <View style={styles.optionsContainer}>
           <View style={styles.rowContainer}>
@@ -92,7 +96,9 @@ export default function BillPayScreen({ navigation, route }) {
           </View>
 
           <View style={styles.rowContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate(Strings.utility)}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(Strings.utility)}
+            >
               <UTILITYSVG
                 width={Values.clyphubsvgwidth}
                 height={Values.clyphubsvgheight}
@@ -111,7 +117,9 @@ export default function BillPayScreen({ navigation, route }) {
           </View>
 
           <View style={styles.rowContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate(Strings.insurance)}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(Strings.insurance)}
+            >
               <INSURANCESVG
                 width={Values.clyphubsvgwidth}
                 height={Values.clyphubsvgheight}
@@ -129,7 +137,7 @@ export default function BillPayScreen({ navigation, route }) {
             </TouchableOpacity>
           </View>
 
-         {/*  <View style={styles.rowContainer}>
+          {/*  <View style={styles.rowContainer}>
             <TouchableOpacity
              onPress={() => navigation.navigate(Strings.taxes)}>
               <TAXESSVG
@@ -156,16 +164,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.internet}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.internet}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -176,11 +188,15 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
+              labelStyle={{ color: theme.text }}
               open={payeeOpen}
               value={payeeValue}
               items={payeeList}
@@ -191,13 +207,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+              style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+              style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
+              labelStyle={{ color: theme.text }}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
@@ -211,13 +235,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />
@@ -246,16 +278,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.cable}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.cable}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -266,8 +302,15 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
-              dropDownContainerStyle={styles.dropDownContainerPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
+              dropDownContainerStyle={[
+                styles.dropDownContainerPicker,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
+              labelStyle={{ color: theme.text }}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
@@ -281,12 +324,19 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+              style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+              style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
@@ -301,13 +351,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />
@@ -336,16 +394,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.utility}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.utility}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -356,11 +418,15 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
+              labelStyle={{ color: theme.text }}
               open={payeeOpen}
               value={payeeValue}
               items={payeeList}
@@ -371,12 +437,19 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+              style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+               style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
@@ -391,13 +464,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />
@@ -426,16 +507,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.education}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.education}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -446,11 +531,15 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
+              labelStyle={{ color: theme.text }}
               open={payeeOpen}
               value={payeeValue}
               items={payeeList}
@@ -461,13 +550,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+              style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+              style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
+              labelStyle={{ color: theme.text }}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
@@ -481,13 +578,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+               style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />
@@ -516,16 +621,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.flight}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.flight}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -536,7 +645,10 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
@@ -606,16 +718,20 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.insurance}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.insurance}
+          </Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -626,11 +742,15 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
+              labelStyle={{ color: theme.text }}
               open={payeeOpen}
               value={payeeValue}
               items={payeeList}
@@ -641,14 +761,22 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+               style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+               style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
+              labelStyle={{ color: theme.text }}
               dropDownDirection="AUTO"
               stickyHeader={true}
               open={planOpen}
@@ -661,13 +789,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+               style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />
@@ -696,16 +832,18 @@ export default function BillPayScreen({ navigation, route }) {
     const [payeeValue, setPayeeValue] = useState(false);
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate('bill')}
+            handlePress={() => navigation.navigate("bill")}
           />
-          <Text style={styles.headerText}>{Strings.taxes}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.taxes}</Text>
         </View>
 
         <View style={styles.fiatBalanceContainer}>
@@ -716,9 +854,13 @@ export default function BillPayScreen({ navigation, route }) {
         <ScrollView>
           <View>
             <DropDownPicker
-              style={styles.dropDownPicker}
+              style={[
+                styles.dropDownPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
               zIndex={600}
+              labelStyle={{ color: theme.text }}
               dropDownDirection="AUTO"
               stickyHeader={true}
               open={payeeOpen}
@@ -731,13 +873,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.addressInput}
+               style={[
+                styles.addressInput,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Reference Number"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <DropDownPicker
-              style={styles.selectPlanPicker}
+              style={[
+                styles.selectPlanPicker,
+                { backgroundColor: theme.textinput },
+              ]}
               dropDownContainerStyle={styles.dropDownContainerPicker}
+              labelStyle={{ color: theme.text }}
               zIndex={600}
               dropDownDirection="AUTO"
               stickyHeader={true}
@@ -751,13 +901,21 @@ export default function BillPayScreen({ navigation, route }) {
             />
 
             <TextInput
-              style={styles.otherTextInputs}
+              style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Amount"
+              placeholderTextColor={theme.text}
               selectionColor={Colors.primary}
             />
             <TextInput
-              style={styles.otherTextInputs}
+               style={[
+                styles.otherTextInputs,
+                { backgroundColor: theme.textinput, color: theme.text },
+              ]}
               placeholder="Pin"
+              placeholderTextColor={theme.text}
               secureTextEntry={true}
               selectionColor={Colors.primary}
             />

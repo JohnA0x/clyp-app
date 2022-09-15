@@ -12,6 +12,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { ProcessingModal } from "../components/modal";
 import { CustomAlert } from "../components/alert";
 
+import { useSelector, useDispatch } from "react-redux";
+
 export default function RechargeScreen({ navigation, route }) {
   const [networkValue, setNetworkValue] = useState(false);
   const [open, setOpen] = useState(null);
@@ -22,6 +24,9 @@ export default function RechargeScreen({ navigation, route }) {
   const [amount, setAmount] = useState()
   const [pin, setPin] = useState()
   const [isVisible, setIsVisible] = useState(false)
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const recharge = () => {
     setIsVisible(true)
@@ -39,16 +44,16 @@ export default function RechargeScreen({ navigation, route }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView  style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.clyphub)}
         />
-        <Text style={styles.headerText}>{Strings.recharge}</Text>
+        <Text style={[styles.headerText, { color: theme.text }]}>{Strings.recharge}</Text>
       </View>
 
       <View style={styles.fiatBalanceContainer}>
@@ -59,8 +64,9 @@ export default function RechargeScreen({ navigation, route }) {
       <ScrollView>
         <View>
           <DropDownPicker
-            style={styles.dropDownPicker}
-            dropDownContainerStyle={styles.dropDownContainerPicker}
+            style={[styles.dropDownPicker, {backgroundColor: theme.textinput}]}
+            dropDownContainerStyle={[styles.dropDownContainerPicker, {backgroundColor: theme.textinput}]}
+            labelStyle={{color: theme.text}}
             zIndex={600}
             dropDownDirection="AUTO"
             stickyHeader={true}
@@ -74,20 +80,32 @@ export default function RechargeScreen({ navigation, route }) {
           />
 
           <TextInput
-            style={styles.addressInput}
+             style={[
+              styles.addressInput,
+              { backgroundColor: theme.textinput, color: theme.text },
+            ]}
             placeholder="Enter Mobile Number"
+            placeholderTextColor={theme.text}
             selectionColor={Colors.primary}
             onChangeText={(text) => setMobile(text)}
           />
           <TextInput
-            style={styles.otherTextInputs}
+             style={[
+              styles.otherTextInputs,
+              { backgroundColor: theme.textinput, color: theme.text },
+            ]}
             placeholder="Amount"
+            placeholderTextColor={theme.text}
             selectionColor={Colors.primary}
             onChangeText={(text) => setAmount(text)}
           />
           <TextInput
-            style={styles.otherTextInputs}
+             style={[
+              styles.otherTextInputs,
+              { backgroundColor: theme.textinput, color: theme.text },
+            ]}
             placeholder="Pin"
+            placeholderTextColor={theme.text}
             secureTextEntry={true}
             selectionColor={Colors.primary}
             onChangeText={(text) => setPin(text)}

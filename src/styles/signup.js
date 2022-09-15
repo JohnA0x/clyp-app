@@ -57,7 +57,6 @@ export const styles = StyleSheet.create({
 
   passwordinput: {
     alignSelf: "center",
-    backgroundColor: Colors.inputLight,
     width: "90%",
     height: 55,
     borderRadius: 15,

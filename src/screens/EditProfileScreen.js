@@ -26,9 +26,11 @@ const Stack = createNativeStackNavigator();
 export default function EditProfileScreen({ navigation, route }) {
   //const img =
 
-  const [image, setImage] = useState(route.params.user.picture ? route.params.user.picture : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
+  const [image, setImage] = useState(
+    route.params.user.picture
+      ? route.params.user.picture
+      : "https://img.freepik.com/free-psd/3d-illustration-person-with-rainbow-sunglasses_23-2149436196.jpg"
   );
-
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ export default function EditProfileScreen({ navigation, route }) {
   );
 
   function EditProfile() {
-    const [isVisible, setIsVisisble] = useState(false)
+    const [isVisible, setIsVisisble] = useState(false);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -58,55 +60,63 @@ export default function EditProfileScreen({ navigation, route }) {
         aspect: [1, 1],
         quality: 1,
       });
-  
+
       console.log(result);
-  
+
       if (!result.cancelled) {
-        setIsVisisble(true)
-        let formdata = new FormData()
-  
+        setIsVisisble(true);
+        let formdata = new FormData();
+
         formdata.append("file", {
           uri: result.uri,
-          name: `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`,
-          type: `${result.type}/${result.uri.slice(result.uri.lastIndexOf('.') - 1)}`,
+          name: `${route.params.user.first_name}_clyp_image${result.uri.slice(
+            result.uri.lastIndexOf(".")
+          )}`,
+          type: `${result.type}/${result.uri.slice(
+            result.uri.lastIndexOf(".") - 1
+          )}`,
           height: result.height,
-          width: result.width
-        })
-  
-        formdata.append("filename", `${route.params.user.first_name}_clyp_image${result.uri.slice(result.uri.lastIndexOf('.'))}`)
-  
-        formdata.append("user_id", route.params.user.id)
-  
-        axios.post('/user-gateway/update-user', formdata, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-          }
-        })
-          .then(user_data => {
-            setIsVisisble(false)
+          width: result.width,
+        });
+
+        formdata.append(
+          "filename",
+          `${route.params.user.first_name}_clyp_image${result.uri.slice(
+            result.uri.lastIndexOf(".")
+          )}`
+        );
+
+        formdata.append("user_id", route.params.user.id);
+
+        axios
+          .post("/user-gateway/update-user", formdata, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((user_data) => {
+            setIsVisisble(false);
             if (user_data.data.message == "success") {
               setImage(result.uri);
-              route.params.user.picture = result.uri
-              navigation.navigate("editprofile")
-            }
-            else {
+              route.params.user.picture = result.uri;
+              navigation.navigate("editprofile");
+            } else {
               CustomAlert({
                 title: "Update failed",
                 subtitle: "Please try again...",
-                handlePress: () => { },
+                handlePress: () => {},
               });
             }
           })
-          .catch(err => {
-            setIsVisisble(false)
+          .catch((err) => {
+            setIsVisisble(false);
             CustomAlert({
               title: "Error",
               subtitle: err,
-              handlePress: () => { },
+              handlePress: () => {},
             });
-          })
-  
+          });
       }
     };
 
@@ -114,7 +124,7 @@ export default function EditProfileScreen({ navigation, route }) {
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: theme.flatlist}]}
+            style={[styles.button, { backgroundColor: theme.flatlist }]}
             onPress={() => navigation.navigate(item.name)}
           >
             <VectorButton
@@ -124,27 +134,32 @@ export default function EditProfileScreen({ navigation, route }) {
               style={styles.flatlistImage}
               handlePress={() => navigation.navigate(item.name)}
             />
-            <Text style={[styles.flatlistText, {color: theme.text}]}>{item.name}</Text>
+            <Text style={[styles.flatlistText, { color: theme.text }]}>
+              {item.name}
+            </Text>
           </TouchableOpacity>
         </View>
       );
     };
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <VectorButton
           name="chevron-back"
           size={24}
           color={theme.primary}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.Profile, {
-            id: route.params.id,
-            preferences: route.params.preferences,
-            firstName: route.params.firstName,
-            lastName: route.params.lastName,
-            user: route.params.user
-          })}
+          handlePress={() =>
+            navigation.navigate(Strings.Profile, {
+              id: route.params.id,
+              preferences: route.params.preferences,
+              firstName: route.params.firstName,
+              lastName: route.params.lastName,
+              user: route.params.user,
+            })
+          }
         />
 
         <ImageButton
@@ -154,7 +169,9 @@ export default function EditProfileScreen({ navigation, route }) {
           handlePress={pickImage}
         />
 
-        <Text style={[styles.profileName, {color: theme.text}]}>{route.params.user.first_name} {route.params.user.last_name}</Text>
+        <Text style={[styles.profileName, { color: theme.text }]}>
+          {route.params.user.first_name} {route.params.user.last_name}
+        </Text>
 
         <FlatList
           contentContainerStyle={styles.flatlist}
@@ -167,48 +184,55 @@ export default function EditProfileScreen({ navigation, route }) {
   }
 
   function UserNameEdit() {
-    const [first_name, setFName] = useState(route.params.user.first_name ? route.params.user.first_name : "");
-    const [last_name, setLName] = useState(route.params.user.last_name ? route.params.user.last_name : "");
-    const [middle_name, setMName] = useState(route.params.user.middle_name ? route.params.user.middle_name : "");
-    const [isVisible, setIsVisible] = useState(false)
+    const [first_name, setFName] = useState(
+      route.params.user.first_name ? route.params.user.first_name : ""
+    );
+    const [last_name, setLName] = useState(
+      route.params.user.last_name ? route.params.user.last_name : ""
+    );
+    const [middle_name, setMName] = useState(
+      route.params.user.middle_name ? route.params.user.middle_name : ""
+    );
+    const [isVisible, setIsVisible] = useState(false);
 
     const submit = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       let data = {
         first_name,
         last_name,
         // middle_name,
-        user_id: route.params.user.id
-      }
-      axios.post('/user-gateway/update-user', data)
-        .then(user_data => {
-          setIsVisible(false)
+        user_id: route.params.user.id,
+      };
+      axios
+        .post("/user-gateway/update-user", data)
+        .then((user_data) => {
+          setIsVisible(false);
           if (user_data.data.message == "success") {
-            route.params.user.first_name = data.first_name
-            route.params.user.last_name = data.last_name
-            navigation.navigate("editprofile")
-          }
-          else {
+            route.params.user.first_name = data.first_name;
+            route.params.user.last_name = data.last_name;
+            navigation.navigate("editprofile");
+          } else {
             CustomAlert({
               title: "Update failed",
               subtitle: "Please try again...",
-              handlePress: () => { },
+              handlePress: () => {},
             });
           }
         })
-        .catch(err => {
-          setIsVisible(false)
+        .catch((err) => {
+          setIsVisible(false);
           CustomAlert({
             title: "Error",
             subtitle: err,
-            handlePress: () => { },
+            handlePress: () => {},
           });
-        })
-
-    }
+        });
+    };
 
     return (
-      <SafeAreaView>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -217,11 +241,17 @@ export default function EditProfileScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("editprofile")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.username}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.username}
+          </Text>
         </View>
 
         <TextInput
-          style={styles.inputText}
+          style={[
+            styles.inputText,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="First Name"
           selectionColor={Colors.primary}
           value={first_name}
@@ -229,7 +259,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="Middle Name"
           selectionColor={Colors.primary}
           value={middle_name ? middle_name : ""}
@@ -237,7 +271,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="Last Name"
           selectionColor={Colors.primary}
           value={last_name}
@@ -256,65 +294,76 @@ export default function EditProfileScreen({ navigation, route }) {
   }
 
   function AddressEdit() {
-    const [state, setState] = useState(route.params.user.state ? route.params.user.state : "");
-    const [city, setCity] = useState(route.params.user.city ? route.params.user.city : "");
-    const [house, setHouse] = useState(route.params.user.address ? route.params.user.address : "");
-    const [isVisible, setIsVisible] = useState(false)
+    const [state, setState] = useState(
+      route.params.user.state ? route.params.user.state : ""
+    );
+    const [city, setCity] = useState(
+      route.params.user.city ? route.params.user.city : ""
+    );
+    const [house, setHouse] = useState(
+      route.params.user.address ? route.params.user.address : ""
+    );
+    const [isVisible, setIsVisible] = useState(false);
 
     const submit = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       let data = {
         state,
         city,
         house,
-        user_id: route.params.user.id
-      }
-      axios.post('/user-gateway/update-user', data)
-        .then(user_data => {
-          setIsVisible(false)
+        user_id: route.params.user.id,
+      };
+      axios
+        .post("/user-gateway/update-user", data)
+        .then((user_data) => {
+          setIsVisible(false);
           if (user_data.data.message == "success") {
+            route.params.user.state = data.state;
+            route.params.user.city = data.city;
+            route.params.user.address = data.house;
 
-            route.params.user.state = data.state
-            route.params.user.city = data.city
-            route.params.user.address = data.house
-
-            navigation.navigate("editprofile")
-          }
-          else {
+            navigation.navigate("editprofile");
+          } else {
             CustomAlert({
               title: "Update failed",
               subtitle: "Please try again...",
-              handlePress: () => { },
+              handlePress: () => {},
             });
           }
         })
-        .catch(err => {
-          setIsVisible(false)
+        .catch((err) => {
+          setIsVisible(false);
           CustomAlert({
             title: "Error",
             subtitle: err,
-            handlePress: () => { },
+            handlePress: () => {},
           });
-        })
-
-
-    }
+        });
+    };
 
     return (
-      <SafeAreaView style ={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("editprofile")}
           />
-          <Text style={styles.headerText}>{Strings.useraddress}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.useraddress}
+          </Text>
         </View>
 
         <TextInput
-          style={styles.inputText}
+          style={[
+            styles.inputText,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="State"
           selectionColor={Colors.primary}
           value={state}
@@ -322,7 +371,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="City"
           selectionColor={Colors.primary}
           value={city}
@@ -330,7 +383,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="House Number and Street Name"
           selectionColor={Colors.primary}
           value={house}
@@ -349,63 +406,71 @@ export default function EditProfileScreen({ navigation, route }) {
   }
 
   function ContactEdit() {
-
-    const [phone, setPhone] = useState(route.params.user.email ? route.params.user.email : "");
-    const [email, setEmail] = useState(route.params.user.phone ? route.params.user.phone : "");
-    const [isVisible, setIsVisible] = useState(false)
+    const [phone, setPhone] = useState(
+      route.params.user.email ? route.params.user.email : ""
+    );
+    const [email, setEmail] = useState(
+      route.params.user.phone ? route.params.user.phone : ""
+    );
+    const [isVisible, setIsVisible] = useState(false);
 
     const submit = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       let data = {
         phone,
         email,
-        user_id: route.params.user.id
-      }
-      axios.post('/user-gateway/update-user', data)
-        .then(user_data => {
-          setIsVisible(false)
+        user_id: route.params.user.id,
+      };
+      axios
+        .post("/user-gateway/update-user", data)
+        .then((user_data) => {
+          setIsVisible(false);
           if (user_data.data.message == "success") {
+            route.params.user.email = data.email;
+            route.params.user.phone = data.phone;
 
-            route.params.user.email = data.email
-            route.params.user.phone = data.phone
-
-            navigation.navigate("editprofile")
-          }
-          else {
-            setIsVisible(false)
+            navigation.navigate("editprofile");
+          } else {
+            setIsVisible(false);
             CustomAlert({
               title: "Update failed",
               subtitle: "Please try again...",
-              handlePress: () => { },
+              handlePress: () => {},
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           CustomAlert({
             title: "Error",
             subtitle: err,
-            handlePress: () => { },
+            handlePress: () => {},
           });
-        })
-
-
-    }
+        });
+    };
 
     return (
-      <SafeAreaView style = {[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("editprofile")}
           />
-          <Text style={styles.headerText}>{Strings.contact}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.contact}
+          </Text>
         </View>
 
         <TextInput
-          style={styles.inputText}
+          style={[
+            styles.inputText,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="Phone Number"
           selectionColor={Colors.primary}
           value={email}
@@ -413,7 +478,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="Email"
           selectionColor={Colors.primary}
           value={phone}
@@ -433,64 +502,72 @@ export default function EditProfileScreen({ navigation, route }) {
   }
 
   function IdentifictaionEdit() {
-
-    const [bvn, setBVN] = useState(route.params.user.bvn ? route.params.user.bvn : "");
-    const [nin, setNIN] = useState(route.params.user.nin ? route.params.user.nin : "");
-    const [isVisible, setIsVisible] = useState(false)
+    const [bvn, setBVN] = useState(
+      route.params.user.bvn ? route.params.user.bvn : ""
+    );
+    const [nin, setNIN] = useState(
+      route.params.user.nin ? route.params.user.nin : ""
+    );
+    const [isVisible, setIsVisible] = useState(false);
 
     const submit = () => {
-      setIsVisible(true)
+      setIsVisible(true);
       let data = {
         bvn,
         nin,
-        user_id: route.params.user.id
-      }
+        user_id: route.params.user.id,
+      };
 
-      axios.post('/user-gateway/update-user', data)
-        .then(user_data => {
-          setIsVisible(false)
+      axios
+        .post("/user-gateway/update-user", data)
+        .then((user_data) => {
+          setIsVisible(false);
           if (user_data.data.message == "success") {
+            route.params.user.bvn = data.bvn;
+            route.params.user.nin = data.nin;
 
-            route.params.user.bvn = data.bvn
-            route.params.user.nin = data.nin
-
-            navigation.navigate("editprofile")
-          }
-          else {
+            navigation.navigate("editprofile");
+          } else {
             CustomAlert({
               title: "Update failed",
               subtitle: "Please try again...",
-              handlePress: () => { },
+              handlePress: () => {},
             });
           }
         })
-        .catch(err => {
-          setIsVisible(false)
+        .catch((err) => {
+          setIsVisible(false);
           CustomAlert({
             title: "Error",
             subtitle: err,
-            handlePress: () => { },
+            handlePress: () => {},
           });
-        })
-
-
-    }
+        });
+    };
 
     return (
-      <SafeAreaView style ={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("editprofile")}
           />
-          <Text style={styles.headerText}>{Strings.iddocument}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.iddocument}
+          </Text>
         </View>
 
         <TextInput
-          style={styles.inputText}
+          style={[
+            styles.inputText,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="BVN Number"
           selectionColor={Colors.primary}
           value={bvn}
@@ -498,7 +575,11 @@ export default function EditProfileScreen({ navigation, route }) {
         />
 
         <TextInput
-          style={styles.otherTextInputs}
+          style={[
+            styles.otherTextInputs,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
+          placeholderTextColor={theme.text}
           placeholder="NIN Number"
           selectionColor={Colors.primary}
           value={nin}
@@ -512,7 +593,6 @@ export default function EditProfileScreen({ navigation, route }) {
           handlePress={() => submit()}
         />
         <ProcessingModal isVisible={isVisible} />
-
       </SafeAreaView>
     );
   }
