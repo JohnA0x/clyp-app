@@ -186,15 +186,7 @@ export default function HomeScreen({ navigation }) {
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again...",
-            handlePress: () => {},
-          });
-          console.log({ err });
-        })
-        .catch((err) => {
-          CustomAlert({
-            title: "Error",
-            subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            handlePress: () => { },
           });
           console.log({ err });
         });
@@ -366,13 +358,12 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.cryptoBalanceText}>
                 {preferences.private_mode
                   ? "***"
-                  : `N ${
-                      fiatWallet.available_balance
-                        ? fiatWallet.available_balance
-                            .toFixed(2)
-                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-                        : "0.00"
-                    }`}
+                  : `N ${fiatWallet.available_balance
+                    ? fiatWallet.available_balance
+                      .toFixed(2)
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                    : "0.00"
+                  }`}
               </Text>
 
               <View style={styles.transactionOptions}>
