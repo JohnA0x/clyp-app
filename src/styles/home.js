@@ -451,9 +451,8 @@ export const styles = StyleSheet.create({
     flatlist: {
       display: "flex",
       paddingVertical: 10,
-      backgroundColor: Colors.listHolder,
       margin: 10,
-      marginTop: 30,
+      marginTop: 10,
       height: "100%",
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,

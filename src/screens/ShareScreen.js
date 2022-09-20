@@ -1,7 +1,12 @@
 import React from 'react';
-import { Share, View, Button } from 'react-native';
+import { Share, View, Button, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from "react-redux";
 
-const ShareScreen = ({navigation, route}) => {
+function ShareScreen ({navigation, route}){
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -42,7 +47,7 @@ const ShareScreen = ({navigation, route}) => {
     }
   };
   return (
-    <View onLayout={onShare}>
+    <View style ={{backgroundColor: theme.background}} onLayout={onShare}>
     
     </View>
   );

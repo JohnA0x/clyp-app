@@ -6,9 +6,12 @@ export const darkTheme = {
     secondary: Colors.secondaryDark,
     tertiary: Colors.tertiaryDark,
     text: Colors.textColorDark,
+    textinput: Colors.textInputDark,
     background: Colors.backgroundColorDark,
     flatlist: Colors.listHolderDark,
-    statusbar: 'light-content'
+    coinlist: Colors.listHolderDark,
+    statusbar: 'light-content',
+    qrcode: Colors.white
 
 }
 
@@ -18,7 +21,10 @@ export const lightTheme = {
     secondary: Colors.secondary,
     tertiary: Colors.tertiary,
     text: Colors.textColor,
+    textinput: Colors.textInput,
     background: Colors.backgroundColor,
     flatlist: Colors.white,
-    statusbar: 'default'
+    coinlist: Colors.listHolder,
+    statusbar: 'default',
+    qrcode: Colors.black
 }

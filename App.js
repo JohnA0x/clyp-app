@@ -61,6 +61,10 @@ export default function App() {
     }
   };
 
+  const saveWidth = () => {
+    storeData('tabWidth', "0")
+  }
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
@@ -68,7 +72,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-        <View onLayout={isFirstTime} />
+        <View onLayout={saveWidth()} />
         <Onboarding />
       </PersistGate>
     </Provider>

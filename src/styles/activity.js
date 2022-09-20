@@ -160,4 +160,8 @@ export const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     color: Colors.white,
   },
+
+  modalView:{
+    backgroundColor: Colors.backgroundColor,
+  }
 });

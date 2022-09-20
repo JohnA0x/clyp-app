@@ -7,6 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Colors from "../../constants/colors"
 
+import { useSelector, useDispatch } from "react-redux";
+
 const CoinItem = ({ marketCoin }) => {
   const {
     id,
@@ -44,8 +46,11 @@ const CoinItem = ({ marketCoin }) => {
 
   const isFavouritedIcon = isFavourited === true ? "star" : "star-outline";
 
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
-    <View style={styles.rowContainer}>
+    <View style={[styles.rowContainer, {backgroundColor: theme.background}]}>
       <Pressable
         style={styles.button}
         onPress={() => navigation.navigate("Stats", { coinId: id })}
@@ -67,7 +72,7 @@ const CoinItem = ({ marketCoin }) => {
           }}
         />
         {/* <View> */}
-        <Text style={styles.cryptoText}>{name}</Text>
+        <Text style={[styles.cryptoText, {color: theme.text}]}>{name}</Text>
         {/* <View style={{ flexDirection: "row" }}> */}
         {/* <View style={stylesC.rankContainer}> */}
         {/* <Text style={stylesC.rank}>{market_cap_rank}</Text> */}
@@ -85,8 +90,8 @@ const CoinItem = ({ marketCoin }) => {
         {/* </View> */}
         {/* </View> */}
         {/* <View style={{ marginLeft: "auto", alignItems: "flex-end" }}> */}
-        <Text style={styles.cryptoPriceText}>{current_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-        <Text style={styles.cryptoMarketCapText} numberOfLines={1}>
+        <Text style={[styles.cryptoPriceText, {color: theme.text}]}>{current_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+        <Text style={[styles.cryptoMarketCapText, {color: theme.text}]} numberOfLines={1}>
           {normalizeMarketCap(market_cap)}
         </Text>
         {/* </View> */}

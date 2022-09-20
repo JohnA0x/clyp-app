@@ -33,6 +33,8 @@ import { KeycodeInput } from "react-native-keycode";
 import { SuccessModal } from "../components/modal"
 import { CustomAlert } from "../components/alert";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function BuyCryptoScreen({ navigation, route }) {
@@ -43,6 +45,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator
@@ -81,27 +86,29 @@ export default function BuyCryptoScreen({ navigation, route }) {
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={styles.valueText}>{item.value}</Text>
-          <Text style={styles.text}>{item.name}</Text>
+          <Text style={[styles.valueText, { color: theme.text }]}>
+            {item.value}
+          </Text>
+          <Text style={[styles.text, { color: theme.text }]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     );
 
     // This renders some components and the flatlist together
     return (
-      <SafeAreaView>
+      <SafeAreaView style ={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.buy}</Text>
         </View>
 
-        <View style={styles.flatlist}>
+        <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
@@ -117,7 +124,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
       return (
         <View style={styles.optionsContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, {backgroundColor: theme.flatlist}]}
             onPress={() => navigation.navigate(item.title)}
           >
             <VectorButton
@@ -126,23 +133,23 @@ export default function BuyCryptoScreen({ navigation, route }) {
               color={Colors.primary}
               style={styles.preferencesimage}
             />
-            <Text style={styles.preferencestext}>{item.title}</Text>
+            <Text style={[styles.preferencestext, {color: theme.text}]}>{item.title}</Text>
           </TouchableOpacity>
         </View>
       );
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("buylist")}
           />
-          <Text style={styles.headerText}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.buy}</Text>
         </View>
 
         <FlatList
@@ -169,7 +176,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
       };
     };
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"

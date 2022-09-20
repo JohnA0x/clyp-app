@@ -19,6 +19,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { BarCodeScanner } from "expo-barcode-scanner";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function QRCodeScreen({ route }) {
@@ -35,27 +37,29 @@ export default function QRCodeScreen({ route }) {
 }
 
 const Code = ({ navigation, route }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
   // React.useEffect(()=> {
   //   console.log(route)
   // },[])
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View style={styles.qrcodeHeader}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.home)}
         />
-        <Text style={styles.qrcodeHeaderText}>{Strings.scanqrcode}</Text>
+        <Text style={[styles.qrcodeHeaderText, {color: theme.text}]}>{Strings.scanqrcode}</Text>
       </View>
 
       <View style={styles.qrcode}>
         <QRCode
           value={route.params.token}
-          color={Colors.qrcode}
-          backgroundColor={Colors.backgroundColor}
+          color={theme.qrcode}
+          backgroundColor={theme.background}
           size={Dimensions.get("window").width / 2.5}
           //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
           // logoMargin={2}

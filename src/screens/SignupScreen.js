@@ -39,12 +39,12 @@ import * as WebBrowser from "expo-web-browser";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as Google from "expo-auth-session/providers/google";
 import { ResponseType } from "expo-auth-session";
-import axios from '../components/axios'
+import axios from "../components/axios";
 import { CustomAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ProcessingModal } from "../components/modal";
 import { getData } from "../services/storage";
-import * as Values from '../constants/values'
+import * as Values from "../constants/values";
 
 import { useSelector, useDispatch } from "react-redux";
 import { theme } from "native-base";
@@ -61,12 +61,9 @@ export default function Signup() {
     Poppins_400Regular,
   });
 
-  
-
-
-  const value = AsyncStorage.getItem(Values.theme)
+  const value = AsyncStorage.getItem(Values.theme);
   // const [text, setText] = React.useState("");
-  getData(Values.theme)
+  getData(Values.theme);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -74,13 +71,12 @@ export default function Signup() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="Signup" component={NameSignupScreen} />
 
         <Stack.Screen
-          name="Signup"
-          component={NameSignupScreen}
+          name="CompleteEmailSignup"
+          component={EmailSignupScreen}
         />
-
-        <Stack.Screen name="CompleteEmailSignup" component={EmailSignupScreen} />
 
         <Stack.Screen
           name="CompletePhoneSignup"
@@ -100,7 +96,7 @@ function NameSignupScreen({ route }) {
 
   const [first_name, setFirstName] = React.useState("");
   const [last_name, setLastName] = React.useState("");
-  const [isVisible, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -117,117 +113,153 @@ function NameSignupScreen({ route }) {
       console.log(response);
 
       const fetchData = async () => {
-        setIsVisible(true)
+        setIsVisible(true);
         const requestOptions = {
-          method: 'GET',
+          method: "GET",
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         };
 
-
-        console.log(request)
-        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`
+        console.log(request);
+        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`;
 
         const response = await fetch(link, requestOptions);
         const body = await response.json();
-        axios.post('/user-gateway/facebook', { access_token: body.access_token })
+        axios
+          .post("/user-gateway/facebook", { access_token: body.access_token })
           .then(async (data) => {
             console.log({
-              facebook_data: data.data
-            })
-            setIsVisible(false)
+              facebook_data: data.data,
+            });
+            setIsVisible(false);
             if (data.data.message == "success") {
-
-              await AsyncStorage.setItem('token', data.data.token, async (err) => {
-                console.log({ err })
-                if (err) {
-                  console.log(err)
-                  return
+              await AsyncStorage.setItem(
+                "token",
+                data.data.token,
+                async (err) => {
+                  console.log({ err });
+                  if (err) {
+                    console.log(err);
+                    return;
+                  }
+                  await AsyncStorage.setItem(
+                    "user_id",
+                    data.data.user_data.id,
+                    async (err) => {
+                      await AsyncStorage.setItem(
+                        "email",
+                        data.data.user_data.email,
+                        (err) => {
+                          navigation.navigate("MenuNavigation");
+                        }
+                      );
+                    }
+                  );
                 }
-                await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                  await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                    navigation.navigate("MenuNavigation")
-                  })
-
-                })
-              })
-
+              );
             } else {
-              CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-              return false
+              CustomAlert({
+                title: "Signup Error",
+                subtitle: data.data.details,
+                handlePress: () => {},
+              });
+              return false;
             }
-
           })
-          .catch(err => {
-            setIsVisible(false)
-            CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-          })
+          .catch((err) => {
+            setIsVisible(false);
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: err,
+              handlePress: () => {},
+            });
+          });
         console.log("fetchData response: => ", body);
-      }
-      fetchData()
-
+      };
+      fetchData();
     }
-
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    iosClientId:
+      "322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com",
+    androidClientId:
+      "322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com",
+    webClientId:
+      "322534561816-lfr6keodqdfv9ro5ume47pv9ieh952g7.apps.googleusercontent.com",
   });
 
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
       console.log(gresponse);
-      setIsVisible(true)
-      axios.post('/user-gateway/google', { token: gresponse.params.id_token })
+      setIsVisible(true);
+      axios
+        .post("/user-gateway/google", { token: gresponse.params.id_token })
         .then(async (data) => {
-          setIsVisible(false)
+          setIsVisible(false);
           console.log({
-            google_data: data.data
-          })
+            google_data: data.data,
+          });
 
           if (data.data.message == "success") {
-
-            await AsyncStorage.setItem('token', data.data.token, async (err) => {
-              console.log({ err })
-              if (err) {
-                console.log(err)
-                return
+            await AsyncStorage.setItem(
+              "token",
+              data.data.token,
+              async (err) => {
+                console.log({ err });
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                await AsyncStorage.setItem(
+                  "user_id",
+                  data.data.user_data.id,
+                  async (err) => {
+                    await AsyncStorage.setItem(
+                      "email",
+                      data.data.user_data.email,
+                      (err) => {
+                        navigation.navigate("MenuNavigation");
+                      }
+                    );
+                  }
+                );
               }
-              await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                  navigation.navigate("MenuNavigation")
-                })
-
-              })
-            })
-
+            );
           } else {
-            CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-            return false
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: data.data.details,
+              handlePress: () => {},
+            });
+            return false;
           }
-
         })
-        .catch(err => {
-          setIsVisible(false)
-          CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-        })
+        .catch((err) => {
+          setIsVisible(false);
+          CustomAlert({
+            title: "Signup Error",
+            subtitle: err,
+            handlePress: () => {},
+          });
+        });
       // navigation.navigate("MenuNavigation")
     }
   }, [gresponse]);
 
-
-
   return (
     <PaperProvider>
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <Text style={[styles.texts, { color: theme.text }]}>
+          {Strings.createAccount}
+        </Text>
         <TextInput
           value={first_name}
           onChangeText={(text) => setFirstName(text)}
@@ -249,7 +281,6 @@ function NameSignupScreen({ route }) {
           left={<TextInput.Icon name="phone-outline" />}
           activeUnderlineColor={Colors.backgroundColor}
           underlineColor={Colors.backgroundColor}
-          keyboardType="number-pad"
         />
 
         <TouchableOpacity
@@ -257,7 +288,7 @@ function NameSignupScreen({ route }) {
           onPress={() =>
             navigation.navigate("CompleteEmailSignup", {
               first_name,
-              last_name
+              last_name,
             })
           }
         >
@@ -266,7 +297,7 @@ function NameSignupScreen({ route }) {
             onPress={() =>
               navigation.navigate("CompleteEmailSignup", {
                 first_name,
-                last_name
+                last_name,
               })
             }
           >
@@ -335,8 +366,10 @@ function NameSignupScreen({ route }) {
         </View>
 
         <View style={styles.rowContainer}>
-          <Text style={styles.alreadyHaveAccount}
-          onPress={() => navigation.navigate('MenuNavigation')}>
+          <Text
+            style={styles.alreadyHaveAccount}
+            onPress={() => navigation.navigate("MenuNavigation")}
+          >
             {Strings.alreadyHaveAccount}
           </Text>
           <Text
@@ -356,7 +389,7 @@ function EmailSignupScreen({ route }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [isVisible, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -373,107 +406,141 @@ function EmailSignupScreen({ route }) {
       console.log(response);
 
       const fetchData = async () => {
-        setIsVisible(true)
+        setIsVisible(true);
         const requestOptions = {
-          method: 'GET',
+          method: "GET",
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         };
 
-
-        console.log(request)
-        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`
+        console.log(request);
+        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`;
 
         const response = await fetch(link, requestOptions);
         const body = await response.json();
-        axios.post('/user-gateway/facebook', { access_token: body.access_token })
+        axios
+          .post("/user-gateway/facebook", { access_token: body.access_token })
           .then(async (data) => {
             console.log({
-              facebook_data: data.data
-            })
-            setIsVisible(false)
+              facebook_data: data.data,
+            });
+            setIsVisible(false);
             if (data.data.message == "success") {
-
-              await AsyncStorage.setItem('token', data.data.token, async (err) => {
-                console.log({ err })
-                if (err) {
-                  console.log(err)
-                  return
+              await AsyncStorage.setItem(
+                "token",
+                data.data.token,
+                async (err) => {
+                  console.log({ err });
+                  if (err) {
+                    console.log(err);
+                    return;
+                  }
+                  await AsyncStorage.setItem(
+                    "user_id",
+                    data.data.user_data.id,
+                    async (err) => {
+                      await AsyncStorage.setItem(
+                        "email",
+                        data.data.user_data.email,
+                        (err) => {
+                          navigation.navigate("MenuNavigation");
+                        }
+                      );
+                    }
+                  );
                 }
-                await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                  await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                    navigation.navigate("MenuNavigation")
-                  })
-
-                })
-              })
-
+              );
             } else {
-              CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-              return false
+              CustomAlert({
+                title: "Signup Error",
+                subtitle: data.data.details,
+                handlePress: () => {},
+              });
+              return false;
             }
-
           })
-          .catch(err => {
-            setIsVisible(false)
-            CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-          })
+          .catch((err) => {
+            setIsVisible(false);
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: err,
+              handlePress: () => {},
+            });
+          });
         console.log("fetchData response: => ", body);
-      }
-      fetchData()
-
+      };
+      fetchData();
     }
-
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    iosClientId:
+      "322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com",
+    androidClientId:
+      "322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com",
+    webClientId:
+      "322534561816-lfr6keodqdfv9ro5ume47pv9ieh952g7.apps.googleusercontent.com",
   });
 
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
       console.log(gresponse);
-      setIsVisible(true)
-      axios.post('/user-gateway/google', { token: gresponse.params.id_token })
+      setIsVisible(true);
+      axios
+        .post("/user-gateway/google", { token: gresponse.params.id_token })
         .then(async (data) => {
-          setIsVisible(false)
+          setIsVisible(false);
           console.log({
-            google_data: data.data
-          })
+            google_data: data.data,
+          });
 
           if (data.data.message == "success") {
-
-            await AsyncStorage.setItem('token', data.data.token, async (err) => {
-              console.log({ err })
-              if (err) {
-                console.log(err)
-                return
+            await AsyncStorage.setItem(
+              "token",
+              data.data.token,
+              async (err) => {
+                console.log({ err });
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                await AsyncStorage.setItem(
+                  "user_id",
+                  data.data.user_data.id,
+                  async (err) => {
+                    await AsyncStorage.setItem(
+                      "email",
+                      data.data.user_data.email,
+                      (err) => {
+                        navigation.navigate("MenuNavigation");
+                      }
+                    );
+                  }
+                );
               }
-              await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                  navigation.navigate("MenuNavigation")
-                })
-
-              })
-            })
-
+            );
           } else {
-            CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-            return false
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: data.data.details,
+              handlePress: () => {},
+            });
+            return false;
           }
-
         })
-        .catch(err => {
-          setIsVisible(false)
-          CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-        })
+        .catch((err) => {
+          setIsVisible(false);
+          CustomAlert({
+            title: "Signup Error",
+            subtitle: err,
+            handlePress: () => {},
+          });
+        });
       // navigation.navigate("MenuNavigation")
     }
   }, [gresponse]);
@@ -481,12 +548,12 @@ function EmailSignupScreen({ route }) {
   const navigation = useNavigation();
 
   const register = () => {
-    setIsVisible(true)
+    setIsVisible(true);
     let data = {
       first_name: route.params.first_name,
       last_name: route.params.last_name,
       email: email,
-      password: password
+      password: password,
     };
     console.log(data);
 
@@ -496,29 +563,29 @@ function EmailSignupScreen({ route }) {
       data.email === "" ||
       data.password == ""
     ) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Please provide your sign up details completely",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
     if (data.password.length < 8) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Password is too short (Minmum of 8 characters)",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
     if (data.password !== confirmPassword) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Passwords does not match",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
@@ -526,30 +593,38 @@ function EmailSignupScreen({ route }) {
     axios
       .post("/user-gateway/register", data)
       .then(async (data) => {
-        setIsVisible(false)
+        setIsVisible(false);
         if (data.data.message == "success") {
           await AsyncStorage.setItem("token", data.data.token, async (err) => {
-            await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-              await AsyncStorage.setItem("email", data.data.user_data.email, async (err) => {
-                navigation.navigate("MenuNavigation");
-              });
-            });
+            await AsyncStorage.setItem(
+              "user_id",
+              data.data.user_data.id,
+              async (err) => {
+                await AsyncStorage.setItem(
+                  "email",
+                  data.data.user_data.email,
+                  async (err) => {
+                    navigation.navigate("MenuNavigation");
+                  }
+                );
+              }
+            );
           });
         } else {
           CustomAlert({
             title: "Sign up Error",
             subtitle: data.data.details,
-            handlePress: () => { },
+            handlePress: () => {},
           });
           return false;
         }
       })
       .catch((err) => {
-        setIsVisible(false)
+        setIsVisible(false);
         CustomAlert({
           title: "Sign up Error",
           subtitle: "Error making request, please try again...",
-          handlePress: () => { },
+          handlePress: () => {},
         });
         console.log({ err });
       });
@@ -557,8 +632,12 @@ function EmailSignupScreen({ route }) {
 
   return (
     <PaperProvider>
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <Text style={[styles.texts, { color: theme.text }]}>
+          {Strings.createAccount}
+        </Text>
 
         <TextInput
           value={email}
@@ -591,9 +670,7 @@ function EmailSignupScreen({ route }) {
           onChangeText={(password) => setConfirmPassword(password)}
           style={styles.emailinput}
           label={
-            <Text style={{ color: Colors.inputLabel }}>
-              Confirm Password
-            </Text>
+            <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>
           }
           left={<TextInput.Icon name="lock-outline" />}
           selectionColor={Colors.primary}
@@ -601,24 +678,19 @@ function EmailSignupScreen({ route }) {
           underlineColor={Colors.backgroundColor}
         />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            register()
-          }
-        >
-          <Text
-            style={nameStyles.textButton}
-            onPress={() =>
-              register()
-            }
-          >
+        <TouchableOpacity style={styles.button} onPress={() => register()}>
+          <Text style={nameStyles.textButton} onPress={() => register()}>
             {" "}
             {Strings.signup}
           </Text>
         </TouchableOpacity>
 
-        <Text style={styles.usemobileNumber} onPress={() => navigation.navigate("CompletePhoneSignup")}>{Strings.mobileNumber}</Text>
+        <Text
+          style={styles.usemobileNumber}
+          onPress={() => navigation.navigate("CompletePhoneSignup")}
+        >
+          {Strings.mobileNumber}
+        </Text>
 
         <Text
           style={nameStyles.forgotPassword}
@@ -689,14 +761,13 @@ function EmailSignupScreen({ route }) {
   );
 }
 
-
 function PhoneSignupScreen({ route }) {
   const navigation = useNavigation();
 
   const [phone, setPhone] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [isVisible, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
 
@@ -712,118 +783,152 @@ function PhoneSignupScreen({ route }) {
       console.log(response);
 
       const fetchData = async () => {
-        setIsVisible(true)
+        setIsVisible(true);
         const requestOptions = {
-          method: 'GET',
+          method: "GET",
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         };
 
-
-        console.log(request)
-        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`
+        console.log(request);
+        const link = `https://graph.facebook.com/v12.0/oauth/access_token?client_id=390391096288445&redirect_uri=https%3A%2F%2Fauth.expo.io%2F%40gabrielclyp%2Fclyppay&client_secret=9a6c3e717df46a3fe104d4aec0ecac7d&code=${code}&code_verifier=${request?.codeVerifier}`;
 
         const response = await fetch(link, requestOptions);
         const body = await response.json();
-        axios.post('/user-gateway/facebook', { access_token: body.access_token })
+        axios
+          .post("/user-gateway/facebook", { access_token: body.access_token })
           .then(async (data) => {
             console.log({
-              facebook_data: data.data
-            })
-            setIsVisible(false)
+              facebook_data: data.data,
+            });
+            setIsVisible(false);
             if (data.data.message == "success") {
-
-              await AsyncStorage.setItem('token', data.data.token, async (err) => {
-                console.log({ err })
-                if (err) {
-                  console.log(err)
-                  return
+              await AsyncStorage.setItem(
+                "token",
+                data.data.token,
+                async (err) => {
+                  console.log({ err });
+                  if (err) {
+                    console.log(err);
+                    return;
+                  }
+                  await AsyncStorage.setItem(
+                    "user_id",
+                    data.data.user_data.id,
+                    async (err) => {
+                      await AsyncStorage.setItem(
+                        "email",
+                        data.data.user_data.email,
+                        (err) => {
+                          navigation.navigate("MenuNavigation");
+                        }
+                      );
+                    }
+                  );
                 }
-                await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                  await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                    navigation.navigate("MenuNavigation")
-                  })
-
-                })
-              })
-
+              );
             } else {
-              CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-              return false
+              CustomAlert({
+                title: "Signup Error",
+                subtitle: data.data.details,
+                handlePress: () => {},
+              });
+              return false;
             }
-
           })
-          .catch(err => {
-            setIsVisible(false)
-            CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-          })
+          .catch((err) => {
+            setIsVisible(false);
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: err,
+              handlePress: () => {},
+            });
+          });
         console.log("fetchData response: => ", body);
-      }
-      fetchData()
-
+      };
+      fetchData();
     }
-
   }, [response]);
 
   const [grequest, gresponse, googlePromptAsync] = Google.useAuthRequest({
     responseType: "id_token",
     expoClientId:
       "322534561816-ru2tu1fbhpcki4cooeh93l9ljrb0febt.apps.googleusercontent.com",
-    //iosClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    //androidClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
-    // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+    iosClientId:
+      "322534561816-mg5aevkegg6lp3o98h5nc91ejgr4bj57.apps.googleusercontent.com",
+    androidClientId:
+      "322534561816-4u37l993k91k84mdfu0afg17eajhufjg.apps.googleusercontent.com",
+    webClientId:
+      "322534561816-lfr6keodqdfv9ro5ume47pv9ieh952g7.apps.googleusercontent.com",
   });
 
   React.useEffect(() => {
     if (gresponse?.type === "success") {
       const { authentication } = gresponse;
       console.log(gresponse);
-      setIsVisible(true)
-      axios.post('/user-gateway/google', { token: gresponse.params.id_token })
+      setIsVisible(true);
+      axios
+        .post("/user-gateway/google", { token: gresponse.params.id_token })
         .then(async (data) => {
-          setIsVisible(false)
+          setIsVisible(false);
           console.log({
-            google_data: data.data
-          })
+            google_data: data.data,
+          });
 
           if (data.data.message == "success") {
-
-            await AsyncStorage.setItem('token', data.data.token, async (err) => {
-              console.log({ err })
-              if (err) {
-                console.log(err)
-                return
+            await AsyncStorage.setItem(
+              "token",
+              data.data.token,
+              async (err) => {
+                console.log({ err });
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                await AsyncStorage.setItem(
+                  "user_id",
+                  data.data.user_data.id,
+                  async (err) => {
+                    await AsyncStorage.setItem(
+                      "email",
+                      data.data.user_data.email,
+                      (err) => {
+                        navigation.navigate("MenuNavigation");
+                      }
+                    );
+                  }
+                );
               }
-              await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-                await AsyncStorage.setItem("email", data.data.user_data.email, (err) => {
-                  navigation.navigate("MenuNavigation")
-                })
-
-              })
-            })
-
+            );
           } else {
-            CustomAlert({ title: "Signup Error", subtitle: data.data.details, handlePress: () => { } })
-            return false
+            CustomAlert({
+              title: "Signup Error",
+              subtitle: data.data.details,
+              handlePress: () => {},
+            });
+            return false;
           }
-
         })
-        .catch(err => {
-          setIsVisible(false)
-          CustomAlert({ title: "Signup Error", subtitle: err, handlePress: () => { } })
-        })
+        .catch((err) => {
+          setIsVisible(false);
+          CustomAlert({
+            title: "Signup Error",
+            subtitle: err,
+            handlePress: () => {},
+          });
+        });
       // navigation.navigate("MenuNavigation")
     }
   }, [gresponse]);
 
   const register = () => {
-    setIsVisible(true)
+    setIsVisible(true);
     let data = {
       first_name: route.params.first_name,
       last_name: route.params.last_name,
       phone: phone,
-      password: password
+      password: password,
     };
 
     if (
@@ -832,29 +937,29 @@ function PhoneSignupScreen({ route }) {
       data.phone === "" ||
       data.password == ""
     ) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Please provide your sign up details completely",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
     if (data.password.length < 8) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Password is too short (Minimum of 8 characters)",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
     if (data.password !== confirmPassword) {
-      setIsVisible(false)
+      setIsVisible(false);
       CustomAlert({
         title: "Sign up error",
         subtitle: "Passwords does not match",
-        handlePress: () => { },
+        handlePress: () => {},
       });
       return false;
     }
@@ -862,30 +967,38 @@ function PhoneSignupScreen({ route }) {
     axios
       .post("/user-gateway/register", data)
       .then(async (data) => {
-        setIsVisible(false)
+        setIsVisible(false);
         if (data.data.message == "success") {
           await AsyncStorage.setItem("token", data.data.token, async (err) => {
-            await AsyncStorage.setItem("user_id", data.data.user_data.id, async (err) => {
-              await AsyncStorage.setItem("email", data.data.user_data.email, async (err) => {
-                navigation.navigate("MenuNavigation");
-              });
-            });
+            await AsyncStorage.setItem(
+              "user_id",
+              data.data.user_data.id,
+              async (err) => {
+                await AsyncStorage.setItem(
+                  "email",
+                  data.data.user_data.email,
+                  async (err) => {
+                    navigation.navigate("MenuNavigation");
+                  }
+                );
+              }
+            );
           });
         } else {
           CustomAlert({
             title: "Sign up Error",
             subtitle: data.data.details,
-            handlePress: () => { },
+            handlePress: () => {},
           });
           return false;
         }
       })
       .catch((err) => {
-        setIsVisible(false)
+        setIsVisible(false);
         CustomAlert({
           title: "Sign up Error",
           subtitle: "Error making request, please try again...",
-          handlePress: () => { },
+          handlePress: () => {},
         });
         console.log({ err });
       });
@@ -893,8 +1006,12 @@ function PhoneSignupScreen({ route }) {
 
   return (
     <PaperProvider>
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-        <Text style={[styles.texts, {color: theme.text}]}>{Strings.createAccount}</Text>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <Text style={[styles.texts, { color: theme.text }]}>
+          {Strings.createAccount}
+        </Text>
 
         <TextInput
           value={phone}
@@ -947,7 +1064,12 @@ function PhoneSignupScreen({ route }) {
         >
           {Strings.email}
         </Text> */}
-        <Text style={styles.usemobileNumber} onPress={() => navigation.navigate("CompleteEmailSignup")}>{Strings.email}</Text>
+        <Text
+          style={styles.usemobileNumber}
+          onPress={() => navigation.navigate("CompleteEmailSignup")}
+        >
+          {Strings.email}
+        </Text>
 
         <Text
           style={nameStyles.forgotPassword}

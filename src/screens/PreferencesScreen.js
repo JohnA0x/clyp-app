@@ -37,10 +37,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { switchTheme } from "../redux/themeAction";
 import { lightTheme, darkTheme } from "../constants/theme";
 import { getData, storeData } from "../services/storage";
+import { theme } from "native-base";
 
 const Stack = createNativeStackNavigator();
 
 export default function PreferencesScreen({ navigation, route }) {
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator
@@ -85,8 +89,10 @@ export default function PreferencesScreen({ navigation, route }) {
 }
 
 const Preferences = ({ navigation, route }) => {
+
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
+
   const preferencesList = ({ item }) => (
     <View style={[styles.rowContainer]}>
       <TouchableOpacity
@@ -194,29 +200,29 @@ export const ChangeAppearance = ({ navigation, route }) => {
   }, [mode]);
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+      style={[styles.container, { backgroundColor: theme.background }]}
     >
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.preferences)}
         />
-        <Text style={styles.preferencesHeaderText}>
+        <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>
           {Strings.changeappearance}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.optionsContainer}>
+      <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
         <VectorButton
           name="moon"
           size={24}
           color={Colors.primary}
           style={styles.preferencesimage}
         />
-        <Text style={styles.preferencestext}>{mode} Mode</Text>
+        <Text style={[styles.preferencestext, {color: theme.text}]}>{mode} Mode</Text>
 
         <Switch
           style={styles.switch}
@@ -233,6 +239,9 @@ export const ChangeAppearance = ({ navigation, route }) => {
 };
 
 export const HideBalance = ({ navigation, route }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const [isEnabled, setIsEnabled] = useState(
     route.params.params.preferences.private_mode
   );
@@ -277,26 +286,26 @@ export const HideBalance = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.preferences)}
         />
-        <Text style={styles.preferencesHeaderText}>{Strings.hidebalance}</Text>
+        <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>{Strings.hidebalance}</Text>
       </View>
 
-      <TouchableOpacity style={styles.optionsContainer}>
+      <TouchableOpacity style={[styles.optionsContainer, {backgroundColor: theme.flatlist}]}>
         <VectorButton
           name="eye-off"
           size={24}
           color={Colors.primary}
           style={styles.preferencesimage}
         />
-        <Text style={styles.preferencestext}>{Strings.hidebalance}</Text>
+        <Text style={[styles.preferencestext, {color: theme.text}]}>{Strings.hidebalance}</Text>
 
         <Switch
           style={styles.switch}
@@ -313,12 +322,16 @@ export const HideBalance = ({ navigation, route }) => {
 };
 
 export function PaymentMethod({ navigation, route }) {
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const [cards, setCards] = useState([])
   const paymentMethods = ({ item, route }) => {
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, {backgroundColor: theme.flatlist}]}
           onPress={() => navigation.navigate("update-card", {
             card: item
           })}
@@ -356,12 +369,12 @@ export function PaymentMethod({ navigation, route }) {
   }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
       <View style={styles.preferencesHeader}>
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.backButton}
           handlePress={() => navigation.navigate(Strings.preferences, {
             id: route.params.params.id,
@@ -371,7 +384,7 @@ export function PaymentMethod({ navigation, route }) {
             user: route.params.params.user,
           })}
         />
-        <Text style={styles.preferencesHeaderText}>
+        <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>
           {Strings.paymentmethod}
         </Text>
       </View>

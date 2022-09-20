@@ -46,7 +46,6 @@ export const styles = StyleSheet.create({
 
   emailinput: {
     alignSelf: "center",
-  
     width: "90%",
     height: 55,
     borderRadius: 15,
@@ -58,7 +57,6 @@ export const styles = StyleSheet.create({
 
   passwordinput: {
     alignSelf: "center",
-    backgroundColor: Colors.inputLight,
     width: "90%",
     height: 55,
     borderRadius: 15,
