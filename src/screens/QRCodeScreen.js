@@ -99,6 +99,7 @@ const Scan = ({ navigation }) => {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    navigation.goBack()
   };
 
   if (hasPermission === null) {

@@ -5,19 +5,23 @@ import { styles } from "../styles/support";
 import * as Strings from '../strings/strings'
 import * as Colors from '../constants/colors'
 import { ImageButton, RoundedButton, VectorButton } from "../components/button";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function SupportScreen({navigation, route}) {
+export default function SupportScreen({navigation}) {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
        <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.Profile)}
+            handlePress={() => navigation.goBack()}
           />
-          <Text style={styles.headerText}>{Strings.help}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.help}</Text>
         </View>
 
     </SafeAreaView>

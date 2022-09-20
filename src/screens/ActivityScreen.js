@@ -41,12 +41,17 @@ import RNDatePicker from "react-native-date-picker";
 import axiosFiat from "../components/axios-fait";
 import { CustomAlert } from "../components/alert";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function ActivityScreen({ navigation, route }) {
   const [open, setOpen] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const [mydate, setDate] = useState(new Date());
   const changeSelectedDate = (event, selectedDate) => {
@@ -59,7 +64,7 @@ export default function ActivityScreen({ navigation, route }) {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          backgroundColor: Colors.backgroundColor,
+          backgroundColor: theme.background,
         }}
       >
         <Stack.Screen
@@ -73,12 +78,12 @@ export default function ActivityScreen({ navigation, route }) {
 
   function TabNavigator({ route }) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={Colors.primary}
             style={styles.backButton}
             handlePress={() =>
               navigation.navigate(Strings.Profile, {
@@ -90,13 +95,13 @@ export default function ActivityScreen({ navigation, route }) {
               })
             }
           />
-          <Text style={styles.headerText}>{Strings.activity}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.activity}</Text>
         </View>
 
         <Tab.Navigator
           tabBarOptions={{
-            style: styles.tabBar,
-            labelStyle: { fontSize: 12 },
+            style: [styles.tabBar, {backgroundColor: theme.background }],
+            labelStyle: { fontSize: 12, color: theme.text },
             //   activeTintColor:Colors.primary,
             // tabStyle: {backgroundColor: Colors.backgroundColor },
             indicatorStyle: { backgroundColor: Colors.primary },
@@ -138,7 +143,7 @@ export default function ActivityScreen({ navigation, route }) {
       }, []);
       const historyList = ({ item }) => {
         return (
-          <View style={styles.rowContainer}>
+          <View style={[styles.rowContainer]}>
             <TouchableOpacity style={styles.list}>
               <VectorButton
                 name={item.icon}
@@ -165,7 +170,7 @@ export default function ActivityScreen({ navigation, route }) {
       };
 
       return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
           <FlatList
             data={transactions}
             //ListHeaderComponent={renderHeader}
@@ -180,21 +185,23 @@ export default function ActivityScreen({ navigation, route }) {
     function Range() {
       
       return (
-        <SafeAreaView style={styles.container}>
-          <Text style={styles.fromText}
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+          <Text style={[styles.fromText, {color: theme.text}]}
           onPress={() => setModalVisible(true)}>FROM:</Text>
           <TextInput
-            style={styles.fromInput}
+            style={[styles.fromInput, {backgroundColor: theme.textinput, color: theme.text}]}
             placeholder="Select Date"
+            placeholderTextColor={theme.text}
             selectionColor={Colors.primary}
             editable={false}
             text={mydate}
             onPressIn={() => setOpen(true)}
           />
-          <Text style={styles.toText}>TO:</Text>
+          <Text style={[styles.toText, {color: theme.text}]}>TO:</Text>
           <TextInput
-            style={styles.fromInput}
+            style={[styles.fromInput, {backgroundColor: theme.textinput, color: theme.text}]}
             placeholder="Select Date"
+            placeholderTextColor={theme.text}
             selectionColor={Colors.primary}
           />
 

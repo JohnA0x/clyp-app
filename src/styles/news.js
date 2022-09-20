@@ -54,6 +54,10 @@ export const styles = StyleSheet.create({
     marginTop: 30,
   },
 
+  newsContent:{
+    margin: 20,
+  },
+
   separator: {
     height: 1,
     width: '95%',
