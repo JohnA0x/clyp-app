@@ -172,7 +172,25 @@ export default function HomeScreen({ navigation }) {
               { user_id: id }
             )
             .then((coins_data) => {
-              setCoins(coins_data.data.coins);
+              setCoins([{
+                currency: "BTC",
+                address: "btc-xxxxxxx"
+              }, {
+                currency: "USDT",
+                address: "usdt-xxxxxxx"
+              }, {
+                currency: "ETH",
+                address: "eth-xxxxxxx"
+              }, {
+                currency: "BNB",
+                address: "bnb-xxxxxxx"
+              }, {
+                currency: "LTC",
+                address: "ltc-xxxxxxx"
+              }, {
+                currency: "BTC",
+                address: "btc-xxxxxxx"
+              }]);
             });
 
           axios
@@ -186,7 +204,7 @@ export default function HomeScreen({ navigation }) {
         .catch((err) => {
           CustomAlert({
             title: "Error",
-            subtitle: "Error making request, please try again...",
+            subtitle: "Error making request, please try again..." + err,
             handlePress: () => { },
           });
           console.log({ err });
