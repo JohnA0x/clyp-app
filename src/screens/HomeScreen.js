@@ -98,7 +98,6 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.favouriteBaseContainer}>
       <TouchableOpacity
         style={[styles.favouriteButton, { backgroundColor: theme.flatlist }]}
-        onPress={biometricsAuth}
       >
         <Ionicons
           name="star"
