@@ -27,12 +27,17 @@ import {
 } from "../components/button";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function NewsScreen({ navigation }) {
   const [image, setImage] = useState("");
   const [newsContent, steNewsContent] = useState("");
   const [news, setNews] = useState(null)
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const fetchNews = async () => {
 
@@ -70,23 +75,23 @@ export default function NewsScreen({ navigation }) {
         }}
       >
         <Image style={styles.newsImage} source={{ uri: item.image_url ? item.image_url : 'https://cdn-icons-png.flaticon.com/512/2964/2964063.png' }} />
-        <Text style={styles.newsText} numberOfLines={1}>
+        <Text style={[styles.newsText, {color: theme.text}]} numberOfLines={1}>
           {item.title}
         </Text>
       </TouchableOpacity>
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.clyphub)}
           />
-          <Text style={styles.headerText}>{Strings.News}</Text>
+          <Text style={[styles.headerText,{color: theme.text}]}>{Strings.News}</Text>
         </View>
 
         <View style={styles.flatlist}>
@@ -103,16 +108,16 @@ export default function NewsScreen({ navigation }) {
 
   function NewsContainer() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("news")}
           />
-          <Text style={styles.headerText}>{Strings.News}</Text>
+          <Text style={[styles.headerText,{color: theme.text}]}>{Strings.News}</Text>
 
           <ScrollView>
             <Image
@@ -120,7 +125,7 @@ export default function NewsScreen({ navigation }) {
               source={{ uri: image }}
               resizeMode="cover"
             />
-            <Text>{newsContent}</Text>
+            <Text style={[styles.newsContent, {color: theme.text}]}>{newsContent}</Text>
           </ScrollView>
         </View>
       </SafeAreaView>

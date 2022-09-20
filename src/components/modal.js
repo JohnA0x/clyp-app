@@ -14,6 +14,7 @@ import { Button } from "react-native";
 import * as Colors from '../constants/colors'
 import LottieView from 'lottie-react-native';
 import { RoundedButton } from "./button";
+import { useSelector, useDispatch } from "react-redux";
 
 export const ProcessingModal = ({
   isVisible,
@@ -21,6 +22,9 @@ export const ProcessingModal = ({
   style,
   textStyle,
 }) => {
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const animation = useRef(null);
   useEffect(() => {
@@ -31,7 +35,7 @@ export const ProcessingModal = ({
 
   return (
     <ReactNativeModal isVisible={isVisible}>
-      <View style={styles.view}>
+      <View style={[styles.view, {backgroundColor: theme.background}]}>
       <LottieView
         autoPlay loop
         ref={animation}
@@ -43,7 +47,7 @@ export const ProcessingModal = ({
         source={require('../lottie/kite.json')}
       />
         <Text style={styles.title}>Processing</Text>
-        <Text style={styles.subtitle}>Please hold on a moment...</Text>
+        <Text style={[styles.subtitle, {color: theme.text}]}>Please hold on a moment...</Text>
       </View>
     </ReactNativeModal>
   );
@@ -55,6 +59,8 @@ export const SuccessModal = ({
   style,
   textStyle,
 }) => {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
 
   const animation = useRef(null);
   useEffect(() => {
@@ -65,7 +71,7 @@ export const SuccessModal = ({
 
   return (
     <ReactNativeModal isVisible={isVisible}>
-      <View style={styles.view}>
+      <View style={[styles.view, {backgroundColor: theme.background}]}>
       <LottieView
         autoPlay loop
         ref={animation}
@@ -77,7 +83,7 @@ export const SuccessModal = ({
         source={require('../lottie/check.json')}
       />
         <Text style={styles.successTitle}>Success!</Text>
-        <Text style={styles.subtitle}>Successfully done</Text>
+        <Text style={[styles.subtitle, {color: theme.text}]}>Successfully done</Text>
         <RoundedButton
           style={styles.okButton}
           text='Done'

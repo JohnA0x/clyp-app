@@ -47,7 +47,6 @@ import { getData } from "../services/storage";
 import * as Values from "../constants/values";
 
 import { useSelector, useDispatch } from "react-redux";
-import { theme } from "native-base";
 
 const Stack = createNativeStackNavigator();
 
@@ -263,24 +262,26 @@ function NameSignupScreen({ route }) {
         <TextInput
           value={first_name}
           onChangeText={(text) => setFirstName(text)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={<Text style={{ color: Colors.inputLabel }}>First Name</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="email-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          left={<TextInput.Icon name="alpha-f" color={theme.primary} />}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TextInput
           value={last_name}
           onChangeText={(text) => setLastName(text)}
-          style={styles.passwordinput}
+          style={[styles.passwordinput, { backgroundColor: theme.textinput }]}
           secureTextEntry={false}
           label={<Text style={{ color: Colors.inputLabel }}>Last Name</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="phone-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          left={<TextInput.Icon name="alpha-l" color={theme.primary} />}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TouchableOpacity
@@ -642,40 +643,43 @@ function EmailSignupScreen({ route }) {
         <TextInput
           value={email}
           onChangeText={(email) => setEmail(email)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="email-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          left={<TextInput.Icon name="email-outline" color={theme.primary} />}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>
               {Strings.passwordHint}
             </Text>
           }
-          left={<TextInput.Icon name="lock-outline" />}
+          left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
           selectionColor={Colors.primary}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TextInput
           value={confirmPassword}
           onChangeText={(password) => setConfirmPassword(password)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>
           }
-          left={<TextInput.Icon name="lock-outline" />}
+          left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
           selectionColor={Colors.primary}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TouchableOpacity style={styles.button} onPress={() => register()}>
@@ -1016,30 +1020,32 @@ function PhoneSignupScreen({ route }) {
         <TextInput
           value={phone}
           onChangeText={(phone) => setPhone(phone)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
           secureTextEntry={false}
           label={<Text style={{ color: Colors.inputLabel }}>Phone</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="phone-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          left={<TextInput.Icon name="phone-outline" color={theme.primary}/>}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
           keyboardType="number-pad"
         />
 
         <TextInput
           value={password}
           onChangeText={(text) => setPassword(text)}
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
           secureTextEntry={true}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TextInput
-          style={styles.emailinput}
+          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
           onChangeText={(val) => setConfirmPassword(val)}
           secureTextEntry={true}
           label={
@@ -1047,8 +1053,9 @@ function PhoneSignupScreen({ route }) {
           }
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
-          activeUnderlineColor={Colors.backgroundColor}
-          underlineColor={Colors.backgroundColor}
+          activeUnderlineColor={theme.background}
+          underlineColor={theme.background}
+          theme={{ colors: { text: theme.text} }}
         />
 
         <TouchableOpacity style={styles.button} onPress={() => register()}>

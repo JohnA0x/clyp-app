@@ -15,10 +15,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { styles } from "../styles/onboarding";
 import * as Colors from "../constants/colors";
 import * as Strings from "../strings/strings";
-import FirstSVG from "../drawables/vector/firstonboard 2.svg";
+import FirstSVG from "../drawables/vector/firstonboard.png";
 import SecondSVG from "../drawables/vector/secondonboard.svg";
 import ThirdSVG from "../drawables/vector/thirdonboard.svg";
-import FourthSVG from "../drawables/vector/fourthonboard.svg";
+import FourthSVG from "../drawables/vector/fourthonboard.png";
 
 import {
   useFonts,
@@ -73,7 +73,10 @@ function FirstScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      <FirstSVG width={300} height={300} style={styles.svg} />
+      <Image
+        source={require("../drawables/vector/firstonboard.png")}
+        style={styles.image}
+      />
       <Text style={[styles.title, { color: theme.text }]}>
         {Strings.firstOnboardingTitle}
       </Text>
@@ -169,7 +172,10 @@ function FourthScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      <FourthSVG width={300} height={300} style={styles.svg} />
+      <Image
+        source={require("../drawables/vector/fourthonboard.png")}
+        style={styles.image}
+      />
       <Text style={[styles.title, { color: theme.text }]}>
         {Strings.fourthOnboardingTitle}
       </Text>
