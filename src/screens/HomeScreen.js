@@ -165,12 +165,12 @@ export default function HomeScreen({ navigation }) {
           setPrefrences(data.data.user.prefrence[0]);
           setUser(data.data.user);
           console.log(data.data.user);
-          axios
-            .post(
-              "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
-              { user_id: id }
-            )
-            .then((coins_data) => {
+          // axios
+          //   .post(
+          //     "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
+          //     { user_id: id }
+          //   )
+          //   .then((coins_data) => {
               setCoins([{
                 currency: "BTC",
                 address: "btc-xxxxxxx"
@@ -190,7 +190,7 @@ export default function HomeScreen({ navigation }) {
                 currency: "BTC",
                 address: "btc-xxxxxxx"
               }]);
-            });
+            // });
 
           axios
             .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {

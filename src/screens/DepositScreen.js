@@ -43,6 +43,8 @@ import axiosFiat from "../components/axios-fait";
 import { styles2 } from "../styles/buycrypto";
 import { KeycodeInput } from "react-native-keycode";
 
+import * as Clipboard from 'expo-clipboard';
+
 const Stack = createNativeStackNavigator();
 
 export default function DepositScreen({ navigation, route }) {
@@ -337,7 +339,11 @@ export default function DepositScreen({ navigation, route }) {
           <Text style={[styles.headerText, { color: theme.text }]}>{Strings.depositviaBank}</Text>
         </View>
 
-        <View>
+        <View
+        onPress={async () => {
+          await Clipboard.setStringAsync(route.params.wallet.number)
+          CustomAlert({title: "Copied", subtitle: "Your accoont number has been successfully copied"})
+        }}>
           <Text style={[styles.titleText, { color: theme.primary }]}>ACCOUNT NUMBER</Text>
           <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.number}</Text>
           <Ionicons
@@ -348,7 +354,11 @@ export default function DepositScreen({ navigation, route }) {
         </View>
 
 
-        <View>
+        <View
+          onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.name)
+            CustomAlert({ title: "Copied", subtitle: "Your account name has been successfully copied" })
+          }}>
           <Text style={[styles.titleText, { color: theme.primary }]}>ACCOUNT NAME</Text>
           <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.name}</Text>
           <Ionicons
@@ -358,7 +368,11 @@ export default function DepositScreen({ navigation, route }) {
             style={styles.copyButton} />
         </View>
 
-        <View>
+        <View
+            onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.bank_name)
+            CustomAlert({title: "Copied", subtitle: "Your bank name has been successfully copied"})
+          }}>
           <Text style={[styles.titleText, { color: theme.primary }]}>BANK</Text>
           <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.bank_name}</Text>
           <Ionicons
@@ -368,7 +382,11 @@ export default function DepositScreen({ navigation, route }) {
             style={styles.copyButton} />
         </View>
 
-        <View>
+        <View
+            onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.bank_code)
+            CustomAlert({title: "Copied", subtitle: "Your bank code has been successfully copied"})
+          }}>
           <Text style={[styles.titleText, { color: theme.primary }]}>SORT CODE</Text>
           <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.bank_code}</Text>
           <Ionicons
