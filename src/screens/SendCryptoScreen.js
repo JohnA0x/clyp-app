@@ -113,7 +113,7 @@ export default function SendCryptoScreen({ navigation, route }) {
   }
 
   // When a crypto is clicked from the list, it takes you to the send options screen
-  function SendOptions() {
+  function SendOptions({ route }) {
     const navigation = useNavigation();
     // function specific states
     const [open, setOpen] = useState(false);
@@ -126,7 +126,7 @@ export default function SendCryptoScreen({ navigation, route }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const [amount, setAmount] = useState("");
-    const [rAddress, setRAddress] = useState("");
+    const [rAddress, setRAddress] = useState(route.params.data? route.params.data: "");
     const [network, setNetwork] = useState("");
     const [walletName, setWalletName] = useState("");
 
@@ -184,7 +184,7 @@ export default function SendCryptoScreen({ navigation, route }) {
               ]}
               placeholderTextColor={theme.text}
               placeholder={Strings.walletAddress}
-              value={cryptoAddress}
+              value={rAddress}
               // onChangeText={(value) => setCryptoAddress(value)}
               selectionColor={Colors.primary}
               onChangeText={(text) => setRAddress(text)}
@@ -312,6 +312,8 @@ export default function SendCryptoScreen({ navigation, route }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 
+    const navigation = useNavigation();
+
     useEffect(() => {
       (async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -321,8 +323,11 @@ export default function SendCryptoScreen({ navigation, route }) {
 
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
-      alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-      setCryptoAddress(data);
+      // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+      // setCryptoAddress(data);
+      navigation.navigate("sendoptions", {
+        data
+      })
     };
 
     if (hasPermission === null) {
