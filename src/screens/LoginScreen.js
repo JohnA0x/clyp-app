@@ -425,7 +425,7 @@ function LoginScreen({ navigation }) {
         left={<TextInput.Icon name="email-outline" color={theme.primary} />}
         activeUnderlineColor={theme.background}
         underlineColor={theme.background}
-        theme={{ colors: { text: theme.text} }}
+        theme={{ colors: { text: theme.text, primary: theme.primary}}}
       />
 
       <TextInput
@@ -447,7 +447,7 @@ function LoginScreen({ navigation }) {
         }
         activeUnderlineColor={theme.background}
         underlineColor={theme.background}
-        theme={{ colors: { text: theme.text} }}
+        theme={{ colors: { text: theme.text, primary: theme.primary}}}
       ></TextInput>
 
       <TouchableOpacity style={styles.button} onPress={() => login()}>

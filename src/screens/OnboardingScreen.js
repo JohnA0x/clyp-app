@@ -20,6 +20,8 @@ import SecondSVG from "../drawables/vector/secondonboard.svg";
 import ThirdSVG from "../drawables/vector/thirdonboard.svg";
 import FourthSVG from "../drawables/vector/fourthonboard.png";
 
+import { useState, useEffect } from "react";
+
 import {
   useFonts,
   Poppins_900Black,
@@ -39,7 +41,7 @@ import { theme } from "native-base";
 
 const Stack = createNativeStackNavigator();
 
-export default function Onboarding() {
+export default function Onboarding({ navigation, props}) {
   let [fontsLoaded, error] = useFonts({
     Poppins_700Bold,
     Poppins_900Black,
@@ -69,6 +71,19 @@ function FirstScreen() {
   const navigation = useNavigation();
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
+
+  const isFirstTime = async () => {
+    try {
+      const value = await AsyncStorage.getItem(Values.IS_FIRST_TIME);
+      if (value === "false") {
+        alert("no");
+      } else {
+        alert("yes");
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   return (
     <SafeAreaView

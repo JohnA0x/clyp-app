@@ -342,7 +342,7 @@ export default function DepositScreen({ navigation, route }) {
         <View
         onPress={async () => {
           await Clipboard.setStringAsync(route.params.wallet.number)
-          CustomAlert({title: "Copied", subtitle: "Your accoont number has been successfully copied"})
+          CustomAlert({title: "Copied", subtitle: "Your account number has been successfully copied"})
         }}>
           <Text style={[styles.titleText, { color: theme.primary }]}>ACCOUNT NUMBER</Text>
           <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.number}</Text>

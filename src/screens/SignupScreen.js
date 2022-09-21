@@ -393,7 +393,6 @@ function NameSignupScreen({ route }) {
           onDismiss={() => setSnackVisibility(false)}
           action={{
             label: "Undo",
-            labelStyle: ,
             onPress: () => {
               // Do something
             },
