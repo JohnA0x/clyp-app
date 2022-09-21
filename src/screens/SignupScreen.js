@@ -22,6 +22,7 @@ import {
   Text,
   View,
   Image,
+  StatusBar,
   TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -256,6 +257,7 @@ function NameSignupScreen({ route }) {
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.background }]}
       >
+        <StatusBar barStyle={theme.statusbar} />
         <Text style={[styles.texts, { color: theme.text }]}>
           {Strings.createAccount}
         </Text>
@@ -655,6 +657,7 @@ function EmailSignupScreen({ route }) {
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
+          secureTextEntry={true}
           style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>
@@ -671,6 +674,7 @@ function EmailSignupScreen({ route }) {
         <TextInput
           value={confirmPassword}
           onChangeText={(password) => setConfirmPassword(password)}
+          secureTextEntry={true}
           style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>

@@ -54,6 +54,7 @@ export default function Onboarding() {
           headerShown: false,
         }}
       >
+        
         <Stack.Screen name={Strings.firstScreen} component={FirstScreen} />
         <Stack.Screen name={Strings.secondScreen} component={SecondScreen} />
         <Stack.Screen name={Strings.thirdScreen} component={ThirdScreen} />
@@ -73,6 +74,7 @@ function FirstScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
+      <StatusBar barStyle={theme.statusbar} />
       <Image
         source={require("../drawables/vector/firstonboard.png")}
         style={styles.image}
