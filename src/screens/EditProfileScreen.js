@@ -407,10 +407,10 @@ export default function EditProfileScreen({ navigation, route }) {
 
   function ContactEdit() {
     const [phone, setPhone] = useState(
-      route.params.user.email ? route.params.user.email : ""
+      route.params.user.phone ? route.params.user.phone : ""
     );
     const [email, setEmail] = useState(
-      route.params.user.phone ? route.params.user.phone : ""
+      route.params.user.email ? route.params.user.email : ""
     );
     const [isVisible, setIsVisible] = useState(false);
 
@@ -473,7 +473,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholderTextColor={theme.text}
           placeholder="Phone Number"
           selectionColor={Colors.primary}
-          value={email}
+          value={phone}
           onChangeText={(value) => setPhone(value)}
         />
 
@@ -485,7 +485,7 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholderTextColor={theme.text}
           placeholder="Email"
           selectionColor={Colors.primary}
-          value={phone}
+          value={email}
           onChangeText={(value) => setEmail(value)}
         />
 

@@ -123,7 +123,7 @@ export default function ActivityScreen({ navigation, route }) {
           })
           .then((data) => {
             if (data.data.message === "success") {
-              setTransactions(data.data.transactions);
+              setTransactions(data.data.transactions.reverse());
             } else {
               CustomAlert({
                 title: "failed",

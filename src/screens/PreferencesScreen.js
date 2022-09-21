@@ -208,7 +208,13 @@ export const ChangeAppearance = ({ navigation, route }) => {
           size={24}
           color={theme.primary}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.preferences)}
+          handlePress={() => navigation.navigate(Strings.preferences, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })}
         />
         <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>
           {Strings.changeappearance}
@@ -293,7 +299,13 @@ export const HideBalance = ({ navigation, route }) => {
           size={24}
           color={theme.primary}
           style={styles.backButton}
-          handlePress={() => navigation.navigate(Strings.preferences)}
+          handlePress={() => navigation.navigate(Strings.preferences, {
+            id: route.params.params.id,
+            firstName: route.params.params.firstName,
+            lastName: route.params.params.lastName,
+            preferences: route.params.params.preferences,
+            user: route.params.params.user,
+          })}
         />
         <Text style={[styles.preferencesHeaderText, {color: theme.text}]}>{Strings.hidebalance}</Text>
       </View>
