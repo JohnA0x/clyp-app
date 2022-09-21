@@ -308,7 +308,7 @@ export default function SendCryptoScreen({ navigation, route }) {
     );
   }
 
-  function Scan({ navigation }) {
+  function Scan({ route }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 

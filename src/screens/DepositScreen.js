@@ -339,7 +339,7 @@ export default function DepositScreen({ navigation, route }) {
           <Text style={[styles.headerText, { color: theme.text }]}>{Strings.depositviaBank}</Text>
         </View>
 
-        <View
+        <TouchableOpacity
         onPress={async () => {
           await Clipboard.setStringAsync(route.params.wallet.number)
           CustomAlert({title: "Copied", subtitle: "Your accoont number has been successfully copied"})
@@ -351,10 +351,10 @@ export default function DepositScreen({ navigation, route }) {
             size={20}
             color={theme.primary}
             style={styles.copyButton} />
-        </View>
+        </TouchableOpacity>
 
 
-        <View
+        <TouchableOpacity
           onPress={async () => {
             await Clipboard.setStringAsync(route.params.wallet.name)
             CustomAlert({ title: "Copied", subtitle: "Your account name has been successfully copied" })
@@ -366,9 +366,9 @@ export default function DepositScreen({ navigation, route }) {
             size={20}
             color={theme.primary}
             style={styles.copyButton} />
-        </View>
+        </TouchableOpacity>
 
-        <View
+        <TouchableOpacity
             onPress={async () => {
             await Clipboard.setStringAsync(route.params.wallet.bank_name)
             CustomAlert({title: "Copied", subtitle: "Your bank name has been successfully copied"})
@@ -380,9 +380,9 @@ export default function DepositScreen({ navigation, route }) {
             size={20}
             color={theme.primary}
             style={styles.copyButton} />
-        </View>
+        </TouchableOpacity>
 
-        <View
+        <TouchableOpacity
             onPress={async () => {
             await Clipboard.setStringAsync(route.params.wallet.bank_code)
             CustomAlert({title: "Copied", subtitle: "Your bank code has been successfully copied"})
@@ -394,7 +394,7 @@ export default function DepositScreen({ navigation, route }) {
             size={20}
             color={theme.primary}
             style={styles.copyButton} />
-        </View>
+        </TouchableOpacity>
 
         <RoundedButton
           style={[styles.roundedButton, { top: 40, }]}

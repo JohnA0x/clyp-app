@@ -68,6 +68,7 @@ export default function WithdrawScreen({ route }) {
     const [amount, setAmount] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const [message, setMessage] = useState(false)
+    const [details, setDetails] = useState({})
 
     const withdraw = () => {
       setIsVisible(true);
@@ -90,7 +91,9 @@ export default function WithdrawScreen({ route }) {
           console.log(sent.data);
           setIsVisible(false);
           if (sent.data.message === "success") {
-
+            setMessage(sent.data.transaction.status)
+            setDetails(sent.data.transaction)
+            setPage("success")
           } else {
             setMessage(sent.data.details)
             setPage("failed")
@@ -110,18 +113,20 @@ export default function WithdrawScreen({ route }) {
 
     if (page === "confirm") {
       return (
-        <PaymentConfirmation amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} isVisible={isVisible}/>
+        <PaymentConfirmation amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} txid={details.id} withdraw={withdraw} isVisible={isVisible} />
       )
     }
 
     if (page === "failed") {
-      return(
-        <TransactionFailedScreen amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} message={message} status={"Not Submited"} />
+      return (
+        <TransactionFailedScreen amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} withdraw={withdraw} message={message} status={"auth-pending"} />
       )
     }
 
     if (page === "success") {
-      <TransactionSuccessScreen />
+      return (
+        <TransactionSuccessScreen amount={amount} destination={`${route.params.account.bank_name}, ${route.params.account.account_name}`} source={"Fiat walllet"} date={Date.now()} fee={0} txid={details.id} withdraw={withdraw} message={message} status={details.status} />
+      )
     }
 
     return (

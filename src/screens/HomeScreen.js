@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import {
   useState,
@@ -66,7 +67,7 @@ import CoinDetailedScreen from "./CoinDetailedScreen_copy/index";
       )
 } */
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   const [id, setID] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -83,6 +84,8 @@ export default function HomeScreen({ navigation }) {
     { address: "", abb: "" },
   ]);
   const [fiatWallet, setFiatWallet] = React.useState("");
+  const [refreshing, setRefreshing] = React.useState(false)
+  const [cleanup, setCleanUp] = React.useState(0)
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -164,6 +167,7 @@ export default function HomeScreen({ navigation }) {
           setLastName(data.data.user.last_name);
           setPrefrences(data.data.user.prefrence[0]);
           setUser(data.data.user);
+          setRefreshing(false)
           console.log(data.data.user);
           // axios
           //   .post(
@@ -171,26 +175,26 @@ export default function HomeScreen({ navigation }) {
           //     { user_id: id }
           //   )
           //   .then((coins_data) => {
-              setCoins([{
-                currency: "BTC",
-                address: "btc-xxxxxxx"
-              }, {
-                currency: "USDT",
-                address: "usdt-xxxxxxx"
-              }, {
-                currency: "ETH",
-                address: "eth-xxxxxxx"
-              }, {
-                currency: "BNB",
-                address: "bnb-xxxxxxx"
-              }, {
-                currency: "LTC",
-                address: "ltc-xxxxxxx"
-              }, {
-                currency: "BTC",
-                address: "btc-xxxxxxx"
-              }]);
-            // });
+          setCoins([{
+            currency: "BTC",
+            address: "btc-xxxxxxx"
+          }, {
+            currency: "USDT",
+            address: "usdt-xxxxxxx"
+          }, {
+            currency: "ETH",
+            address: "eth-xxxxxxx"
+          }, {
+            currency: "BNB",
+            address: "bnb-xxxxxxx"
+          }, {
+            currency: "LTC",
+            address: "ltc-xxxxxxx"
+          }, {
+            currency: "BTC",
+            address: "btc-xxxxxxx"
+          }]);
+          // });
 
           axios
             .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {
@@ -201,6 +205,7 @@ export default function HomeScreen({ navigation }) {
             });
         })
         .catch((err) => {
+          setRefreshing(false)
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again..." + err,
@@ -209,8 +214,10 @@ export default function HomeScreen({ navigation }) {
           console.log({ err });
         });
     }
-    fetchData();
-  }, []);
+    navigation.addListener('focus', async () =>
+      fetchData()
+    )
+  }, [cleanup]);
 
   const Stack = createNativeStackNavigator();
 
@@ -232,9 +239,17 @@ export default function HomeScreen({ navigation }) {
     return (
       <SafeAreaView
         style={[styles.container, { backgroundColor: theme.background }]}
-      onLayout={saveWidth()}>
+        onLayout={saveWidth()}>
         <StatusBar barStyle={theme.statusbar} />
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true)
+                setCleanUp(cleanup + 1)
+
+              }} />
+          }>
           <View style={styles.topBar}>
             <ImageButton
               style={styles.profileImage}
