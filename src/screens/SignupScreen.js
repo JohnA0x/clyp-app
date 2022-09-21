@@ -16,7 +16,7 @@ import {
   Poppins_600SemiBold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, Snackbar } from "react-native-paper";
 import {
   StyleSheet,
   Text,
@@ -97,6 +97,8 @@ function NameSignupScreen({ route }) {
   const [first_name, setFirstName] = React.useState("");
   const [last_name, setLastName] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const [snackVisibility, setSnackVisibility] = React.useState(true); //
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -270,7 +272,7 @@ function NameSignupScreen({ route }) {
           left={<TextInput.Icon name="alpha-f" color={theme.primary} />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TextInput
@@ -283,7 +285,7 @@ function NameSignupScreen({ route }) {
           left={<TextInput.Icon name="alpha-l" color={theme.primary} />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TouchableOpacity
@@ -383,6 +385,25 @@ function NameSignupScreen({ route }) {
           </Text>
         </View>
         <ProcessingModal isVisible={isVisible} />
+
+
+        <Snackbar
+          visible={snackVisibility}
+          duration={5000}
+          onDismiss={() => setSnackVisibility(false)}
+          action={{
+            label: "Undo",
+            labelStyle: ,
+            onPress: () => {
+              // Do something
+            },
+          }}
+          style={{ backgroundColor: theme.textinput }}
+        >
+          <View>
+            <Text>Hey there! I'm ssda Snackbar sdsdds.</Text>
+          </View>
+        </Snackbar>
       </SafeAreaView>
     </PaperProvider>
   );
@@ -581,6 +602,7 @@ function EmailSignupScreen({ route }) {
         subtitle: "Password is too short (Minmum of 8 characters)",
         handlePress: () => {},
       });
+
       return false;
     }
     if (data.password !== confirmPassword) {
@@ -651,7 +673,7 @@ function EmailSignupScreen({ route }) {
           left={<TextInput.Icon name="email-outline" color={theme.primary} />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TextInput
@@ -668,7 +690,7 @@ function EmailSignupScreen({ route }) {
           selectionColor={Colors.primary}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TextInput
@@ -683,7 +705,7 @@ function EmailSignupScreen({ route }) {
           selectionColor={Colors.primary}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TouchableOpacity style={styles.button} onPress={() => register()}>
@@ -1024,32 +1046,41 @@ function PhoneSignupScreen({ route }) {
         <TextInput
           value={phone}
           onChangeText={(phone) => setPhone(phone)}
-          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
+          style={[
+            styles.emailinput,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           secureTextEntry={false}
           label={<Text style={{ color: Colors.inputLabel }}>Phone</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="phone-outline" color={theme.primary}/>}
+          left={<TextInput.Icon name="phone-outline" color={theme.primary} />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
           keyboardType="number-pad"
         />
 
         <TextInput
           value={password}
           onChangeText={(text) => setPassword(text)}
-          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
+          style={[
+            styles.emailinput,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           secureTextEntry={true}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
           selectionColor={Colors.primary}
           left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TextInput
-          style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
+          style={[
+            styles.emailinput,
+            { backgroundColor: theme.textinput, color: theme.text },
+          ]}
           onChangeText={(val) => setConfirmPassword(val)}
           secureTextEntry={true}
           label={
@@ -1059,7 +1090,7 @@ function PhoneSignupScreen({ route }) {
           left={<TextInput.Icon name="lock-outline" />}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
-          theme={{ colors: { text: theme.text} }}
+          theme={{ colors: { text: theme.text, primary: theme.primary } }}
         />
 
         <TouchableOpacity style={styles.button} onPress={() => register()}>
