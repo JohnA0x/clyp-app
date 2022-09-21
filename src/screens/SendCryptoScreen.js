@@ -308,11 +308,8 @@ export default function SendCryptoScreen({ navigation, route }) {
     );
   }
 
-<<<<<<< HEAD
   function Scan() {
-=======
-  function Scan({ route }) {
->>>>>>> ebbbcfcd906b54999e44bc96a40a6e5c28af5d74
+
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 
