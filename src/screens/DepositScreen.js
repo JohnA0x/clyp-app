@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  ScrollView
 } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,12 +34,16 @@ import {
   bankAccountList,
 } from "../strings/depositlist";
 import cryptoListArray from "../strings/cryptolist";
-import { ProcessingModal } from "../components/modal";
+import { ProcessingModal, SuccessModal } from "../components/modal";
 import { AddCard } from "./PreferencesScreen";
 import { useSelector, useDispatch } from "react-redux";
 import { CustomAlert } from "../components/alert";
 
 import axiosFiat from "../components/axios-fait";
+import { styles2 } from "../styles/buycrypto";
+import { KeycodeInput } from "react-native-keycode";
+
+import * as Clipboard from 'expo-clipboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -96,7 +101,7 @@ export default function DepositScreen({ navigation, route }) {
 
       <Stack.Screen
         name={Strings.depositviaDebit}
-        component={DepositviaDebitCard}
+        component={BuyWithCard}
         initialParams={route}
       />
 
@@ -129,6 +134,26 @@ export default function DepositScreen({ navigation, route }) {
         component={CompleteUseCard}
         initialParams={route}
       />
+
+
+      <Stack.Screen
+        name="cardpin"
+        component={CardPin}
+        initialParams={route}
+      />
+
+      <Stack.Screen
+        name="inputotp"
+        component={InputOTP}
+        initialParams={route}
+      />
+
+      <Stack.Screen
+        name="address"
+        component={Address}
+        initialParams={route}
+      />
+
     </Stack.Navigator>
   );
 
@@ -136,7 +161,7 @@ export default function DepositScreen({ navigation, route }) {
     const depositOptions = ({ item }) => (
       <View style={styles.rowContainer}>
         <TouchableOpacity
-        style={[styles.button, {backgroundColor: theme.flatlist}]}
+          style={[styles.button, { backgroundColor: theme.flatlist }]}
           onPress={() => navigation.navigate(item.title)}
         >
           <VectorButton
@@ -145,14 +170,14 @@ export default function DepositScreen({ navigation, route }) {
             color={Colors.primary}
             style={styles.headerImage}
           />
-          <Text style={[styles.title, {color: theme.text}]}>{item.title}</Text>
-          <Text style={[styles.subtitle, {color: theme.text}]}>{item.subtitle}</Text>
+          <Text style={[styles.title, { color: theme.text }]}>{item.title}</Text>
+          <Text style={[styles.subtitle, { color: theme.text }]}>{item.subtitle}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -161,7 +186,7 @@ export default function DepositScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.fund}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.fund}</Text>
         </View>
         <FlatList
           //contentContainerStyle={styles.flatlist}
@@ -228,7 +253,7 @@ export default function DepositScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -302,7 +327,7 @@ export default function DepositScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -311,63 +336,79 @@ export default function DepositScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate('depositscreen')}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.depositviaBank}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.depositviaBank}</Text>
         </View>
 
-        <View>
-          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NUMBER</Text>
-          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.number}</Text>
+        <View
+        onPress={async () => {
+          await Clipboard.setStringAsync(route.params.wallet.number)
+          CustomAlert({title: "Copied", subtitle: "Your accoont number has been successfully copied"})
+        }}>
+          <Text style={[styles.titleText, { color: theme.primary }]}>ACCOUNT NUMBER</Text>
+          <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.number}</Text>
           <Ionicons
-          name="copy"
-          size={20}
-          color={theme.primary}
-          style ={styles.copyButton}/>
+            name="copy"
+            size={20}
+            color={theme.primary}
+            style={styles.copyButton} />
         </View>
 
 
-        <View>
-          <Text style={[styles.titleText, {color: theme.primary}]}>ACCOUNT NAME</Text>
-          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.name}</Text>
+        <View
+          onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.name)
+            CustomAlert({ title: "Copied", subtitle: "Your account name has been successfully copied" })
+          }}>
+          <Text style={[styles.titleText, { color: theme.primary }]}>ACCOUNT NAME</Text>
+          <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.name}</Text>
           <Ionicons
-          name="copy"
-          size={20}
-          color={theme.primary}
-          style ={styles.copyButton}/>
+            name="copy"
+            size={20}
+            color={theme.primary}
+            style={styles.copyButton} />
         </View>
 
-        <View>
-          <Text style={[styles.titleText, {color: theme.primary}]}>BANK</Text>
-          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.bank_name}</Text>
+        <View
+            onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.bank_name)
+            CustomAlert({title: "Copied", subtitle: "Your bank name has been successfully copied"})
+          }}>
+          <Text style={[styles.titleText, { color: theme.primary }]}>BANK</Text>
+          <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.bank_name}</Text>
           <Ionicons
-          name="copy"
-          size={20}
-          color={theme.primary}
-          style ={styles.copyButton}/>
+            name="copy"
+            size={20}
+            color={theme.primary}
+            style={styles.copyButton} />
         </View>
 
-        <View>
-          <Text style={[styles.titleText, {color: theme.primary}]}>SORT CODE</Text>
-          <Text style={[styles.detailsText, {color: theme.text}]}>{route.params.wallet.bank_code}</Text>
+        <View
+            onPress={async () => {
+            await Clipboard.setStringAsync(route.params.wallet.bank_code)
+            CustomAlert({title: "Copied", subtitle: "Your bank code has been successfully copied"})
+          }}>
+          <Text style={[styles.titleText, { color: theme.primary }]}>SORT CODE</Text>
+          <Text style={[styles.detailsText, { color: theme.text }]}>{route.params.wallet.bank_code}</Text>
           <Ionicons
-          name="copy"
-          size={20}
-          color={theme.primary}
-          style ={styles.copyButton}/>
+            name="copy"
+            size={20}
+            color={theme.primary}
+            style={styles.copyButton} />
         </View>
-       
+
         <RoundedButton
-          style={[styles.roundedButton, {top: 40,}]}
+          style={[styles.roundedButton, { top: 40, }]}
           text='Share Account Details'
           textStyle={styles.roundedTextButton}
         />
-       
+
       </SafeAreaView>
     );
   }
 
   function AddBankAccount() {
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -574,129 +615,436 @@ export default function DepositScreen({ navigation, route }) {
     );
   }
 
-  // function AddCardd({ navigation, route }) {
-  //   const [cardNumber, setCardNumber] = useState("");
-  //   const [cvvNumber, setCVVNumber] = useState("");
-  //   const [expiryNumber, setExpiryNumber] = useState("");
-  //   const [cardName, setCardName] = useState("");
-  //   const [cardType, setCardType] = useState("");
-  //   const [cardPin, setCardPin] = useState("");
-  //   const [loading, setLoading] = useState(false);
-  
-  //   const submit = () => {
-  //     setLoading(true)
-  
-  //     let data = {
-  //       card_number: cardNumber,
-  //       cvv: cvvNumber,
-  //       card_expiry: expiryNumber,
-  //       card_type: cardType,
-  //       card_name: cardName,
-  //       card_pin: cardPin,
-  //       user_id: route.params.params.id
-  //     }
-      
-  //     if(data.card_number === "" || data.cvv === "" || data.card_expiry === ""){
-  //       setLoading(false)
-  //       return false
-  //     }
-  //     axiosFiat.post('/fiat-gateway/save-card', data)
-  //       .then(data => {
-  //         if (data.data.message === "success") {
-  //           setLoading(false)
-  //           navigation.navigate(Strings.paymentmethod, {
-  //             id: route.params.params.id,
-  //             firstName: route.params.params.firstName,
-  //             lastName: route.params.params.lastName,
-  //             preferences: route.params.params.preferences,
-  //             user: route.params.params.user,
-  //           })
-  //         } else {
-  //           setLoading(false)
-  //           CustomAlert({
-  //             title: "Failed",
-  //             subtitle: "Problem adding card.",
-  //             handlePress: () => { },
-  //           });
-  //         }
-  //       })
-  //       .catch(err => {
-  //         setLoading(false)
-  //         CustomAlert({
-  //           title: "Failed",
-  //           subtitle: "Problem adding card.",
-  //           handlePress: () => { },
-  //         });
-  //       })
-  //   }
-  
-  //   return (
-  //     <SafeAreaView style={styles.container}>
-  //       <View style={styles.preferencesHeader}>
-  //         <VectorButton
-  //           name="chevron-back"
-  //           size={24}
-  //           color={Colors.textColor}
-  //           style={styles.backButton}
-  //           handlePress={() => navigation.goBack({
-  //             id: route.params.params.id,
-  //             firstName: route.params.params.firstName,
-  //             lastName: route.params.params.lastName,
-  //             preferences: route.params.params.preferences,
-  //             user: route.params.params.user,
-  //           })}
-  //         />
-  //         <Text style={styles.headerText}>{Strings.addNewCard}</Text>
-  //       </View>
-  
-  //       <TextInput
-  //         style={styles.inputText2}
-  //         placeholder="Card Name"
-  //         selectionColor={Colors.primary}
-  //         value={cardName}
-  //         onChangeText={(value) => setCardName(value)}
-  //       />
-  
-  //       <TextInput
-  //         style={styles.otherTextInputs2}
-  //         placeholder="Card Number"
-  //         selectionColor={Colors.primary}
-  //         maxLength={16}
-  //         value={cardNumber}
-  //         onChangeText={(value) => setCardNumber(value)}
-  //       />
-  
-  //       <View style={styles.rowCardContainer}>
-  //         <TextInput
-  //           style={styles.rowTextInputs}
-  //           placeholder="Expiry Date"
-  //           selectionColor={Colors.primary}
-  //           maxLength={5}
-  //           value={expiryNumber}
-  //           onChangeText={(value) => setExpiryNumber(value)}
-  //         />
-  
-  //         <TextInput
-  //           style={styles.rowTextInputs}
-  //           placeholder="CVV"
-  //           selectionColor={Colors.primary}
-  //           maxLength={3}
-  //           value={cvvNumber}
-  //           onChangeText={(value) => setCVVNumber(value)}
-  //         />
-  //       </View>
-  
-        
-  
-  //       <RoundedButton
-  //         text="Add Card"
-  //         textStyle={styles.roundedTextButton}
-  //         style={styles.roundedButton}
-  //         handlePress={() => submit()}
-  //       />
-  
-  //       <ProcessingModal isVisible={loading} />
-  //     </SafeAreaView>
-  //   );
-  // }
+  function BuyWithCard() {
+    const [amount, setAmount] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
+    const [cards, setCards] = useState([]);
+    const [checkmarkColor, setCheckmarkColor] = useState();
+    const [card, setCard] = useState();
+    const [pin, setPin] = useState();
+    const [flw, setFLW] = useState();
+    const [otp, setOTP] = useState();
+
+    const start_charge = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: card.card_number,
+        cvv: card.cvv,
+        card_expiry_month: card.card_expiry.slice(0, card.card_expiry.indexOf('/')),
+        card_expiry_year: card.card_expiry.slice(card.card_expiry.indexOf('/') + 1),
+        card_name: card.card_name,
+        amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/charge-card", card_data)
+        .then((resp) => {
+          setIsVisible(false);
+          console.log(resp.data)
+          if (resp.data.auth_mode === "pin") {
+            navigation.navigate("cardpin", { card: card, amount: amount, user: route.params.user })
+          } else if (resp.data.auth_mode === "redirect") {
+
+          } else if (resp.data.auth_mode === "avs_noauth") {
+            navigation.navigate("address", { card: card, amount: amount, user: route.params.user })
+          } else if (resp.data.transaction) {
+
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+    useEffect(() => {
+      axiosFiat
+        .post("/fiat-gateway/get-cards", { user_id: route.params.user.id })
+        .then((data) => {
+          if (data.data.message === "success") {
+            setCards(data.data.cards);
+            setCheckmarkColor(data.data.cards[0].id);
+            setCard(data.data.cards[0])
+            console.log(data.data.cards[0].id);
+          } else {
+            // CustomAlert({ title: "Failed", subtitle: data.data.error, handlePress: () => { } })
+          }
+        })
+        .catch((err) => {
+          // CustomAlert({ title: "Error", subtitle: err.error, handlePress: () => { } })
+        });
+    }, []);
+
+    const cardList = ({ item }) => {
+      return (
+        <View style={styles2.cardViewContainer}>
+          <TouchableOpacity
+            style={[styles2.cardsContainer, { backgroundColor: Colors.black }]}
+            onPress={() => {
+              setCheckmarkColor(item.id);
+              setCard(item);
+            }}
+          >
+            <VectorButton
+              name={item.icon}
+              size={24}
+              color={Colors.primary}
+              style={styles2.preferencesimage}
+            />
+            <Text style={styles2.cardNameText}>{item.card_name}</Text>
+            <Image style={styles2.cardIcon} />
+            <Text style={styles2.cardNumberText}>{item.card_number}</Text>
+            <Text style={styles2.cardValidThruText}>VALID THRU</Text>
+            <Text style={styles2.cardValidityText}>{item.card_expiry}</Text>
+            <Text style={styles2.cardCVVText}>CVV</Text>
+            <Text style={styles2.cardCVV}>{item.cvv}</Text>
+            <Ionicons
+              name={"checkmark-circle"}
+              size={24}
+              style={styles2.selectedIcon}
+              color={checkmarkColor === item.id ? Colors.addGoal : Colors.grey}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+    return (
+      <SafeAreaView style={styles2.container}>
+        <View style={styles2.header}>
+          <VectorButton
+            name="chevron-back"
+            size={24}
+            color={Colors.textColor}
+            style={styles2.backButton}
+            handlePress={() => navigation.navigate("depositscreen")}
+          />
+          <Text style={styles2.headerText}>{Strings.buy}</Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={styles2.cardListContainer}
+          //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+          data={cards}
+          renderItem={cardList}
+          ListEmptyComponent={<Text>No debit cards added yet</Text>}
+          horizontal={true}
+          keyExtractor={(item) => item.id}
+        />
+
+        {/* <View style={styles2.cardCryptoContainer}>
+          <Image style={styles2.cryptoImage} source={{ uri: cryptoIcon }} />
+          <Text style={styles2.cryptoText}>{cryptoName}</Text>
+        </View> */}
+
+        <View style={styles2.cardAmountContainer}>
+          <Text style={styles2.amountText}>Amount:</Text>
+          <TextInput
+            style={styles2.amountValueText}
+            keyboardType="numeric"
+            numberOfLines={1}
+            maxLength={12}
+            placeholder="Amount"
+            selectionColor={Colors.primary}
+            onChangeText={(text) => setAmount(text)}
+          // value={Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+          ></TextInput>
+          {/* <Text style={styles.amountMaxValue}>Max</Text> */}
+        </View>
+
+        <View style={styles2.lineCrosser} />
+        <Text style={styles2.receiveAmount}>
+          You will receive N{Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} in Naira
+        </Text>
+
+        <RoundedButton
+          style={styles2.cardDepositButton}
+          text={Strings.deposit}
+          textStyle={styles2.depositText}
+          handlePress={() => start_charge()}
+        />
+        <ProcessingModal isVisible={isVisible} />
+      </SafeAreaView>
+    );
+  }
+
+  function CardPin({ route }) {
+    const [pin, setPin] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+      console.log({
+        route_params: route
+      })
+    }, [])
+
+    const charge_pin = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: route.params.card.card_number,
+        cvv: route.params.card.cvv,
+        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
+        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_name: route.params.card.card_name,
+        amount: route.params.amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        pin: pin,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-pin", card_data)
+        .then((data) => {
+          setIsVisible(false);
+          if (data.data.message === "otp required") {
+            // setFLW(data.data.flw_ref);
+            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+    return (
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles2.header}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles2.backButton}
+              handlePress={() => navigation.navigate(Strings.depositviaDebit)}
+            />
+            <Text style={styles2.headerText}>Card Pin</Text>
+          </View>
+
+          <Text style={styles2.enterPinText}>Enter Your Card Pin</Text>
+          <KeycodeInput
+            tintColor={Colors.primary}
+            textColor={Colors.textColor}
+            style={styles2.pin}
+            numeric={true}
+            alphaNumeric={false}
+            onComplete={(value) => {
+              setPin(value);
+            }}
+          />
+
+          <RoundedButton
+            style={styles2.nextButton}
+            text={Strings.next}
+            textStyle={styles2.depositText}
+            handlePress={() => charge_pin()}
+          />
+        </ScrollView>
+        <ProcessingModal isVisible={isVisible} />
+      </SafeAreaView>
+    );
+  }
+
+  function InputOTP({ route }) {
+    const [code, setCode] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+    const [success, setSuccess] = useState(false);
+
+    const charge_otp = () => {
+      setIsVisible(true);
+      let otp_data = {
+        otp: code,
+        flw_ref: route.params.flw,
+        user_id: route.params.user.id,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-otp", otp_data)
+        .then((fianl) => {
+          setIsVisible(false);
+          if (fianl.data.message === "success") {
+            setSuccess(true);
+          }
+          else {
+            CustomAlert({ title: "Failed", subtitle: "Failed to charge card, please check details provided", handlePress: () => { } })
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+
+    return (
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles2.header}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles2.backButton}
+              handlePress={() => navigation.navigate("cardpin")}
+            />
+            <Text style={styles2.headerText}>Input OTP</Text>
+          </View>
+
+          <Text style={styles2.enterPinText}>An OTP has been sent to card phone number and email</Text>
+
+          <TextInput
+
+            style={styles2.otherTextInputs}
+            numeric={true}
+            alphaNumeric={false}
+            onChangeText={(value) => {
+              setCode(value);
+            }}
+          />
+
+          <RoundedButton
+            style={styles2.nextButton}
+            text={Strings.next}
+            textStyle={styles2.depositText}
+            handlePress={() => charge_otp()}
+          />
+
+          <SuccessModal isVisible={success} handlePress={() => {
+            setSuccess(false)
+            navigation.navigate(Strings.home)
+          }} />
+          <ProcessingModal isVisible={isVisible} />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  function Address({ navigation, route }) {
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [state, setCardState] = useState("");
+    const [zip, setZip] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+    const [success, setSuccess] = useState(false);
+
+    const charge_card = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: route.params.card.card_number,
+        cvv: route.params.card.cvv,
+        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
+        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_name: route.params.card.card_name,
+        amount: route.params.amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        address,
+        city,
+        country,
+        state,
+        zipcode: zip
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-no-auth", card_data)
+        .then((data) => {
+          setIsVisible(false);
+          console.log(card_data)
+          console.log(data.data)
+          if (data.data.message === "otp required") {
+            // setFLW(data.data.flw_ref);
+            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+          } else if (data.data.message === "success") {
+            setSuccess(true);
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.preferencesHeader}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles.backButton}
+              handlePress={() => navigation.goBack()}
+            />
+            <Text style={styles.headerText}>Card Address</Text>
+          </View>
+
+          <TextInput
+            style={styles.inputText2}
+            placeholder="Address"
+            selectionColor={Colors.primary}
+
+            onChangeText={(value) => setAddress(value)}
+          />
+
+          <TextInput
+            style={styles.otherTextInputs2}
+            placeholder="City"
+            selectionColor={Colors.primary}
+            maxLength={16}
+
+            onChangeText={(value) => setCity(value)}
+          />
+
+          <TextInput
+            style={styles.otherTextInputs2}
+            placeholder="Country"
+            selectionColor={Colors.primary}
+            maxLength={16}
+
+            onChangeText={(value) => setCountry(value)}
+          />
+
+          <View style={styles.rowCardContainer}>
+            <TextInput
+              style={styles.rowTextInputs}
+              placeholder="State"
+              selectionColor={Colors.primary}
+              maxLength={5}
+
+              onChangeText={(value) => setCardState(value)}
+            />
+
+            <TextInput
+              style={styles.rowTextInputs}
+              placeholder="Zip code"
+              selectionColor={Colors.primary}
+
+
+              onChangeText={(value) => setZip(value)}
+            />
+          </View>
+
+
+
+          <RoundedButton
+            text="Submit"
+            textStyle={styles.roundedTextButton}
+            style={styles.roundedButton}
+            handlePress={() => charge_card()}
+          />
+
+          <ProcessingModal isVisible={isVisible} />
+          <SuccessModal isVisible={success} handlePress={() => {
+            setSuccess(false)
+            navigation.navigate(Strings.home)
+          }} />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }

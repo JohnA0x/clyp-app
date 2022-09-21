@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,7 +30,8 @@ import { ProcessingModal } from "../components/modal";
 
 import { KeycodeInput } from "react-native-keycode";
 
-import {SuccessModal} from "../components/modal"
+import { SuccessModal } from "../components/modal"
+import { CustomAlert } from "../components/alert";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -39,7 +41,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [otpPhonenumber, setOTPPhoneNumber] = useState("");
-  const [success, setSuccess] = useState(false);
+  
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
@@ -65,6 +67,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
       />
       <Stack.Screen name="cardpin" component={CardPin} />
       <Stack.Screen name="inputotp" component={InputOTP} />
+      <Stack.Screen name="address" component={Address} />
     </Stack.Navigator>
   );
 
@@ -245,7 +248,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
       let card_data = {
         card_number: card.card_number,
         cvv: card.cvv,
-        card_expiry: card.card_expiry,
+        card_expiry_month: card.card_expiry.slice(0, card.card_expiry.indexOf('/')),
+        card_expiry_year: card.card_expiry.slice(card.card_expiry.indexOf('/') + 1),
         card_name: card.card_name,
         amount,
         email: route.params.user.email,
@@ -258,55 +262,13 @@ export default function BuyCryptoScreen({ navigation, route }) {
         .then((resp) => {
           setIsVisible(false);
           if (resp.data.auth_mode === "pin") {
+            navigation.navigate("cardpin", { card: card, amount: amount, user: route.params.user })
           } else if (resp.data.auth_mode === "redirect") {
+
+          } else if (resp.data.auth_mode === "avs_noauth") {
+            navigation.navigate("address", { card: card, amount: amount, user: route.params.user })
           } else if (resp.data.transaction) {
-          }
-        })
-        .catch((err) => {
-          setIsVisible(false);
-        });
-    };
 
-    const charge_pin = () => {
-      setIsVisible(true);
-
-      let card_data = {
-        card_number: card.card_number,
-        cvv: card.cvv,
-        card_expiry: card.card_expiry,
-        card_name: card.card_name,
-        amount,
-        email: route.params.user.email,
-        phone: route.params.user.phone,
-        user_id: route.params.user.id,
-        pin: pin,
-      };
-
-      axiosFiat
-        .post("/fiat-gateway/card-pin", card_data)
-        .then((data) => {
-          setIsVisible(false);
-          if (data.data.message === "otp required") {
-            setFLW(data.data.flw_ref);
-          }
-        })
-        .catch((err) => {
-          setIsVisible(false);
-        });
-    };
-
-    const charge_otp = () => {
-      setIsVisible(true);
-      let otp_data = {
-        otp,
-        flw_ref: flw,
-      };
-
-      axiosFiat
-        .post("/fiat-gateway/card-otp", otp_data)
-        .then((fianl) => {
-          setIsVisible(false);
-          if (fianl.data.message === "success") {
           }
         })
         .catch((err) => {
@@ -403,100 +365,297 @@ export default function BuyCryptoScreen({ navigation, route }) {
             placeholder="Amount"
             selectionColor={Colors.primary}
             onChangeText={(text) => setAmount(text)}
+          // value={Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
 
         <View style={styles.lineCrosser} />
         <Text style={styles.receiveAmount}>
-          You will receive N20,000 in Naira
+          You will receive N{Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} in Naira
         </Text>
         <Text style={styles.conversionAmount}>1 BTC = $23,000</Text>
         <RoundedButton
           style={styles.cardDepositButton}
           text={Strings.deposit}
           textStyle={styles.depositText}
-          handlePress={() => {
-            navigation.navigate("cardpin");
-          }}
+          handlePress={() => start_charge()}
         />
         <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
 
-  function CardPin() {
+  function CardPin({ route }) {
+    const [pin, setPin] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+      console.log({
+        route_params: route
+      })
+    }, [])
+
+    const charge_pin = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: route.params.card.card_number,
+        cvv: route.params.card.cvv,
+        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
+        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_name: route.params.card.card_name,
+        amount: route.params.amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        pin: pin,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-pin", card_data)
+        .then((data) => {
+          setIsVisible(false);
+          if (data.data.message === "otp required") {
+            // setFLW(data.data.flw_ref);
+            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
     return (
       <SafeAreaView>
-        <View style={styles.header}>
-          <VectorButton
-            name="chevron-back"
-            size={24}
-            color={Colors.textColor}
-            style={styles.backButton}
-            handlePress={() => navigation.navigate("buyoptions")}
+        <ScrollView>
+          <View style={styles.header}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles.backButton}
+              handlePress={() => navigation.navigate(Strings.buywithdebitcardTitle)}
+            />
+            <Text style={styles.headerText}>Card Pin</Text>
+          </View>
+
+          <Text style={styles.enterPinText}>Enter Your Card Pin</Text>
+          <KeycodeInput
+            tintColor={Colors.primary}
+            textColor={Colors.textColor}
+            style={styles.pin}
+            numeric={true}
+            alphaNumeric={false}
+            onComplete={(value) => {
+              setPin(value);
+            }}
           />
-          <Text style={styles.headerText}>Card Pin</Text>
-        </View>
 
-        <Text style={styles.enterPinText}>Enter Your Card Pin</Text>
-        <KeycodeInput
-          tintColor={Colors.primary}
-          textColor={Colors.textColor}
-          style={styles.pin}
-          onComplete={(value) => {
-            setCode(value);
-          }}
-        />
-
-        <RoundedButton
-          style={styles.nextButton}
-          text={Strings.next}
-          textStyle={styles.depositText}
-          handlePress={() => {
-            navigation.navigate("inputotp");
-          }}
-        />
+          <RoundedButton
+            style={styles.nextButton}
+            text={Strings.next}
+            textStyle={styles.depositText}
+            handlePress={() => charge_pin()}
+          />
+        </ScrollView>
+        <ProcessingModal isVisible={isVisible} />
       </SafeAreaView>
     );
   }
 
-  function InputOTP() {
+  function InputOTP({ route }) {
+    const [code, setCode] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+    const [success, setSuccess] = useState(false);
+
+    const charge_otp = () => {
+      setIsVisible(true);
+      let otp_data = {
+        otp: code,
+        flw_ref: route.params.flw,
+        user_id: route.params.user.id,
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-otp", otp_data)
+        .then((fianl) => {
+          setIsVisible(false);
+          if (fianl.data.message === "success") {
+            setSuccess(true);
+          }
+          else {
+            CustomAlert({title: "Failed", subtitle: "Failed to charge card, please check details provided", handlePress: () => {}})
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+
     return (
       <SafeAreaView>
-        <View style={styles.header}>
-          <VectorButton
-            name="chevron-back"
-            size={24}
-            color={Colors.textColor}
-            style={styles.backButton}
-            handlePress={() => navigation.navigate("buyoptions")}
+        <ScrollView>
+          <View style={styles.header}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles.backButton}
+              handlePress={() => navigation.navigate("cardpin")}
+            />
+            <Text style={styles.headerText}>Input OTP</Text>
+          </View>
+
+          <Text style={styles.enterPinText}>An OTP has been sent to card phone number and email</Text>
+
+          <TextInput
+
+            style={styles.otherTextInputs}
+            numeric={true}
+            alphaNumeric={false}
+            onChangeText={(value) => {
+              setCode(value);
+            }}
           />
-          <Text style={styles.headerText}>Input OTP</Text>
-        </View>
 
-        <Text style={styles.enterPinText}>An OTP has been sent to {otpPhonenumber}</Text>
-        <KeycodeInput
-          tintColor={Colors.primary}
-          textColor={Colors.textColor}
-          style={styles.pin}
-          numeric={true}
-          alphaNumeric={false}
-          onComplete={(value) => {
-            setCode(value);
-          }}
-        />
+          <RoundedButton
+            style={styles.nextButton}
+            text={Strings.next}
+            textStyle={styles.depositText}
+            handlePress={() => charge_otp()}
+          />
 
-        <RoundedButton
-          style={styles.nextButton}
-          text={Strings.next}
-          textStyle={styles.depositText}
-          handlePress={() => {
-           setSuccess(true);
-          }}
-        />
+          <SuccessModal isVisible={success} />
+          <ProcessingModal isVisible={isVisible} />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 
-        <SuccessModal isVisible={success}/>
+  function Address({ navigation, route }) {
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [state, setCardState] = useState("");
+    const [zip, setZip] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
+    const [success, setSuccess] = useState(false);
+
+    const charge_card = () => {
+      setIsVisible(true);
+
+      let card_data = {
+        card_number: route.params.card.card_number,
+        cvv: route.params.card.cvv,
+        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
+        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_name: route.params.card.card_name,
+        amount: route.params.amount,
+        email: route.params.user.email,
+        phone: route.params.user.phone,
+        user_id: route.params.user.id,
+        address,
+        city,
+        country,
+        state,
+        zipcode: zip
+      };
+
+      axiosFiat
+        .post("/fiat-gateway/card-no-auth", card_data)
+        .then((data) => {
+          setIsVisible(false);
+          console.log(card_data)
+          console.log(data.data)
+          if (data.data.message === "otp required") {
+            // setFLW(data.data.flw_ref);
+            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+          } else if (data.data.message === "success") {
+            setSuccess(true);
+          }
+        })
+        .catch((err) => {
+          setIsVisible(false);
+        });
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.preferencesHeader}>
+            <VectorButton
+              name="chevron-back"
+              size={24}
+              color={Colors.textColor}
+              style={styles.backButton}
+              handlePress={() => navigation.goBack()}
+            />
+            <Text style={styles.headerText}>Card Address</Text>
+          </View>
+
+          <TextInput
+            style={styles.inputText2}
+            placeholder="Address"
+            selectionColor={Colors.primary}
+
+            onChangeText={(value) => setAddress(value)}
+          />
+
+          <TextInput
+            style={styles.otherTextInputs2}
+            placeholder="City"
+            selectionColor={Colors.primary}
+            maxLength={16}
+
+            onChangeText={(value) => setCity(value)}
+          />
+
+          <TextInput
+            style={styles.otherTextInputs2}
+            placeholder="Country"
+            selectionColor={Colors.primary}
+            maxLength={16}
+
+            onChangeText={(value) => setCountry(value)}
+          />
+
+          <View style={styles.rowCardContainer}>
+            <TextInput
+              style={styles.rowTextInputs}
+              placeholder="State"
+              selectionColor={Colors.primary}
+              maxLength={5}
+
+              onChangeText={(value) => setCardState(value)}
+            />
+
+            <TextInput
+              style={styles.rowTextInputs}
+              placeholder="Zip code"
+              selectionColor={Colors.primary}
+
+
+              onChangeText={(value) => setZip(value)}
+            />
+          </View>
+
+
+
+          <RoundedButton
+            text="Submit"
+            textStyle={styles.roundedTextButton}
+            style={styles.roundedButton}
+            handlePress={() => charge_card()}
+          />
+
+          <ProcessingModal isVisible={isVisible} />
+          <SuccessModal isVisible={success} handlePress={() => {
+            setSuccess(false)
+            navigation.navigate(Strings.home)
+          }} />
+        </ScrollView>
       </SafeAreaView>
     );
   }

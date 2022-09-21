@@ -165,14 +165,32 @@ export default function HomeScreen({ navigation }) {
           setPrefrences(data.data.user.prefrence[0]);
           setUser(data.data.user);
           console.log(data.data.user);
-          axios
-            .post(
-              "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
-              { user_id: id }
-            )
-            .then((coins_data) => {
-              setCoins(coins_data.data.coins);
-            });
+          // axios
+          //   .post(
+          //     "https://clyp-crypto.herokuapp.com/crypto-gateway/get-coins",
+          //     { user_id: id }
+          //   )
+          //   .then((coins_data) => {
+              setCoins([{
+                currency: "BTC",
+                address: "btc-xxxxxxx"
+              }, {
+                currency: "USDT",
+                address: "usdt-xxxxxxx"
+              }, {
+                currency: "ETH",
+                address: "eth-xxxxxxx"
+              }, {
+                currency: "BNB",
+                address: "bnb-xxxxxxx"
+              }, {
+                currency: "LTC",
+                address: "ltc-xxxxxxx"
+              }, {
+                currency: "BTC",
+                address: "btc-xxxxxxx"
+              }]);
+            // });
 
           axios
             .post("https://clyp-fiat.herokuapp.com/fiat-gateway/get-wallet", {
@@ -185,16 +203,8 @@ export default function HomeScreen({ navigation }) {
         .catch((err) => {
           CustomAlert({
             title: "Error",
-            subtitle: "Error making request, please try again...",
-            handlePress: () => {},
-          });
-          console.log({ err });
-        })
-        .catch((err) => {
-          CustomAlert({
-            title: "Error",
-            subtitle: "Error making request, please try again...",
-            handlePress: () => {},
+            subtitle: "Error making request, please try again..." + err,
+            handlePress: () => { },
           });
           console.log({ err });
         });
@@ -369,13 +379,12 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.cryptoBalanceText}>
                 {preferences.private_mode
                   ? "***"
-                  : `N ${
-                      fiatWallet.available_balance
-                        ? fiatWallet.available_balance
-                            .toFixed(2)
-                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-                        : "0.00"
-                    }`}
+                  : `N ${fiatWallet.available_balance
+                    ? fiatWallet.available_balance
+                      .toFixed(2)
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                    : "0.00"
+                  }`}
               </Text>
 
               <View style={styles.transactionOptions}>
