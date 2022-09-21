@@ -217,6 +217,7 @@ export default function HomeScreen({ navigation, route }) {
     navigation.addListener('focus', async () =>
       fetchData()
     )
+    fetchData()
   }, [cleanup]);
 
   const Stack = createNativeStackNavigator();
