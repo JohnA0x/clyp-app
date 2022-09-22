@@ -98,7 +98,8 @@ function NameSignupScreen({ route }) {
   const [last_name, setLastName] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false);
 
-  const [snackVisibility, setSnackVisibility] = React.useState(true); //
+  const [snackVisibility, setSnackVisibility] = React.useState(false);
+  const [error, setError] = React.useState(""); //
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -386,21 +387,21 @@ function NameSignupScreen({ route }) {
         </View>
         <ProcessingModal isVisible={isVisible} />
 
-
         <Snackbar
           visible={snackVisibility}
           duration={5000}
           onDismiss={() => setSnackVisibility(false)}
           action={{
-            label: "Undo",
+            label: "OK",
             onPress: () => {
               // Do something
             },
+            color: theme.primary,
           }}
-          style={{ backgroundColor: theme.textinput }}
+          style={{ backgroundColor: Colors.failedColor }}
         >
           <View>
-            <Text>Hey there! I'm ssda Snackbar sdsdds.</Text>
+            <Text style={{ color: Colors.white }}>{error}</Text>
           </View>
         </Snackbar>
       </SafeAreaView>
@@ -413,6 +414,13 @@ function EmailSignupScreen({ route }) {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const [snackVisibility, setSnackVisibility] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const [isPasswordSecure, setPasswordSecurity] = React.useState(true);
+  const [isConfirmPasswordSecure, setConfirmPasswordSecurity] =
+    React.useState(true);
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
@@ -587,30 +595,20 @@ function EmailSignupScreen({ route }) {
       data.password == ""
     ) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Please provide your sign up details completely",
-        handlePress: () => {},
-      });
+      setError("Please provide your sign up details completely");
+      setSnackVisibility(true);
       return false;
     }
     if (data.password.length < 8) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Password is too short (Minmum of 8 characters)",
-        handlePress: () => {},
-      });
-
+      setError("Password is too short (Minimum of 8 characters)");
+      setSnackVisibility(true);
       return false;
     }
     if (data.password !== confirmPassword) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Passwords does not match",
-        handlePress: () => {},
-      });
+      setError("Passwords does not match");
+      setSnackVisibility(true);
       return false;
     }
 
@@ -635,21 +633,15 @@ function EmailSignupScreen({ route }) {
             );
           });
         } else {
-          CustomAlert({
-            title: "Sign up Error",
-            subtitle: data.data.details,
-            handlePress: () => {},
-          });
+          setError(data.data.details);
+          setSnackVisibility(true);
           return false;
         }
       })
       .catch((err) => {
         setIsVisible(false);
-        CustomAlert({
-          title: "Sign up Error",
-          subtitle: "Error making request, please try again...",
-          handlePress: () => {},
-        });
+        setError("Error making request, please try again...");
+        setSnackVisibility(true);
         console.log({ err });
       });
   };
@@ -678,7 +670,7 @@ function EmailSignupScreen({ route }) {
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
-          secureTextEntry={true}
+          secureTextEntry={isPasswordSecure}
           style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>
@@ -686,6 +678,15 @@ function EmailSignupScreen({ route }) {
             </Text>
           }
           left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
+          right={
+            <TextInput.Icon
+              name="eye"
+              color={theme.primary}
+              onPress={() => {
+                setPasswordSecurity((prev) => !prev);
+              }}
+            />
+          }
           selectionColor={Colors.primary}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
@@ -695,12 +696,22 @@ function EmailSignupScreen({ route }) {
         <TextInput
           value={confirmPassword}
           onChangeText={(password) => setConfirmPassword(password)}
-          secureTextEntry={true}
+          secureTextEntry={isConfirmPasswordSecure}
           style={[styles.emailinput, { backgroundColor: theme.textinput }]}
           label={
             <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>
           }
-          left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
+          left={<TextInput.Icon name="lock-outline" color={theme.primary} 
+          />}
+          right={
+            <TextInput.Icon
+              name="eye"
+              color={theme.primary}
+              onPress={() => {
+                setConfirmPasswordSecurity((prev) => !prev);
+              }}
+            />
+          }
           selectionColor={Colors.primary}
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
@@ -785,6 +796,24 @@ function EmailSignupScreen({ route }) {
           </Text>
         </View>
         <ProcessingModal isVisible={isVisible} />
+
+        <Snackbar
+          visible={snackVisibility}
+          duration={5000}
+          onDismiss={() => setSnackVisibility(false)}
+          action={{
+            label: "OK",
+            onPress: () => {
+              // Do something
+            },
+            color: theme.primary,
+          }}
+          style={{ backgroundColor: Colors.failedColor }}
+        >
+          <View>
+            <Text style={{ color: Colors.white }}>{error}</Text>
+          </View>
+        </Snackbar>
       </SafeAreaView>
     </PaperProvider>
   );
@@ -799,6 +828,13 @@ function PhoneSignupScreen({ route }) {
   const [isVisible, setIsVisible] = React.useState(false);
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
+
+  const [snackVisibility, setSnackVisibility] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const [isPasswordSecure, setPasswordSecurity] = React.useState(true);
+  const [isConfirmPasswordSecure, setConfirmPasswordSecurity] =
+    React.useState(true);
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientSecret: "9a6c3e717df46a3fe104d4aec0ecac7d",
@@ -967,29 +1003,20 @@ function PhoneSignupScreen({ route }) {
       data.password == ""
     ) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Please provide your sign up details completely",
-        handlePress: () => {},
-      });
+      setError("Please provide your sign up details completely");
+      setSnackVisibility(true);
       return false;
     }
     if (data.password.length < 8) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Password is too short (Minimum of 8 characters)",
-        handlePress: () => {},
-      });
+      setError("Password is too short (Minimum of 8 characters)");
+      setSnackVisibility(true);
       return false;
     }
     if (data.password !== confirmPassword) {
       setIsVisible(false);
-      CustomAlert({
-        title: "Sign up error",
-        subtitle: "Passwords does not match",
-        handlePress: () => {},
-      });
+      setError("Passwords does not match");
+      setSnackVisibility(true);
       return false;
     }
 
@@ -1024,11 +1051,8 @@ function PhoneSignupScreen({ route }) {
       })
       .catch((err) => {
         setIsVisible(false);
-        CustomAlert({
-          title: "Sign up Error",
-          subtitle: "Error making request, please try again...",
-          handlePress: () => {},
-        });
+        setError("Error making request, please try again...");
+        setSnackVisibility(true);
         console.log({ err });
       });
   };
@@ -1066,10 +1090,19 @@ function PhoneSignupScreen({ route }) {
             styles.emailinput,
             { backgroundColor: theme.textinput, color: theme.text },
           ]}
-          secureTextEntry={true}
+          secureTextEntry={isPasswordSecure}
           label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="lock-outline" />}
+          left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
+          right={
+            <TextInput.Icon
+              name="eye"
+              color={theme.primary}
+              onPress={() => {
+                setPasswordSecurity((prev) => !prev);
+              }}
+            />
+          }
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
           theme={{ colors: { text: theme.text, primary: theme.primary } }}
@@ -1081,12 +1114,21 @@ function PhoneSignupScreen({ route }) {
             { backgroundColor: theme.textinput, color: theme.text },
           ]}
           onChangeText={(val) => setConfirmPassword(val)}
-          secureTextEntry={true}
+          secureTextEntry={isConfirmPasswordSecure}
           label={
             <Text style={{ color: Colors.inputLabel }}>Confirm Password</Text>
           }
           selectionColor={Colors.primary}
-          left={<TextInput.Icon name="lock-outline" />}
+          left={<TextInput.Icon name="lock-outline" color={theme.primary}/>}
+          right={
+            <TextInput.Icon
+              name="eye"
+              color={theme.primary}
+              onPress={() => {
+                setConfirmPasswordSecurity((prev) => !prev);
+              }}
+            />
+          }
           activeUnderlineColor={theme.background}
           underlineColor={theme.background}
           theme={{ colors: { text: theme.text, primary: theme.primary } }}
@@ -1176,6 +1218,24 @@ function PhoneSignupScreen({ route }) {
           </Text>
         </View>
         <ProcessingModal isVisible={isVisible} />
+
+        <Snackbar
+          visible={snackVisibility}
+          duration={5000}
+          onDismiss={() => setSnackVisibility(false)}
+          action={{
+            label: "OK",
+            onPress: () => {
+              // Do something
+            },
+            color: theme.primary,
+          }}
+          style={{ backgroundColor: Colors.failedColor }}
+        >
+          <View>
+            <Text style={{ color: Colors.white }}>{error}</Text>
+          </View>
+        </Snackbar>
       </SafeAreaView>
     </PaperProvider>
   );

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import * as Strings from "../strings/strings";
 import { styles, loginButton } from "../styles/login";
 
-import { StatusBar } from "expo-status-bar";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -15,7 +14,7 @@ import {
   Poppins_600SemiBold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
-import { TextInput } from "react-native-paper";
+import { TextInput, Snackbar } from "react-native-paper";
 import {
   StyleSheet,
   Text,
@@ -23,6 +22,7 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
+  StatusBar
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Colors from "../constants/colors";
@@ -77,17 +77,19 @@ export default function Login() {
   });
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
-      <Stack.Screen name="MenuNavigation" component={MenuNavigation} />
-      <Stack.Screen name="BiometricScreen" component={BiometricScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="MenuNavigation" component={MenuNavigation} />
+        <Stack.Screen name="BiometricScreen" component={BiometricScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -100,6 +102,9 @@ function LoginScreen({ navigation }) {
 
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
+
+  const [snackVisibility, setSnackVisibility] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
     async function fetchStorage() {
@@ -262,11 +267,8 @@ function LoginScreen({ navigation }) {
 
     if (data.email === "" || data.password === "") {
       setIsVisible(false);
-      CustomAlert({
-        title: "All fields Required",
-        subtitle: "Please provide your email and password",
-        handlePress: () => {},
-      });
+      setError("Please provide your email and password");
+      setSnackVisibility(true);
       return false;
     }
     axios
@@ -305,11 +307,8 @@ function LoginScreen({ navigation }) {
       })
       .catch((err) => {
         setIsVisible(false);
-        CustomAlert({
-          title: "Login Error",
-          subtitle: "Error making request, please try again...",
-          handlePress: () => {},
-        });
+        setError("Error making request, please try again...");
+        setSnackVisibility(true);
         console.log({ err });
       });
   };
@@ -335,11 +334,8 @@ function LoginScreen({ navigation }) {
 
       if (data.email === "" || data.password === "") {
         setIsVisible(false);
-        CustomAlert({
-          title: "All fields Required",
-          subtitle: "Please provide your email and password",
-          handlePress: () => {},
-        });
+        setError("Please provide your email and password");
+        setSnackVisibility(true);
         return false;
       } else {
         axios
@@ -382,11 +378,8 @@ function LoginScreen({ navigation }) {
           })
           .catch((err) => {
             setIsVisible(false);
-            CustomAlert({
-              title: "Login Error",
-              subtitle: "Error making request, please try again...",
-              handlePress: () => {},
-            });
+            setError("Error making request, please try again...");
+            setSnackVisibility(true);
             console.log({ err });
           });
       }
@@ -400,6 +393,7 @@ function LoginScreen({ navigation }) {
       style={[styles.container, { backgroundColor: theme.background }]}
       theme={theme}
     >
+          <StatusBar barStyle={theme.statusbar} />
       {/*  {theme.mode === "light" ? (
           <Button
             style={styles.themeButton}
@@ -419,23 +413,29 @@ function LoginScreen({ navigation }) {
       <TextInput
         value={text}
         onChangeText={(text) => setText(text.toLowerCase())}
-        style={[styles.emailinput, { backgroundColor: theme.textinput, color: theme.text }]}
+        style={[
+          styles.emailinput,
+          { backgroundColor: theme.textinput, color: theme.text },
+        ]}
         label={<Text style={{ color: Colors.inputLabel }}>Email</Text>}
         selectionColor={Colors.primary}
         left={<TextInput.Icon name="email-outline" color={theme.primary} />}
         activeUnderlineColor={theme.background}
         underlineColor={theme.background}
-        theme={{ colors: { text: theme.text, primary: theme.primary}}}
+        theme={{ colors: { text: theme.text, primary: theme.primary } }}
       />
 
       <TextInput
-        style={[styles.passwordinput, { backgroundColor: theme.textinput, color: theme.text }]}
+        style={[
+          styles.passwordinput,
+          { backgroundColor: theme.textinput, color: theme.text },
+        ]}
         value={password}
         onChangeText={(val) => setPassword(val)}
         secureTextEntry={true}
         label={<Text style={{ color: Colors.inputLabel }}>Password</Text>}
         selectionColor={Colors.primary}
-        left={<TextInput.Icon name="lock-outline" color={theme.primary}/>}
+        left={<TextInput.Icon name="lock-outline" color={theme.primary} />}
         right={
           <TextInput.Icon
             name="fingerprint"
@@ -447,7 +447,7 @@ function LoginScreen({ navigation }) {
         }
         activeUnderlineColor={theme.background}
         underlineColor={theme.background}
-        theme={{ colors: { text: theme.text, primary: theme.primary}}}
+        theme={{ colors: { text: theme.text, primary: theme.primary } }}
       ></TextInput>
 
       <TouchableOpacity style={styles.button} onPress={() => login()}>
@@ -507,6 +507,24 @@ function LoginScreen({ navigation }) {
         </Text>
       </View>
       <ProcessingModal isVisible={isVisible} />
+
+      <Snackbar
+        visible={snackVisibility}
+        duration={5000}
+        onDismiss={() => setSnackVisibility(false)}
+        action={{
+          label: "OK",
+          onPress: () => {
+            // Do something
+          },
+          color: theme.primary,
+        }}
+        style={{ backgroundColor: Colors.failedColor }}
+      >
+        <View>
+          <Text style={{ color: Colors.white }}>{error}</Text>
+        </View>
+      </Snackbar>
     </SafeAreaView>
   );
 }

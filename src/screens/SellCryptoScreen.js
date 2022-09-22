@@ -26,6 +26,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import sellOptionsListArray from "../strings/selloptionslist";
 
+
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function SellCryptoScreen({ navigation, route }) {
@@ -34,6 +37,10 @@ export default function SellCryptoScreen({ navigation, route }) {
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
+
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -64,27 +71,27 @@ export default function SellCryptoScreen({ navigation, route }) {
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={styles.valueText}>{item.value}</Text>
-          <Text style={styles.text}>{item.name}</Text>
+          <Text style={[styles.valueText, { color: theme.text }]}>{item.value}</Text>
+          <Text style={[styles.text, { color: theme.text }]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     );
 
     // This renders some components and the flatlist together
     return (
-      <SafeAreaView>
+      <SafeAreaView style ={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.sell}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.sell}</Text>
         </View>
 
-        <View style={styles.flatlist}>
+        <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
@@ -116,7 +123,7 @@ export default function SellCryptoScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+       <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"

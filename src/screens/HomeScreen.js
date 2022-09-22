@@ -97,6 +97,8 @@ export default function HomeScreen({ navigation, route }) {
 
   storeData(IS_FIRST_TIME, "false");
 
+  storeData("tabWidth", "60")
+
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
       <TouchableOpacity
@@ -220,6 +222,7 @@ export default function HomeScreen({ navigation, route }) {
     fetchData()
   }, [cleanup]);
 
+
   const Stack = createNativeStackNavigator();
 
   return (
@@ -237,10 +240,11 @@ export default function HomeScreen({ navigation, route }) {
     const saveWidth = () => {
       storeData('tabWidth', "60")
     }
+
+
     return (
       <SafeAreaView
-        style={[styles.container, { backgroundColor: theme.background }]}
-        onLayout={saveWidth()}>
+        style={[styles.container, { backgroundColor: theme.background }]}>
         <StatusBar barStyle={theme.statusbar} />
         <ScrollView
           refreshControl={

@@ -35,9 +35,13 @@ import { store, persistor } from "./src/redux/themeStore";
 import { PersistGate } from "redux-persist/integration/react";
 import HomeScreen from "./src/screens/HomeScreen";
 import { useState, useEffect } from "react";
+import MenuNavigation from "./src/navigations/MenuNavigation";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Login from "./src/screens/LoginScreen";
 
 export default function App({ navigation, props }) {
-  const [firstTime, setFirstTime] = useState("");
+  const [firstTime, setFirstTime] = useState();
   let [fontsLoaded, error] = useFonts({
     Poppins_700Bold,
     Poppins_900Black,
@@ -47,17 +51,27 @@ export default function App({ navigation, props }) {
   });
 
   const isFirstTime = async () => {
-    try {
-      const value = await AsyncStorage.getItem(Values.IS_FIRST_TIME);
+     const value = await AsyncStorage.getItem(Values.IS_FIRST_TIME);
       if (value === "false") {
-        alert("no");
+        setFirstTime(false);
       } else {
-        alert("yes");
+        setFirstTime(true);
       }
-    } catch (e) {
-      // error reading value
-    }
+      console.log(value)
   };
+
+
+  useEffect(() => {
+    isFirstTime();
+  }, []);
+
+  const Screen = () => {
+    if (firstTime === false) {
+      return <Login/>
+    }
+  
+    return <Onboarding />
+  }
 
   const saveWidth = () => {
     storeData("tabWidth", "0");
@@ -71,7 +85,7 @@ export default function App({ navigation, props }) {
     <Provider store={store}>
       <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
         <View onLayout={isFirstTime} />
-        <Onboarding />
+        <Screen />
       </PersistGate>
     </Provider>
   );

@@ -36,6 +36,8 @@ export const failedColor = '#C52020'
 
 export const textInput = 10.
 
+export const snackbar = '#B6B6B6'
+
 
 
 // dark mode
@@ -50,3 +52,5 @@ export const listHolderDark = '#494948'//'#E1E1E1'
 
 export const backgroundColorDark = '#363636'
 export const textInputDark = '#494948'
+
+export const snackbarDark = '#494948'

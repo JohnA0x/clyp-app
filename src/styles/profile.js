@@ -92,8 +92,9 @@ export const styles = StyleSheet.create({
     editProfileButton:{
       width:24,
       height:24,
-      marginLeft: '30%',
-      marginTop: 12,
+      position: 'absolute',
+      top: 45,
+      right: 25,
     },
 
     icon:{

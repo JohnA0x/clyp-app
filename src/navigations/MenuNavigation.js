@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  useState,
-  useCallback,
-  useMemo,
-  useRef,
-  useEffect,
-} from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import AntDesign from "react-native-vector-icons/AntDesign";
 //import {Ionicons, AntDesign} from 'react-native-vector-icons/Ionicons'
 
 import HomeScreen from "../screens/HomeScreen";
@@ -52,7 +46,6 @@ const HomeStack = createNativeStackNavigator();
 const InfoStack = createNativeStackNavigator();
 const HubStack = createNativeStackNavigator();
 
-
 export const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator
@@ -62,12 +55,24 @@ export const HomeStackScreen = () => {
     >
       <HomeStack.Screen name={Strings.home} component={HomeScreen} />
       <HomeStack.Screen name={Strings.Profile} component={ProfileScreen} />
-      <HomeStack.Screen name={Strings.preferences} component={PreferencesScreen} />
-      <HomeStack.Screen name={Strings.notifications} component={NotificationScreen} />
+      <HomeStack.Screen
+        name={Strings.preferences}
+        component={PreferencesScreen}
+      />
+      <HomeStack.Screen
+        name={Strings.notifications}
+        component={NotificationScreen}
+      />
       <HomeStack.Screen name={Strings.qrcode} component={QRCodeScreen} />
       <HomeStack.Screen name={Strings.share} component={ShareScreen} />
-      <HomeStack.Screen name={Strings.sendCrypto} component={SendCryptoScreen} />
-      <HomeStack.Screen name={Strings.receiveCrypto} component={ReceiveCryptoScreen} />
+      <HomeStack.Screen
+        name={Strings.sendCrypto}
+        component={SendCryptoScreen}
+      />
+      <HomeStack.Screen
+        name={Strings.receiveCrypto}
+        component={ReceiveCryptoScreen}
+      />
       <HomeStack.Screen name={Strings.about} component={AboutUs} />
       <HomeStack.Screen name={Strings.deposit} component={DepositScreen} />
       <HomeStack.Screen name={Strings.withdraw} component={WithdrawScreen} />
@@ -76,12 +81,13 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.sell} component={SellCryptoScreen} />
       <HomeStack.Screen name={Strings.swap} component={SwapCryptoScreen} />
       <HomeStack.Screen name={Strings.activity} component={ActivityScreen} />
-      <HomeStack.Screen name={Strings.editprofile} component={EditProfileScreen} />
+      <HomeStack.Screen
+        name={Strings.editprofile}
+        component={EditProfileScreen}
+      />
       <HomeStack.Screen name={Strings.security} component={SecurityScreen} />
       <HomeStack.Screen name={Strings.help} component={SupportScreen} />
       <HomeStack.Screen name={Strings.depositviaP2P} component={P2PScreen} />
-      
-      
     </HomeStack.Navigator>
   );
 };
@@ -118,55 +124,59 @@ export default function MenuNavigation() {
   const theme = useSelector((state) => state.persistedReducer.theme);
   const dispatch = useDispatch();
 
-  const [tabWidth, setTabWidth] = useState(60)
+  const [tabWidth, setTabWidth] = useState(60);
 
-  useEffect(() =>{
-    getWidth()
-  
-  }, [tabWidth])
+  useEffect(() => {
+    getWidth();
+  }, [tabWidth]);
 
-
-const getWidth = async () => {
-  try {
-    const value = await AsyncStorage.getItem('tabWidth')
-    if(value !== null) {
-      // value previously stored
-      setTabWidth(Number(value));
-      return value
+  const getWidth = async () => {
+    try {
+      const value = await AsyncStorage.getItem("tabWidth");
+      if (value !== null) {
+        // value previously stored
+        setTabWidth(Number(value));
+        return value;
+      }
+    } catch (e) {
+      // error reading value
     }
-  } catch(e) {
-    // error reading value
-  }
-  
-}
+  };
 
   return (
-    <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-        let iconOtherName
-        let rn = route.name;
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            let iconOtherName;
+            let rn = route.name;
 
-        if (rn === Strings.home) {
-          iconName = focused ? "home-sharp" : "home-outline";
-        } else if (rn === Strings.info) {
-          iconName = focused ? "stats-chart" : "stats-chart-outline";
-        } else if (rn === Strings.clyphub) {
-          iconName = focused ? "apps" : "apps-outline";
-        } 
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color}/>;
-      },
-      headerShown: false,
-      tabBarActiveTintColor: Colors.primary,
-      tabBarStyle: { height: tabWidth, elevation: 0, borderTopWidth: 0, backgroundColor: theme.background },
-      tabBarShowLabel: false,
-    })}
-  >
-    <Tab.Screen name={Strings.home} component={HomeStackScreen} />
-    <Tab.Screen name={Strings.info} component={InfoStackScreen} />
-    <Tab.Screen name={Strings.clyphub} component={ClypHubStackScreen} />
-  </Tab.Navigator>
+            if (rn === Strings.home) {
+              iconName = focused ? "home-sharp" : "home-outline";
+            } else if (rn === Strings.info) {
+              iconName = focused ? "stats-chart" : "stats-chart-outline";
+            } else if (rn === Strings.clyphub) {
+              iconName = focused ? "apps" : "apps-outline";
+            }
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          headerShown: false,
+          tabBarActiveTintColor: Colors.primary,
+          tabBarStyle: {
+            height: 60,
+            elevation: 0,
+            borderTopWidth: 0,
+            backgroundColor: theme.background,
+          },
+          tabBarShowLabel: false,
+        })}
+      >
+        <Tab.Screen name={Strings.home} component={HomeStackScreen} />
+        <Tab.Screen name={Strings.info} component={InfoStackScreen} />
+        <Tab.Screen name={Strings.clyphub} component={ClypHubStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
