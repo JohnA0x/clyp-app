@@ -1,22 +1,26 @@
+import { StyleSheet } from "react-native";
 import { Button, TextInput, Snackbar } from "react-native-paper";
 
-export const ErrorSnack = ({ text, handlePress, visibility, setVisibility }) => {
+
+export const ErrorSnack = ({
+  error,
+  snackVisibility,
+  setSnackVisibility,
+}) => {
   <Snackbar
-    visible={visibility}
+    visible={snackVisibility}
     duration={5000}
-    onDismiss={() => setVisibility}
+    onDismiss={() => setSnackVisibility}
     action={{
-      label: "Undo",
+      label: "OK",
       onPress: () => {
-        handlePress
+        // Do something
       },
     }}
-    style={{ backgroundColor: theme.primary }}
+    style={{ backgroundColor: theme.textinput }}
   >
     <View>
-      <Text>{text}</Text>
+      <Text style={{ color: theme.text }}>{error}</Text>
     </View>
   </Snackbar>;
 };
-
-
