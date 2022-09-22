@@ -144,39 +144,37 @@ export default function MenuNavigation() {
   };
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            let iconOtherName;
-            let rn = route.name;
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let iconOtherName;
+          let rn = route.name;
 
-            if (rn === Strings.home) {
-              iconName = focused ? "home-sharp" : "home-outline";
-            } else if (rn === Strings.info) {
-              iconName = focused ? "stats-chart" : "stats-chart-outline";
-            } else if (rn === Strings.clyphub) {
-              iconName = focused ? "apps" : "apps-outline";
-            }
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          headerShown: false,
-          tabBarActiveTintColor: Colors.primary,
-          tabBarStyle: {
-            height: 60,
-            elevation: 0,
-            borderTopWidth: 0,
-            backgroundColor: theme.background,
-          },
-          tabBarShowLabel: false,
-        })}
-      >
-        <Tab.Screen name={Strings.home} component={HomeStackScreen} />
-        <Tab.Screen name={Strings.info} component={InfoStackScreen} />
-        <Tab.Screen name={Strings.clyphub} component={ClypHubStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          if (rn === Strings.home) {
+            iconName = focused ? "home-sharp" : "home-outline";
+          } else if (rn === Strings.info) {
+            iconName = focused ? "stats-chart" : "stats-chart-outline";
+          } else if (rn === Strings.clyphub) {
+            iconName = focused ? "apps" : "apps-outline";
+          }
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        headerShown: false,
+        tabBarActiveTintColor: Colors.primary,
+        tabBarStyle: {
+          height: 60,
+          elevation: 0,
+          borderTopWidth: 0,
+          backgroundColor: theme.background,
+        },
+        tabBarShowLabel: false,
+      })}
+    >
+      <Tab.Screen name={Strings.home} component={HomeStackScreen} />
+      <Tab.Screen name={Strings.info} component={InfoStackScreen} />
+      <Tab.Screen name={Strings.clyphub} component={ClypHubStackScreen} />
+    </Tab.Navigator>
   );
 }

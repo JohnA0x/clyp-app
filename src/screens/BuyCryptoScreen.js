@@ -327,6 +327,12 @@ export default function BuyCryptoScreen({ navigation, route }) {
       );
     };
 
+    const emptyView = () =>{
+      <View>
+        
+      </View>
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
