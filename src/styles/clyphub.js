@@ -226,7 +226,7 @@ export const styles = StyleSheet.create({
     borderRadius: 40,
     width: "85%",
     height: 50,
-    marginTop: 40,
+    marginTop: '5%',
     shadowOffset: { width: 0, height: 3 },
     shadowColor: Colors.shadowColor,
     shadowOpacity: 0.1,
@@ -269,12 +269,12 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     alignSelf: 'center',
     padding: 40,
-    marginBottom: 280,
+    marginBottom: "60%",
   },
 
   yourGoalText:{
     fontFamily: 'Poppins_500Medium',
-    marginLeft: 20,
+    marginLeft: "15%",
   },
 
   newGoalText:{

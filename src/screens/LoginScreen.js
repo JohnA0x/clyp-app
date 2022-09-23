@@ -77,7 +77,7 @@ export default function Login() {
   });
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

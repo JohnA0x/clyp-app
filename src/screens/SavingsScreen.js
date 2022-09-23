@@ -14,9 +14,14 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function SavingsScreen({ navigation }) {
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -30,16 +35,20 @@ export default function SavingsScreen({ navigation }) {
 
   function Continue() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.clyphub)}
           />
-          <Text style={styles.headerText}>{Strings.savings}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.savings}
+          </Text>
         </View>
 
         <View style={styles.savingsImage}>
@@ -49,9 +58,13 @@ export default function SavingsScreen({ navigation }) {
           />
         </View>
 
-        <View style={styles.continueView}>
-          <Text style={styles.continueTitle}>Create a goal</Text>
-          <Text style={styles.continueDescription}>
+        <View
+          style={[styles.continueView, { backgroundColor: theme.flatlist }]}
+        >
+          <Text style={[styles.continueTitle, { color: theme.primary }]}>
+            Create a goal
+          </Text>
+          <Text style={[styles.continueDescription, { color: theme.text }]}>
             Put some cash away for your desired goals. You can save in fiat and
             cryptocurrency.
           </Text>
@@ -68,16 +81,16 @@ export default function SavingsScreen({ navigation }) {
 
   function Saving() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.savings}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.savings}</Text>
         </View>
 
         <Swiper
@@ -120,7 +133,7 @@ export default function SavingsScreen({ navigation }) {
         </Swiper>
 
         <View style={styles.newGoalView}>
-          <Text style={styles.yourGoalText}>Your goals</Text>
+          <Text style={[styles.yourGoalText, {color: theme.text}]}>Your goals</Text>
 
           <Ionicons
             name={"add-circle"}
@@ -129,7 +142,7 @@ export default function SavingsScreen({ navigation }) {
             size={28}
           />
 
-          <Text style={styles.newGoalText}>New Goal</Text>
+          <Text style={[styles.newGoalText, {color: theme.text}]}>New Goal</Text>
         </View>
       </SafeAreaView>
     );

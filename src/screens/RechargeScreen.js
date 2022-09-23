@@ -77,6 +77,7 @@ export default function RechargeScreen({ navigation, route }) {
             setValue={setNetworkValue}
             setItems={setNetworkList}
             placeholder="Network"
+           
           />
 
           <TextInput
