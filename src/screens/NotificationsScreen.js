@@ -43,6 +43,7 @@ export default function NotificationScreen({navigation}){
         handlePress={() => navigation.navigate(Strings.home)}/>
         <Text style={[styles.notificationHeaderText, {color: theme.text}]}>{Strings.notifications}</Text>
       </View>
+      <Text style ={styles.clerAll}>Clear All</Text>
       <FlatList
         //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
         data={notificationArrayList}

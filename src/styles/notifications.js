@@ -33,6 +33,14 @@ export const styles = StyleSheet.create({
 
   },
 
+  clerAll:{
+    marginLeft: 15,
+    fontSize: 12,
+    fontFamily: "Poppins_600SemiBold",
+    color: Colors.primary,
+    marginStart: '80%',
+  },
+
   notificationimage: {
     marginLeft: 10,
   },

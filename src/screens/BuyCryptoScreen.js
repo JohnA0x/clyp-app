@@ -30,7 +30,7 @@ import { ProcessingModal } from "../components/modal";
 
 import { KeycodeInput } from "react-native-keycode";
 
-import { SuccessModal } from "../components/modal"
+import { SuccessModal } from "../components/modal";
 import { CustomAlert } from "../components/alert";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoIcon, setCryptoIcon] = useState("");
   const [otpPhonenumber, setOTPPhoneNumber] = useState("");
-  
+
   const [walletOptions, setWalletOptions] = useState([
     { address: "hh", abb: "hh" },
   ]);
@@ -96,7 +96,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
 
     // This renders some components and the flatlist together
     return (
-      <SafeAreaView style ={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -105,7 +107,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.buy}
+          </Text>
         </View>
 
         <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
@@ -124,7 +128,7 @@ export default function BuyCryptoScreen({ navigation, route }) {
       return (
         <View style={styles.optionsContainer}>
           <TouchableOpacity
-            style={[styles.button, {backgroundColor: theme.flatlist}]}
+            style={[styles.button, { backgroundColor: theme.flatlist }]}
             onPress={() => navigation.navigate(item.title)}
           >
             <VectorButton
@@ -133,14 +137,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
               color={Colors.primary}
               style={styles.preferencesimage}
             />
-            <Text style={[styles.preferencestext, {color: theme.text}]}>{item.title}</Text>
+            <Text style={[styles.preferencestext, { color: theme.text }]}>
+              {item.title}
+            </Text>
           </TouchableOpacity>
         </View>
       );
     };
 
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -149,7 +157,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("buylist")}
           />
-          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.buy}
+          </Text>
         </View>
 
         <FlatList
@@ -176,7 +186,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
       };
     };
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -248,8 +260,13 @@ export default function BuyCryptoScreen({ navigation, route }) {
       let card_data = {
         card_number: card.card_number,
         cvv: card.cvv,
-        card_expiry_month: card.card_expiry.slice(0, card.card_expiry.indexOf('/')),
-        card_expiry_year: card.card_expiry.slice(card.card_expiry.indexOf('/') + 1),
+        card_expiry_month: card.card_expiry.slice(
+          0,
+          card.card_expiry.indexOf("/")
+        ),
+        card_expiry_year: card.card_expiry.slice(
+          card.card_expiry.indexOf("/") + 1
+        ),
         card_name: card.card_name,
         amount,
         email: route.params.user.email,
@@ -262,13 +279,19 @@ export default function BuyCryptoScreen({ navigation, route }) {
         .then((resp) => {
           setIsVisible(false);
           if (resp.data.auth_mode === "pin") {
-            navigation.navigate("cardpin", { card: card, amount: amount, user: route.params.user })
+            navigation.navigate("cardpin", {
+              card: card,
+              amount: amount,
+              user: route.params.user,
+            });
           } else if (resp.data.auth_mode === "redirect") {
-
           } else if (resp.data.auth_mode === "avs_noauth") {
-            navigation.navigate("address", { card: card, amount: amount, user: route.params.user })
+            navigation.navigate("address", {
+              card: card,
+              amount: amount,
+              user: route.params.user,
+            });
           } else if (resp.data.transaction) {
-
           }
         })
         .catch((err) => {
@@ -327,23 +350,29 @@ export default function BuyCryptoScreen({ navigation, route }) {
       );
     };
 
-    const emptyView = () =>{
-      <View>
-        
-      </View>
-    }
+    const EmptyView = () => {
+      return (
+        <View style={{ flex: 1, padding: 5 }}>
+          <Text
+            style={{ fontFamily: "Poppins_600SemiBold", textAlign: "center", marginTop: 20, color: theme.textinput }}
+          >
+            No debit cards added yet
+          </Text>
+        </View>
+      );
+    };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView  style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("buyoptions")}
           />
-          <Text style={styles.headerText}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.buy}</Text>
         </View>
 
         <FlatList
@@ -351,36 +380,41 @@ export default function BuyCryptoScreen({ navigation, route }) {
           //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
           data={cards}
           renderItem={cardList}
-          ListEmptyComponent={<Text>No debit cards added yet</Text>}
+          ListEmptyComponent={<EmptyView />}
           horizontal={true}
           keyExtractor={(item) => item.id}
         />
 
         <View style={styles.cardCryptoContainer}>
           <Image style={styles.cryptoImage} source={{ uri: cryptoIcon }} />
-          <Text style={styles.cryptoText}>{cryptoName}</Text>
+          <Text style={[styles.cryptoText, {color: theme.text}]}>{cryptoName}</Text>
         </View>
 
         <View style={styles.cardAmountContainer}>
-          <Text style={styles.amountText}>Amount:</Text>
+          <Text style={[styles.amountText, {color: theme.text}]}>Amount:</Text>
           <TextInput
             style={styles.amountValueText}
             keyboardType="numeric"
             numberOfLines={1}
             maxLength={12}
             placeholder="Amount"
+            placeholderTextColor={theme.textinput}
             selectionColor={Colors.primary}
             onChangeText={(text) => setAmount(text)}
-          // value={Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+            // value={Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
 
         <View style={styles.lineCrosser} />
-        <Text style={styles.receiveAmount}>
-          You will receive N{Number(amount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} in Naira
+        <Text style={[styles.receiveAmount, {color: theme.text}]}>
+          You will receive N
+          {Number(amount)
+            .toFixed(2)
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}{" "}
+          in Naira
         </Text>
-        <Text style={styles.conversionAmount}>1 BTC = $23,000</Text>
+        <Text style={[styles.conversionAmount, {color: theme.text}]}>1 BTC = $23,000</Text>
         <RoundedButton
           style={styles.cardDepositButton}
           text={Strings.deposit}
@@ -393,14 +427,14 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function CardPin({ route }) {
-    const [pin, setPin] = useState("")
-    const [isVisible, setIsVisible] = useState(false)
+    const [pin, setPin] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
       console.log({
-        route_params: route
-      })
-    }, [])
+        route_params: route,
+      });
+    }, []);
 
     const charge_pin = () => {
       setIsVisible(true);
@@ -408,8 +442,13 @@ export default function BuyCryptoScreen({ navigation, route }) {
       let card_data = {
         card_number: route.params.card.card_number,
         cvv: route.params.card.cvv,
-        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
-        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_expiry_month: route.params.card.card_expiry.slice(
+          0,
+          route.params.card.card_expiry.indexOf("/")
+        ),
+        card_expiry_year: route.params.card.card_expiry.slice(
+          route.params.card.card_expiry.indexOf("/") + 1
+        ),
         card_name: route.params.card.card_name,
         amount: route.params.amount,
         email: route.params.user.email,
@@ -424,7 +463,10 @@ export default function BuyCryptoScreen({ navigation, route }) {
           setIsVisible(false);
           if (data.data.message === "otp required") {
             // setFLW(data.data.flw_ref);
-            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+            navigation.navigate("inputotp", {
+              flw: data.data.flw_ref,
+              user: route.params.user,
+            });
           }
         })
         .catch((err) => {
@@ -441,7 +483,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
               size={24}
               color={Colors.textColor}
               style={styles.backButton}
-              handlePress={() => navigation.navigate(Strings.buywithdebitcardTitle)}
+              handlePress={() =>
+                navigation.navigate(Strings.buywithdebitcardTitle)
+              }
             />
             <Text style={styles.headerText}>Card Pin</Text>
           </View>
@@ -471,8 +515,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
   }
 
   function InputOTP({ route }) {
-    const [code, setCode] = useState("")
-    const [isVisible, setIsVisible] = useState(false)
+    const [code, setCode] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const charge_otp = () => {
@@ -489,16 +533,18 @@ export default function BuyCryptoScreen({ navigation, route }) {
           setIsVisible(false);
           if (fianl.data.message === "success") {
             setSuccess(true);
-          }
-          else {
-            CustomAlert({title: "Failed", subtitle: "Failed to charge card, please check details provided", handlePress: () => {}})
+          } else {
+            CustomAlert({
+              title: "Failed",
+              subtitle: "Failed to charge card, please check details provided",
+              handlePress: () => {},
+            });
           }
         })
         .catch((err) => {
           setIsVisible(false);
         });
     };
-
 
     return (
       <SafeAreaView>
@@ -514,10 +560,11 @@ export default function BuyCryptoScreen({ navigation, route }) {
             <Text style={styles.headerText}>Input OTP</Text>
           </View>
 
-          <Text style={styles.enterPinText}>An OTP has been sent to card phone number and email</Text>
+          <Text style={styles.enterPinText}>
+            An OTP has been sent to card phone number and email
+          </Text>
 
           <TextInput
-
             style={styles.otherTextInputs}
             numeric={true}
             alphaNumeric={false}
@@ -545,8 +592,8 @@ export default function BuyCryptoScreen({ navigation, route }) {
     const [city, setCity] = useState("");
     const [country, setCountry] = useState("");
     const [state, setCardState] = useState("");
-    const [zip, setZip] = useState("")
-    const [isVisible, setIsVisible] = useState(false)
+    const [zip, setZip] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const charge_card = () => {
@@ -555,8 +602,13 @@ export default function BuyCryptoScreen({ navigation, route }) {
       let card_data = {
         card_number: route.params.card.card_number,
         cvv: route.params.card.cvv,
-        card_expiry_month: route.params.card.card_expiry.slice(0, route.params.card.card_expiry.indexOf('/')),
-        card_expiry_year: route.params.card.card_expiry.slice(route.params.card.card_expiry.indexOf('/') + 1),
+        card_expiry_month: route.params.card.card_expiry.slice(
+          0,
+          route.params.card.card_expiry.indexOf("/")
+        ),
+        card_expiry_year: route.params.card.card_expiry.slice(
+          route.params.card.card_expiry.indexOf("/") + 1
+        ),
         card_name: route.params.card.card_name,
         amount: route.params.amount,
         email: route.params.user.email,
@@ -566,18 +618,21 @@ export default function BuyCryptoScreen({ navigation, route }) {
         city,
         country,
         state,
-        zipcode: zip
+        zipcode: zip,
       };
 
       axiosFiat
         .post("/fiat-gateway/card-no-auth", card_data)
         .then((data) => {
           setIsVisible(false);
-          console.log(card_data)
-          console.log(data.data)
+          console.log(card_data);
+          console.log(data.data);
           if (data.data.message === "otp required") {
             // setFLW(data.data.flw_ref);
-            navigation.navigate("inputotp", { flw: data.data.flw_ref, user: route.params.user })
+            navigation.navigate("inputotp", {
+              flw: data.data.flw_ref,
+              user: route.params.user,
+            });
           } else if (data.data.message === "success") {
             setSuccess(true);
           }
@@ -605,7 +660,6 @@ export default function BuyCryptoScreen({ navigation, route }) {
             style={styles.inputText2}
             placeholder="Address"
             selectionColor={Colors.primary}
-
             onChangeText={(value) => setAddress(value)}
           />
 
@@ -614,7 +668,6 @@ export default function BuyCryptoScreen({ navigation, route }) {
             placeholder="City"
             selectionColor={Colors.primary}
             maxLength={16}
-
             onChangeText={(value) => setCity(value)}
           />
 
@@ -623,7 +676,6 @@ export default function BuyCryptoScreen({ navigation, route }) {
             placeholder="Country"
             selectionColor={Colors.primary}
             maxLength={16}
-
             onChangeText={(value) => setCountry(value)}
           />
 
@@ -633,7 +685,6 @@ export default function BuyCryptoScreen({ navigation, route }) {
               placeholder="State"
               selectionColor={Colors.primary}
               maxLength={5}
-
               onChangeText={(value) => setCardState(value)}
             />
 
@@ -641,13 +692,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
               style={styles.rowTextInputs}
               placeholder="Zip code"
               selectionColor={Colors.primary}
-
-
               onChangeText={(value) => setZip(value)}
             />
           </View>
-
-
 
           <RoundedButton
             text="Submit"
@@ -657,10 +704,13 @@ export default function BuyCryptoScreen({ navigation, route }) {
           />
 
           <ProcessingModal isVisible={isVisible} />
-          <SuccessModal isVisible={success} handlePress={() => {
-            setSuccess(false)
-            navigation.navigate(Strings.home)
-          }} />
+          <SuccessModal
+            isVisible={success}
+            handlePress={() => {
+              setSuccess(false);
+              navigation.navigate(Strings.home);
+            }}
+          />
         </ScrollView>
       </SafeAreaView>
     );
