@@ -35,6 +35,8 @@ import Swiper from "react-native-swiper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ProcessingModal } from "../components/modal";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Stack = createNativeStackNavigator();
 
 export default function SwapCryptoScreen({ navigation, route }) {
@@ -45,11 +47,14 @@ export default function SwapCryptoScreen({ navigation, route }) {
     { address: "hh", abb: "hh" },
   ]);
 
+  const theme = useSelector((state) => state.persistedReducer.theme);
+  const dispatch = useDispatch();
+
   const [buttonColors, setButtonColors] = useState([
     {
       instantColor: Colors.primary,
-      instantTextColor: Colors.backgroundColor,
-      swapColor: Colors.backgroundColor,
+      instantTextColor: Colors.white,
+      swapColor: theme.background,
       swapTextColor: Colors.textColor,
     },
   ]);
@@ -111,26 +116,26 @@ export default function SwapCryptoScreen({ navigation, route }) {
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={styles.valueText}>{item.value}</Text>
-          <Text style={styles.text}>{item.name}</Text>
+          <Text style={[styles.valueText, {color: theme.text}]}>{item.value}</Text>
+          <Text style={[styles.text, {color: theme.text}]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView  style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.swap}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.swap}</Text>
         </View>
 
-        <View style={styles.flatlist}>
+        <View style={[styles.flatlist, {backgroundColor: theme.flatlist}]}>
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}
@@ -144,9 +149,9 @@ export default function SwapCryptoScreen({ navigation, route }) {
   function setButtonColorsDefault() {
     setButtonColors({
       instantColor: Colors.primary,
-      swapColor: Colors.backgroundColor,
-      instantTextColor: Colors.backgroundColor,
-      swapTextColor: Colors.textColor,
+      instantTextColor: Colors.white,
+      swapColor: theme.background,
+      swapTextColor: theme.text,
     });
   }
 
@@ -170,20 +175,20 @@ export default function SwapCryptoScreen({ navigation, route }) {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.push(Strings.swap)}
           />
-          <Text style={styles.headerText}>{Strings.swap}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.swap}</Text>
         </View>
         <Image source={{ uri: cryptoIcon }} style={styles.cryptoImage} />
-        <Text style={styles.cryptoName}>{cryptoName}</Text>
-        <Text style={styles.cryptoAmount}>0.02 {walletOptions.abb}</Text>
+        <Text style={[styles.cryptoName, {color: theme.text}]}>{cryptoName}</Text>
+        <Text style={[styles.cryptoAmount, {color: theme.text}]}>0.02 {walletOptions.abb}</Text>
 
         <View style={styles.buttonView}>
           <RoundedButton
@@ -198,10 +203,10 @@ export default function SwapCryptoScreen({ navigation, route }) {
             ]}
             handlePress={() => {
               setButtonColors({
-                instantColor: Colors.primary,
-                swapColor: Colors.backgroundColor,
-                instantTextColor: Colors.backgroundColor,
-                swapTextColor: Colors.textColor,
+                instantColor: theme.primary,
+                swapColor: theme.background,
+                instantTextColor: Colors.white,
+                swapTextColor: theme.text,
               });
               setSwipeIndex(0);
             }}
@@ -219,10 +224,10 @@ export default function SwapCryptoScreen({ navigation, route }) {
             ]}
             handlePress={() => {
               setButtonColors({
-                instantColor: Colors.backgroundColor,
-                swapColor: Colors.primary,
-                instantTextColor: Colors.textColor,
-                swapTextColor: Colors.backgroundColor,
+                instantColor: theme.background,
+                swapColor: theme.primary,
+                instantTextColor: theme.text,
+                swapTextColor: Colors.white,
               });
               setSwipeIndex(1);
             }}
@@ -239,19 +244,20 @@ export default function SwapCryptoScreen({ navigation, route }) {
         >
           {/* Instant Screen*/}
           <ScrollView>
-            <View style={styles.fromView}>
+            <View style={[styles.fromView, {backgroundColor: theme.flatlist}]}>
               <TextInput
                 style={styles.fromValue}
                 keyboardType="numeric"
                 numberOfLines={1}
                 maxLength={12}
                 placeholder="Amount"
+                placeholderTextColor={theme.label}
                 selectionColor={Colors.primary}
                 onChangeText={(text)=> {
                   setFromAmount(text)
                 }}
               ></TextInput>
-              <Text style={styles.fromDollarValue}>$0.00</Text>
+              <Text style={[styles.fromDollarValue, {color: theme.text}]}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
 
               <View style={styles.lineCrosser} />
@@ -271,25 +277,27 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 setValue={setFromInstantValue}
                 setItems={setFromInstantItems}
                 placeholder="Coin"
+                textStyle={{color: theme.primary, fontWeight: 'bold'}}
               />
-              <Text style={styles.balanceText} numberOfLines={1}>
+               <Text style={[styles.balanceText, {color: theme.text}]} numberOfLines={1}>
                 Balance: 0.00
               </Text>
             </View>
 
-            <View style={styles.toView}>
+            <View style={[styles.toView, {backgroundColor: theme.flatlist}]}>
               <TextInput
                 style={styles.fromValue}
                 keyboardType="numeric"
                 numberOfLines={1}
                 maxLength={12}
                 placeholder="Amount"
+                placeholderTextColor={theme.label}
                 selectionColor={Colors.primary}
                 onChangeText= {(text)=> {
                   setToAmount(text)
                 }}
               ></TextInput>
-              <Text style={styles.fromDollarValue}>$0.00</Text>
+              <Text style={[styles.fromDollarValue, {color: theme.text}]}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
 
               <View style={styles.lineCrosser} />
@@ -305,15 +313,20 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 setOpen={setToInstantOpen}
                 setValue={setToInstantValue}
                 setItems={setToInstantItems}
+                textStyle={{color: theme.primary, fontWeight: 'bold'}}
                 placeholder="Coin"
+                placeholderStyle={{
+                  color: theme.primary,
+                  fontWeight: "bold"
+                }}
               />
-              <Text style={styles.balanceText} numberOfLines={1}>
+              <Text style={[styles.balanceText, {color: theme.text}]} numberOfLines={1}>
                 Balance: 0.00
               </Text>
             </View>
 
             <RoundedButton
-              style={styles.swapButton}
+              style={[styles.swapButton]}
               text={Strings.swap}
               textStyle={styles.swapText}
               handlePress={() => alert('Swap Successful')}
@@ -322,19 +335,20 @@ export default function SwapCryptoScreen({ navigation, route }) {
 
           {/* Limit Screen*/}
           <ScrollView>
-            <View style={styles.fromView}>
+            <View style={[styles.fromView, {backgroundColor: theme.flatlist}]}>
               <TextInput
                 style={styles.fromValue}
                 keyboardType="numeric"
                 numberOfLines={1}
                 maxLength={12}
                 placeholder="Amount"
+                placeholderTextColor={theme.label}
                 selectionColor={Colors.primary}
                 onChangeText={(text)=> {
                   setFromAmount(text)
                 }}
               ></TextInput>
-              <Text style={styles.fromDollarValue}>$0.00</Text>
+              <Text style={[styles.fromDollarValue, {color: theme.text}]}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
 
               <View style={styles.lineCrosser} />
@@ -347,31 +361,37 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 dropDownDirection="AUTO"
                 stickyHeader={true}
                 open={fromInstantOpenLimit}
-                value={fromInstantValueLimit}
+                value={fromIndex}
                 items={fromInstantItemsLimit}
                 setOpen={setFromInstantOpen}
                 setValue={setFromInstantValue}
                 setItems={setFromInstantItems}
                 placeholder="Coin"
+                placeholderStyle={{
+                  color: theme.primary,
+                  fontWeight: "bold"
+                }}
+                textStyle={{color: theme.primary, fontWeight: 'bold'}}
               />
-              <Text style={styles.balanceText} numberOfLines={1}>
+              <Text style={[styles.balanceText, {color: theme.text}]} numberOfLines={1}>
                 Balance: 0.00
               </Text>
             </View>
 
-            <View style={styles.toView}>
+            <View style={[styles.toView, {backgroundColor: theme.flatlist}]}>
               <TextInput
                 style={styles.fromValue}
                 keyboardType="numeric"
                 numberOfLines={1}
                 maxLength={12}
                 placeholder="Amount"
+                placeholderTextColor={theme.label}
                 selectionColor={Colors.primary}
                 onChangeText={(text)=> {
                   setToAmount(text)
                 }}
               ></TextInput>
-              <Text style={styles.fromDollarValue}>$0.00</Text>
+               <Text style={[styles.fromDollarValue, {color: theme.text}]}>$0.00</Text>
               <Text style={styles.maxValue}>MAX</Text>
 
               <View style={styles.lineCrosser} />
@@ -387,15 +407,21 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 setValue={setToInstantValue}
                 setItems={setToInstantItems}
                 placeholder="Coin"
+                placeholderStyle={{
+                  color: theme.primary,
+                  fontWeight: "bold"
+                }}
+                textStyle={{color: theme.primary, fontWeight: 'bold'}}
               />
-              <Text style={styles.balanceText} numberOfLines={1}>
+              <Text style={[styles.balanceText, {color: theme.text}]} numberOfLines={1}>
                 Balance: 0.00
               </Text>
             </View>
 
             <TextInput
-              style={styles.priceInput}
+              style={[styles.priceInput, {backgroundColor: theme.textinput}]}
               placeholder="Set limit price"
+              placeholderTextColor={theme.label}
               onChangeText={(text)=> {
                 setLimit(text)
               }}

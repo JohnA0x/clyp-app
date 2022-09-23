@@ -38,6 +38,8 @@ export const textInput = 10.
 
 export const snackbar = '#B6B6B6'
 
+export const transparent = 'transparent'
+
 
 
 // dark mode

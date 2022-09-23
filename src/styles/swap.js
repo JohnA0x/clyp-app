@@ -171,7 +171,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
     borderRadius: 50,
     marginTop: '10%',
     marginLeft: '20%',

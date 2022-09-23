@@ -26,7 +26,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import sellOptionsListArray from "../strings/selloptionslist";
 
-
 import { useSelector, useDispatch } from "react-redux";
 
 const Stack = createNativeStackNavigator();
@@ -49,10 +48,7 @@ export default function SellCryptoScreen({ navigation, route }) {
     >
       <Stack.Screen name="selllist" component={SellCryptoList} />
       <Stack.Screen name="selloptions" component={SellOptions} />
-      <Stack.Screen
-        name={Strings.sellNowTitle}
-        component={SellNow}
-      />
+      <Stack.Screen name={Strings.sellNowTitle} component={SellNow} />
     </Stack.Navigator>
   );
 
@@ -71,7 +67,9 @@ export default function SellCryptoScreen({ navigation, route }) {
           }}
         >
           <Image source={{ uri: item.icon }} style={styles.image} />
-          <Text style={[styles.valueText, { color: theme.text }]}>{item.value}</Text>
+          <Text style={[styles.valueText, { color: theme.text }]}>
+            {item.value}
+          </Text>
           <Text style={[styles.text, { color: theme.text }]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
@@ -79,7 +77,9 @@ export default function SellCryptoScreen({ navigation, route }) {
 
     // This renders some components and the flatlist together
     return (
-      <SafeAreaView style ={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -88,7 +88,9 @@ export default function SellCryptoScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.sell}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.sell}
+          </Text>
         </View>
 
         <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
@@ -107,7 +109,7 @@ export default function SellCryptoScreen({ navigation, route }) {
       return (
         <View style={styles.optionsContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: theme.flatlist }]}
             onPress={() => navigation.navigate(item.title)}
           >
             <VectorButton
@@ -116,23 +118,27 @@ export default function SellCryptoScreen({ navigation, route }) {
               color={Colors.primary}
               style={styles.preferencesimage}
             />
-            <Text style={styles.preferencestext}>{item.title}</Text>
+            <Text style={[styles.preferencestext, { color: theme.text }]}>
+              {item.title}
+            </Text>
           </TouchableOpacity>
         </View>
       );
     };
 
     return (
-       <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("selllist")}
           />
-          <Text style={styles.headerText}>{Strings.sell}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>{Strings.sell}</Text>
         </View>
 
         <FlatList
@@ -146,52 +152,57 @@ export default function SellCryptoScreen({ navigation, route }) {
     );
   }
 
-
   function SellNow() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate("selloptions")}
           />
-          <Text style={styles.headerText}>{Strings.sell}</Text>
+          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.sell}</Text>
         </View>
 
         <View style={styles.walletBalanceContainer}>
           <Text style={styles.walletBalanceText}>Wallet Balance</Text>
-          <Text style={styles.walletBalanceValueText}>N {route.params.wallet.available_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+          <Text style={styles.walletBalanceValueText}>
+            N{" "}
+            {route.params.wallet.available_balance
+              .toFixed(2)
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+          </Text>
         </View>
 
         <View style={styles.transactionCryptoContainer}>
           <Image style={styles.cryptoImage} source={{ uri: cryptoIcon }} />
-          <Text style={styles.cryptoText}>{cryptoName}</Text>
+          <Text style={[styles.cryptoText, {color: theme.text}]}>{cryptoName}</Text>
         </View>
 
         <View style={styles.transactionAmountContainer}>
-          <Text style={styles.amountText}>Amount:</Text>
+          <Text style={[styles.amountText, {color: theme.text}]}>Amount:</Text>
           <TextInput
             style={styles.amountValueText}
             keyboardType="numeric"
             numberOfLines={1}
             maxLength={12}
             placeholder="Amount"
+            placeholderTextColor={theme.textinput}
             selectionColor={Colors.primary}
           ></TextInput>
           <Text style={styles.amountMaxValue}>Max</Text>
         </View>
 
         <View style={styles.lineCrosser} />
-        <Text style={styles.receiveAmount}>
+        <Text style={[styles.receiveAmount, {color: theme.text}]}>
           You will receive N20,000 in Naira
         </Text>
-        <Text style={styles.conversionAmount}>1 BTC = $23,000</Text>
+        <Text style={[styles.conversionAmount, {color: theme.text}]}>1 BTC = $23,000</Text>
         <RoundedButton
           style={styles.depositButton}
-          text={Strings.sell +' ' + walletOptions.abb}
+          text={Strings.sell + " " + walletOptions.abb}
           textStyle={styles.depositText}
         />
       </SafeAreaView>

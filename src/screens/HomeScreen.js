@@ -340,7 +340,7 @@ export default function HomeScreen({ navigation, route }) {
                   <Text style={styles.optionText}>{Strings.receive}</Text>
                 </View>
 
-                <View style={styles.othercolumnContainer}>
+              {/*   <View style={styles.othercolumnContainer}>
                   <VectorButton
                     name="pricetag-outline"
                     size={18}
@@ -372,7 +372,7 @@ export default function HomeScreen({ navigation, route }) {
                     }
                   />
                   <Text style={styles.optionText}>{Strings.sell}</Text>
-                </View>
+                </View> */}
 
                 <View style={styles.othercolumnContainer}>
                   <VectorButton
