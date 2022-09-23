@@ -354,7 +354,12 @@ export default function BuyCryptoScreen({ navigation, route }) {
       return (
         <View style={{ flex: 1, padding: 5 }}>
           <Text
-            style={{ fontFamily: "Poppins_600SemiBold", textAlign: "center", marginTop: 20, color: theme.textinput }}
+            style={{
+              fontFamily: "Poppins_600SemiBold",
+              textAlign: "center",
+              marginTop: 20,
+              color: theme.textinput,
+            }}
           >
             No debit cards added yet
           </Text>
@@ -363,7 +368,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
     };
 
     return (
-      <SafeAreaView  style={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
@@ -372,7 +379,9 @@ export default function BuyCryptoScreen({ navigation, route }) {
             style={styles.backButton}
             handlePress={() => navigation.navigate("buyoptions")}
           />
-          <Text style={[styles.headerText, {color: theme.text}]}>{Strings.buy}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.buy}
+          </Text>
         </View>
 
         <FlatList
@@ -387,11 +396,15 @@ export default function BuyCryptoScreen({ navigation, route }) {
 
         <View style={styles.cardCryptoContainer}>
           <Image style={styles.cryptoImage} source={{ uri: cryptoIcon }} />
-          <Text style={[styles.cryptoText, {color: theme.text}]}>{cryptoName}</Text>
+          <Text style={[styles.cryptoText, { color: theme.text }]}>
+            {cryptoName}
+          </Text>
         </View>
 
         <View style={styles.cardAmountContainer}>
-          <Text style={[styles.amountText, {color: theme.text}]}>Amount:</Text>
+          <Text style={[styles.amountText, { color: theme.text }]}>
+            Amount:
+          </Text>
           <TextInput
             style={styles.amountValueText}
             keyboardType="numeric"
@@ -407,14 +420,16 @@ export default function BuyCryptoScreen({ navigation, route }) {
         </View>
 
         <View style={styles.lineCrosser} />
-        <Text style={[styles.receiveAmount, {color: theme.text}]}>
+        <Text style={[styles.receiveAmount, { color: theme.text }]}>
           You will receive N
           {Number(amount)
             .toFixed(2)
             .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}{" "}
           in Naira
         </Text>
-        <Text style={[styles.conversionAmount, {color: theme.text}]}>1 BTC = $23,000</Text>
+        <Text style={[styles.conversionAmount, { color: theme.text }]}>
+          1 BTC = $23,000
+        </Text>
         <RoundedButton
           style={styles.cardDepositButton}
           text={Strings.deposit}
