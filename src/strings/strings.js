@@ -42,6 +42,7 @@ export const email = "Use Email Instead";
 
 // Home
 export const home = "Home";
+export const homeScreen = "HomeScreen";
 export const cryptoBalance = "Crypto Balance";
 export const fiatBalance = "Fiat Balance";
 export const deposit = "Deposit";

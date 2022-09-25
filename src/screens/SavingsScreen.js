@@ -1,4 +1,4 @@
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, FlatList } from "react-native";
 import React from "react";
 import Savings from "../drawables/vector/savings/Savings.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -88,7 +88,7 @@ export default function SavingsScreen({ navigation }) {
             size={24}
             color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.navigate(Strings.home)}
+            handlePress={() => navigation.navigate(Strings.clyphub)}
           />
           <Text style={[styles.headerText, {color: theme.text}]}>{Strings.savings}</Text>
         </View>

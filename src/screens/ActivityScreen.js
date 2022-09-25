@@ -168,11 +168,32 @@ export default function ActivityScreen({ navigation, route }) {
           </View>
         );
       };
+      
+      const EmptyView = () => {
+        return (
+          <View style={{ flex: 1, padding: 5 }}>
+            <Image 
+            style = {{width: 200, height: 200, alignSelf: 'center' }}
+            source={require('../drawables/bitmap/no_results.png')}/>
+            <Text
+              style={{
+                fontFamily: "Poppins_600SemiBold",
+                textAlign: "center",
+                marginTop: 20,
+                color: theme.text,
+              }}
+            >
+              No history
+            </Text>
+          </View>
+        );
+      };
 
       return (
         <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
           <FlatList
             data={transactions}
+            ListEmptyComponent={EmptyView}
             //ListHeaderComponent={renderHeader}
             renderItem={historyList}
           />

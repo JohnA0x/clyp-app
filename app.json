@@ -21,11 +21,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.clyppay",
-      "buildNumber": "3"
+      "buildNumber": "3.1"
     },
     "android": {
       "package": "com.clyppay",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"

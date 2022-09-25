@@ -32,6 +32,26 @@ export default function NotificationScreen({navigation}){
     </TouchableOpacity>
   );
 
+  const EmptyView = () => {
+    return (
+      <View style={{ flex: 1, padding: 5 }}>
+        <Image 
+        style = {{width: 200, height: 200, alignSelf: 'center' }}
+        source={require('../drawables/bitmap/no_results.png')}/>
+        <Text
+          style={{
+            fontFamily: "Poppins_600SemiBold",
+            textAlign: "center",
+            marginTop: 20,
+            color: theme.text,
+          }}
+        >
+          No history
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style = {[styles.container, { backgroundColor: theme.background }]}>
        <View style={styles.notificationHeader}>
@@ -45,7 +65,7 @@ export default function NotificationScreen({navigation}){
       </View>
       <Text style ={styles.clerAll}>Clear All</Text>
       <FlatList
-        //ListEmptyComponent = { <Text>This List is a very Flat list</Text> }
+        ListEmptyComponent = {EmptyView}
         data={notificationArrayList}
         renderItem={notificationList}
         ItemSeparatorComponent={listSeparator}

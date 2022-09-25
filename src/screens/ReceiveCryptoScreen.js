@@ -25,7 +25,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { CustomModal } from "../components/modal";
 
 import QRCode from "react-native-qrcode-svg";
-import * as Clipboard from 'expo-clipboard';
+import * as Clipboard from "expo-clipboard";
 import { CustomAlert } from "../components/alert";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -114,19 +114,23 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     };
-    let coin = route.params.coins.filter(c => c.currency == walletOptions.abb)[0]
-    console.log(coin)
+    let coin = route.params.coins.filter(
+      (c) => c.currency == walletOptions.abb
+    )[0];
+    console.log(coin);
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <VectorButton
           name="chevron-back"
           size={24}
-          color={Colors.textColor}
+          color={theme.primary}
           style={styles.optionsbackButton}
           handlePress={() => navigation.navigate(Strings.receiveCrypto)}
         />
-        <Text style={styles.optionHeaderText}>Receive {cryptoName}</Text>
-        <Text style={styles.optionSubtitleText}>
+        <Text style={[styles.optionHeaderText, {color: theme.text}]}>Receive {cryptoName}</Text>
+        <Text style={[styles.optionSubtitleText, {color: theme.text}]}>
           Add Crypto to your Clyp Wallet
         </Text>
         <Image style={styles.optionsimage} source={{ uri: cryptoIcon }} />
@@ -134,43 +138,53 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
         <View style={styles.qrcode}>
           <QRCode
             value={coin.address}
-            color={Colors.qrcode}
-            backgroundColor={Colors.backgroundColor}
+            color={theme.qrcode}
+            backgroundColor={theme.background}
             size={Dimensions.get("window").width / 2.3}
-          //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
-          // logoMargin={2}
-          // logoSize={20}
-          //logoBorderRadius={10}
-          //logoBackgroundColor={'transparent'}
+            //logo={require('../../../embed_logo_file_path')} // or logo={{uri: base64logo}}
+            // logoMargin={2}
+            // logoSize={20}
+            //logoBorderRadius={10}
+            //logoBackgroundColor={'transparent'}
           />
         </View>
 
-        <View style={styles.detailsScreen}>
-          <Text style={styles.networkText}>{Strings.network}</Text>
-          <Text style={styles.addressText}>{coin.address}</Text>
-          <Text style={styles.networkValueText}>ERC-20</Text>
-          <Text style={styles.addressValueText} numberOfLines={1}>
+        <View style={[styles.detailsScreen, {backgroundColor: theme.flatlist}]}>
+          <Text style={[styles.networkText, {color: theme.text}]}>{Strings.network}</Text>
+          <Text style={[styles.addressText, {color: theme.text}]}>{coin.address}</Text>
+          <Text style={[styles.networkValueText, {color: theme.text}]}>ERC-20</Text>
+          <Text style={[styles.addressValueText, {color: theme.text}]} numberOfLines={1}>
             {coin.address}
           </Text>
         </View>
 
-    
         <RoundedButton
           text="Copy Address"
           textStyle={styles.textButton}
           style={styles.button}
           handlePress={async () => {
-            await Clipboard.setStringAsync(coin.address)
-            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
+            await Clipboard.setStringAsync(coin.address);
+            CustomAlert({
+              title: "Copied",
+              subtitle: "Your Wallet address has been successfully copied",
+            });
           }}
         />
-          <RoundedButton text ={'Copy Address'} textStyle = {styles.textButton} title=""
-          style = {styles.button} handlePress = {async () => {
-            await Clipboard.setStringAsync(coin.address)
-            CustomAlert({title: "Copied", subtitle: "Your Wallet address has been successfully copied"})
-          }}/>
-       
-      {/*     <DropDownPicker
+        <RoundedButton
+          text={"Copy Address"}
+          textStyle={styles.textButton}
+          title=""
+          style={styles.button}
+          handlePress={async () => {
+            await Clipboard.setStringAsync(coin.address);
+            CustomAlert({
+              title: "Copied",
+              subtitle: "Your Wallet address has been successfully copied",
+            });
+          }}
+        />
+
+        {/*     <DropDownPicker
           style={styles.dropdown}
             open={open}
             value={value}
@@ -189,42 +203,49 @@ export default function ReceiveCryptoScreen({ navigation, route }) {
     const navigation = useNavigation();
 
     const receiveCryptoList = ({ item }) => {
-      let coin = route.params.coins.filter(c => c.currency == item.abb)[0]
+      let coin = route.params.coins.filter((c) => c.currency == item.abb)[0];
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
             style={styles.list}
             onPress={() => {
-              navigation.navigate("receiveoptions", {coin});
+              navigation.navigate("receiveoptions", { coin });
               setCryptoName(item.name);
               setCryptoIcon(item.icon);
               setWalletOptions({ abb: item.abb });
             }}
           >
             <Image source={{ uri: item.icon }} style={styles.image} />
-            <Text style={styles.valueText}>{item.value}</Text>
-            <Text style={styles.text}>{item.name}</Text>
+            <Text style={[styles.valueText, { color: theme.text }]}>
+              {item.value}
+            </Text>
+            <Text style={[styles.text, { color: theme.text }]}>
+              {item.name}
+            </Text>
           </TouchableOpacity>
         </View>
-      )
-
-    }
+      );
+    };
 
     // This renders some components and the flatlist together
     return (
-      <SafeAreaView>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
             handlePress={() => navigation.navigate(Strings.home)}
           />
-          <Text style={styles.headerText}>{Strings.receiveCrypto}</Text>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.receiveCrypto}
+          </Text>
         </View>
 
-        <View style={styles.flatlist}>
+        <View style={[styles.flatlist, { backgroundColor: theme.coinlist }]}>
           <FlatList
             data={cryptoListArray}
             //ListHeaderComponent={renderHeader}

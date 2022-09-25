@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
       color: Colors.textColor,
       fontFamily: "Poppins_700Bold",
       textAlign: "left",
-      marginLeft: "18%",
+      marginLeft: "20%",
       marginTop: "20%",
       fontSize: 20,
     },
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
       color: Colors.textColor,
       fontFamily: "Poppins_400Regular",
       textAlign: "left",
-      marginLeft: "18%",
+      marginLeft: "20%",
       fontSize: 12,
     },
   
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
       height: 50,
       position: "absolute",
       left: 20,
-      marginTop: 100,
+      marginTop: 95,
     },
   
   

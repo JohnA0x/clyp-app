@@ -9,13 +9,7 @@ import {
   StatusBar,
   RefreshControl,
 } from "react-native";
-import {
-  useState,
-  useCallback,
-  useMemo,
-  useRef,
-  useEffect,
-} from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../styles/home";
 import * as Colors from "../constants/colors";
@@ -56,7 +50,6 @@ import { lightTheme, darkTheme } from "../constants/theme";
 import { TabNavigator } from "./ActivityScreen";
 import CoinDetailedScreen from "./CoinDetailedScreen_copy/index";
 
-
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 /* export default function Home(){
@@ -84,8 +77,8 @@ export default function HomeScreen({ navigation, route }) {
     { address: "", abb: "" },
   ]);
   const [fiatWallet, setFiatWallet] = React.useState("");
-  const [refreshing, setRefreshing] = React.useState(false)
-  const [cleanup, setCleanUp] = React.useState(0)
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [cleanup, setCleanUp] = React.useState(0);
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
   // const [lastName, setLastName] = React.useState("")
@@ -97,7 +90,7 @@ export default function HomeScreen({ navigation, route }) {
 
   storeData(IS_FIRST_TIME, "false");
 
-  storeData("tabWidth", "60")
+  storeData("tabWidth", "60");
 
   const favouriteList = ({ item }) => (
     <View style={styles.favouriteBaseContainer}>
@@ -169,7 +162,7 @@ export default function HomeScreen({ navigation, route }) {
           setLastName(data.data.user.last_name);
           setPrefrences(data.data.user.prefrence[0]);
           setUser(data.data.user);
-          setRefreshing(false)
+          setRefreshing(false);
           console.log(data.data.user);
           // axios
           //   .post(
@@ -177,25 +170,32 @@ export default function HomeScreen({ navigation, route }) {
           //     { user_id: id }
           //   )
           //   .then((coins_data) => {
-          setCoins([{
-            currency: "BTC",
-            address: "btc-xxxxxxx"
-          }, {
-            currency: "USDT",
-            address: "usdt-xxxxxxx"
-          }, {
-            currency: "ETH",
-            address: "eth-xxxxxxx"
-          }, {
-            currency: "BNB",
-            address: "bnb-xxxxxxx"
-          }, {
-            currency: "LTC",
-            address: "ltc-xxxxxxx"
-          }, {
-            currency: "BTC",
-            address: "btc-xxxxxxx"
-          }]);
+          setCoins([
+            {
+              currency: "BTC",
+              address: "btc-xxxxxxx",
+            },
+            {
+              currency: "USDT",
+              address: "usdt-xxxxxxx",
+            },
+            {
+              currency: "ETH",
+              address: "eth-xxxxxxx",
+            },
+            {
+              currency: "BNB",
+              address: "bnb-xxxxxxx",
+            },
+            {
+              currency: "LTC",
+              address: "ltc-xxxxxxx",
+            },
+            {
+              currency: "BTC",
+              address: "btc-xxxxxxx",
+            },
+          ]);
           // });
 
           axios
@@ -207,54 +207,53 @@ export default function HomeScreen({ navigation, route }) {
             });
         })
         .catch((err) => {
-          setRefreshing(false)
+          setRefreshing(false);
           CustomAlert({
             title: "Error",
             subtitle: "Error making request, please try again..." + err,
-            handlePress: () => { },
+            handlePress: () => {},
           });
           console.log({ err });
         });
     }
-    navigation.addListener('focus', async () =>
-      fetchData()
-    )
-    fetchData()
+    navigation.addListener("focus", async () => fetchData());
+    fetchData();
   }, [cleanup]);
-
 
   const Stack = createNativeStackNavigator();
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name={Strings.home} component={HomeScreen} />
-      <Stack.Screen name={Strings.holdings} component={HoldingsDetail} />
-    </Stack.Navigator>
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name={Strings.homeScreen} component={HomeScreen} />
+        <Stack.Screen name={Strings.holdings} component={HoldingsDetail} />
+      </Stack.Navigator>
   );
 
   function HomeScreen() {
     const saveWidth = () => {
-      storeData('tabWidth', "60")
-    }
-
+      storeData("tabWidth", "60");
+    };
 
     return (
       <SafeAreaView
-        style={[styles.container, { backgroundColor: theme.background }]}>
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <StatusBar barStyle={theme.statusbar} />
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing}
+            <RefreshControl
+              refreshing={refreshing}
               onRefresh={() => {
-                setRefreshing(true)
-                setCleanUp(cleanup + 1)
-
-              }} />
-          }>
+                setRefreshing(true);
+                setCleanUp(cleanup + 1);
+              }}
+            />
+          }
+        >
           <View style={styles.topBar}>
             <ImageButton
               style={styles.profileImage}
@@ -340,7 +339,7 @@ export default function HomeScreen({ navigation, route }) {
                   <Text style={styles.optionText}>{Strings.receive}</Text>
                 </View>
 
-              {/*   <View style={styles.othercolumnContainer}>
+                {/*   <View style={styles.othercolumnContainer}>
                   <VectorButton
                     name="pricetag-outline"
                     size={18}
@@ -399,12 +398,13 @@ export default function HomeScreen({ navigation, route }) {
               <Text style={styles.cryptoBalanceText}>
                 {preferences.private_mode
                   ? "***"
-                  : `N ${fiatWallet.available_balance
-                    ? fiatWallet.available_balance
-                      .toFixed(2)
-                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-                    : "0.00"
-                  }`}
+                  : `N ${
+                      fiatWallet.available_balance
+                        ? fiatWallet.available_balance
+                            .toFixed(2)
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                        : "0.00"
+                    }`}
               </Text>
 
               <View style={styles.transactionOptions}>
@@ -513,32 +513,54 @@ export default function HomeScreen({ navigation, route }) {
       );
     };
 
+    const EmptyView = () => {
+      return (
+        <View style={{ flex: 1, padding: 5 }}>
+          <Image 
+          style = {{width: 100, height: 100, alignSelf: 'center', marginTop: 20, }}
+          source={require('../drawables/bitmap/no_results.png')}/>
+          <Text
+            style={{
+              fontFamily: "Poppins_600SemiBold",
+              textAlign: "center",
+              marginTop: 20,
+              color: theme.text,
+            }}
+          >
+            No history
+          </Text>
+        </View>
+      );
+    };
+
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <View style={styles.header}>
           <VectorButton
             name="chevron-back"
             size={24}
-            color={Colors.textColor}
+            color={theme.primary}
             style={styles.backButton}
-            handlePress={() => navigation.push(Strings.home)}
+            handlePress={() => navigation.push(Strings.homeScreen)}
           />
           <View style={styles.holdingsRowContainer}>
             <Image
               style={styles.holdingsDetailImage}
               source={{ uri: cryptoIcon }}
             />
-            <Text style={styles.holdingsCryptoName}>{walletOptions.abb}</Text>
+            <Text style={[styles.holdingsCryptoName, {color: theme.text}]}>{walletOptions.abb}</Text>
           </View>
         </View>
 
         <View>
-          <Text style={styles.cryptoAbbreviationText}>{walletOptions.abb}</Text>
-          <Text style={styles.cryptoAmountText} numberOfLines={1}>
+          <Text style={[styles.cryptoAbbreviationText, {color: theme.text}]}>{walletOptions.abb}</Text>
+          <Text style={[styles.cryptoAmountText, {color: theme.primary}]} numberOfLines={1}>
             {cryptoAmount}
           </Text>
-          <Text style={styles.usdAbbreviationText}>USD</Text>
-          <Text style={styles.usdAmountText} numberOfLines={1}>
+          <Text style={[styles.usdAbbreviationText, {color: theme.text}]}>USD</Text>
+          <Text style={[styles.usdAmountText, {color: theme.primary}]} numberOfLines={1}>
             {cryptoAmount}
           </Text>
           <Text
@@ -566,7 +588,7 @@ export default function HomeScreen({ navigation, route }) {
                 navigation.navigate(Strings.sendCrypto, { coins: coins })
               }
             />
-            <Text style={styles.optionHoldingsText}>{Strings.send}</Text>
+            <Text style={[styles.optionHoldingsText, {color: theme.text}]}>{Strings.send}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -581,7 +603,7 @@ export default function HomeScreen({ navigation, route }) {
                 })
               }
             />
-            <Text style={styles.optionHoldingsText}>{Strings.receive}</Text>
+            <Text style={[styles.optionHoldingsText, {color: theme.text}]}>{Strings.receive}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -594,7 +616,7 @@ export default function HomeScreen({ navigation, route }) {
                 navigation.navigate(Strings.buy, { coins: coins })
               }
             />
-            <Text style={styles.optionHoldingsText}>{Strings.buy}</Text>
+            <Text style={[styles.optionHoldingsText, {color: theme.text}]}>{Strings.buy}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -607,7 +629,7 @@ export default function HomeScreen({ navigation, route }) {
                 navigation.navigate(Strings.sell, { coins: coins })
               }
             />
-            <Text style={styles.optionHoldingsText}>{Strings.sell}</Text>
+            <Text style={[styles.optionHoldingsText, {color: theme.text}]}>{Strings.sell}</Text>
           </View>
 
           <View style={styles.othercolumnContainer}>
@@ -620,15 +642,16 @@ export default function HomeScreen({ navigation, route }) {
                 navigation.navigate(Strings.swap, { coins: coins })
               }
             />
-            <Text style={styles.optionHoldingsText}>{Strings.swap}</Text>
+            <Text style={[styles.optionHoldingsText, {color: theme.text}]}>{Strings.swap}</Text>
           </View>
         </View>
 
         <View>
-          <Text style={styles.historyText}>History</Text>
+          <Text style={[styles.historyText, {color: theme.text}]}>History</Text>
 
           <FlatList
             data={transactions}
+            ListEmptyComponent={EmptyView}
             //ListHeaderComponent={renderHeader}
             renderItem={historyList}
           />
