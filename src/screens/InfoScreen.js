@@ -1,4 +1,11 @@
-import { React, useState, useCallback, useMemo, useRef, useEffect } from "react";
+import {
+  React,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   FlatList,
@@ -8,7 +15,7 @@ import {
   View,
   Image,
   RefreshControl,
-  TextInput
+  TextInput,
 } from "react-native";
 import {
   FileImageButton,
@@ -90,42 +97,62 @@ export default function InfoScreen({ navigation }) {
   );
 
   function TabNavigator() {
-    const [marketCap, setMarketCap] = useState(0)
-    const [volume, setVolume] = useState(0)
-    const [percentageChange, setPercentageChange] = useState(0)
+    const [marketCap, setMarketCap] = useState(0);
+    const [volume, setVolume] = useState(0);
+    const [percentageChange, setPercentageChange] = useState(0);
 
     useEffect(() => {
-      async function fetchData(){
-        axios.get('https://api.coingecko.com/api/v3/global')
-        .then(data => {
-          
-          setMarketCap(data.data.data.total_market_cap.usd)
-          setVolume(data.data.data.total_volume.usd)
-          setPercentageChange(data.data.data.market_cap_change_percentage_24h_usd)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      async function fetchData() {
+        axios
+          .get("https://api.coingecko.com/api/v3/global")
+          .then((data) => {
+            setMarketCap(data.data.data.total_market_cap.usd);
+            setVolume(data.data.data.total_volume.usd);
+            setPercentageChange(
+              data.data.data.market_cap_change_percentage_24h_usd
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-      fetchData()
-    },[])
+      fetchData();
+    }, []);
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-         <View>
-        <Text style={[styles.headerText, {color: theme.text}]}>{Strings.coinStats}</Text>
-      </View>
-        <View style={[styles.summaryContainer, { backgroundColor: theme.flatlist }]}>
-          <Text style={[styles.marketCapText, {color: theme.text}]}>Market Cap</Text>
-        <Text style={[styles.marketCapValueText, {color: theme.text}]}>${marketCap.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-          <Text style={[styles.marketCapMovementText, {color: theme.text}]}>{percentageChange.toFixed(1)}%</Text>
-          <Text style={[styles.volume24hText, {color: theme.text}]}>Volume 24h</Text>
-          <Text style={[styles.volume24hValueText, {color: theme.text}]}>${volume.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-          <Text style={[styles.volume24hMovementText, {color: theme.text}]}>{percentageChange.toFixed(1)}%</Text>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
+        <View>
+          <Text style={[styles.headerText, { color: theme.text }]}>
+            {Strings.coinStats}
+          </Text>
+        </View>
+        <View
+          style={[styles.summaryContainer, { backgroundColor: theme.flatlist }]}
+        >
+          <Text style={[styles.marketCapText, { color: theme.text }]}>
+            Market Cap
+          </Text>
+          <Text style={[styles.marketCapValueText, { color: theme.text }]}>
+            ${marketCap.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+          </Text>
+          <Text style={[styles.marketCapMovementText, { color: theme.text }]}>
+            {percentageChange.toFixed(1)}%
+          </Text>
+          <Text style={[styles.volume24hText, { color: theme.text }]}>
+            Volume 24h
+          </Text>
+          <Text style={[styles.volume24hValueText, { color: theme.text }]}>
+            ${volume.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+          </Text>
+          <Text style={[styles.volume24hMovementText, { color: theme.text }]}>
+            {percentageChange.toFixed(1)}%
+          </Text>
         </View>
 
         <Tab.Navigator
           tabBarOptions={{
-            style: [styles.tabBar, {backgroundColor: theme.background}],
+            style: [styles.tabBar, { backgroundColor: theme.background }],
             labelStyle: { fontSize: 12, color: theme.text },
             //   activeTintColor:Colors.primary,
             //tabStyle: {backgroundColor: Colors.backgroundColor },
@@ -140,7 +167,6 @@ export default function InfoScreen({ navigation }) {
   }
 
   function Cryptocurrencies({ navigation }) {
-
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -168,13 +194,12 @@ export default function InfoScreen({ navigation }) {
       fetchCoins();
     }, []);
 
-
     const cryptocurrenciesList = ({ item }) => {
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
             style={styles.button}
-          // onPress={() => navigation.navigate()}
+            // onPress={() => navigation.navigate()}
           >
             <Ionicons
               name={isFavouritedIcon}
@@ -202,12 +227,22 @@ export default function InfoScreen({ navigation }) {
 
     return (
       <BottomSheetModalProvider>
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+        <SafeAreaView
+          style={[styles.container, { backgroundColor: theme.background }]}
+        >
           <View style={styles.infoContainer}>
-            <Text style={[styles.nameinfoOptions, {color: theme.text}]}>{Strings.name}</Text>
-            <Text style={[styles.infoOptions, {color: theme.text}]}>{Strings.change}</Text>
-            <Text style={[styles.infoOptions, {color: theme.text}]}>${Strings.price}</Text>
-            <Text style={[styles.infoOptions, {color: theme.text}]}>{Strings.marketCap}</Text>
+            <Text style={[styles.nameinfoOptions, { color: theme.text }]}>
+              {Strings.name}
+            </Text>
+            <Text style={[styles.infoOptions, { color: theme.text }]}>
+              {Strings.change}
+            </Text>
+            <Text style={[styles.infoOptions, { color: theme.text }]}>
+              ${Strings.price}
+            </Text>
+            <Text style={[styles.infoOptions, { color: theme.text }]}>
+              {Strings.marketCap}
+            </Text>
           </View>
           {/* <FlatList
             contentContainerStyle={styles.flatlist}
@@ -229,14 +264,12 @@ export default function InfoScreen({ navigation }) {
               />
             }
           />
-
         </SafeAreaView>
       </BottomSheetModalProvider>
     );
   }
 
   function Favourites() {
-
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -263,13 +296,13 @@ export default function InfoScreen({ navigation }) {
     useEffect(() => {
       fetchCoins();
     }, []);
-    
+
     const cryptocurrenciesList = ({ item }) => {
       return (
         <View style={styles.rowContainer}>
           <TouchableOpacity
             style={styles.button}
-          // onPress={() => navigation.navigate()}
+            // onPress={() => navigation.navigate()}
           >
             <Ionicons
               name={isFavouritedIcon}
@@ -295,19 +328,21 @@ export default function InfoScreen({ navigation }) {
     };
 
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.background }]}
+      >
         <FlatList
-            data={coins}
-            renderItem={({ item }) => <CoinItem marketCoin={item} />}
-            onEndReached={() => fetchCoins(coins.length / 50 + 1)}
-            refreshControl={
-              <RefreshControl
-                refreshing={loading}
-                tintColor="white"
-                onRefresh={refetchCoins}
-              />
-            }
-          />
+          data={coins}
+          renderItem={({ item }) => <CoinItem marketCoin={item} />}
+          onEndReached={() => fetchCoins(coins.length / 50 + 1)}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              tintColor="white"
+              onRefresh={refetchCoins}
+            />
+          }
+        />
       </SafeAreaView>
     );
   }
@@ -326,7 +361,7 @@ export default function InfoScreen({ navigation }) {
           />
           <Text style={styles.headerText}>{Strings.coinStats}</Text>
         </View>
-        <CoinDetailedScreen/>
+        <CoinDetailedScreen />
         {/* <Image />
         <Text style={styles.statsCryptoName}>Bitcoin</Text>
         <Text style={styles.statsCryptoName}>$24, 000</Text> */}

@@ -127,12 +127,14 @@ export const contact = "Contact and Email";
 export const iddocument = "Identification Document";
 
 // Cryptocurrencies
+export const ngnToken = "NGN Token"
 export const bitcoin = "Bitcoin";
 export const ethereum = "Ethereum";
 export const binancecoin = "Binance Coin";
 export const litecoin = "Litecoin";
 export const usdtether = "USD Tether";
 
+export const ngnt = "NGNT";
 export const btc = "BTC";
 export const eth = "ETH";
 export const bnb = "BNB";

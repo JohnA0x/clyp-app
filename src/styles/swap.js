@@ -277,7 +277,8 @@ export const styles = StyleSheet.create({
   },
 
   dropDownToContainerPicker:{
-    borderColor: Colors.primary
+    borderColor: Colors.primary,
+    maxHeight: 100,
   },
 
   iconStyle:{
