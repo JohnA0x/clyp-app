@@ -176,7 +176,7 @@ function LoginScreen({ navigation }) {
               CustomAlert({
                 title: "Signup Error",
                 subtitle: data.data.details,
-                handlePress: () => {},
+                handlePress: () => { },
               });
               return false;
             }
@@ -186,7 +186,7 @@ function LoginScreen({ navigation }) {
             CustomAlert({
               title: "Signup Error",
               subtitle: err,
-              handlePress: () => {},
+              handlePress: () => { },
             });
           });
         console.log("fetchData response: => ", body);
@@ -248,7 +248,7 @@ function LoginScreen({ navigation }) {
             CustomAlert({
               title: "Signup Error",
               subtitle: data.data.details,
-              handlePress: () => {},
+              handlePress: () => { },
             });
             return false;
           }
@@ -297,11 +297,13 @@ function LoginScreen({ navigation }) {
             );
           });
         } else {
-          CustomAlert({
-            title: "Login Error",
-            subtitle: data.data.details,
-            handlePress: () => {},
-          });
+          setError(data.data.details);
+          setSnackVisibility(true);
+          // CustomAlert({
+          //   title: "Login Error",
+          //   subtitle: data.data.details,
+          //   handlePress: () => { },
+          // });
           return false;
         }
       })
@@ -368,11 +370,8 @@ function LoginScreen({ navigation }) {
                 }
               );
             } else {
-              CustomAlert({
-                title: "Login Error",
-                subtitle: data.data.details,
-                handlePress: () => {},
-              });
+              setError(data.data.details);
+              setSnackVisibility(true);
               return false;
             }
           })
@@ -393,7 +392,7 @@ function LoginScreen({ navigation }) {
       style={[styles.container, { backgroundColor: theme.background }]}
       theme={theme}
     >
-          <StatusBar barStyle={theme.statusbar} />
+      <StatusBar barStyle={theme.statusbar} />
       {/*  {theme.mode === "light" ? (
           <Button
             style={styles.themeButton}

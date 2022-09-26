@@ -175,6 +175,8 @@ export const depositCash = "Deposit Cash"
 export const paymentOptions = "Payment Options"
 export const offers = "Offers"
 
+export const dedicatedSend = "dedicated-send"
+
 export const finaliseOffer = "Finalise Offer"
 
 // Security

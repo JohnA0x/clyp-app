@@ -40,6 +40,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSelector, useDispatch } from "react-redux";
 import P2PScreen from "../screens/P2PScreen";
+import DedicatedSend from "../screens/DedicatedSendScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -80,6 +81,7 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name={Strings.buy} component={BuyCryptoScreen} />
       <HomeStack.Screen name={Strings.sell} component={SellCryptoScreen} />
       <HomeStack.Screen name={Strings.swap} component={SwapCryptoScreen} />
+      <HomeStack.Screen name={Strings.dedicatedSend} component={DedicatedSend} />
       <HomeStack.Screen name={Strings.activity} component={ActivityScreen} />
       <HomeStack.Screen
         name={Strings.editprofile}

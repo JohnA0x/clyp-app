@@ -126,7 +126,7 @@ export default function SendCryptoScreen({ navigation, route }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const [amount, setAmount] = useState("");
-    const [rAddress, setRAddress] = useState(route.params.data? route.params.data: "");
+    const [rAddress, setRAddress] = useState(route.params ? (route.params.data? route.params.data: "") : "");
     const [network, setNetwork] = useState("");
     const [walletName, setWalletName] = useState("");
 
