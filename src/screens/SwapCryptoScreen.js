@@ -296,7 +296,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 setValue={setFromInstantValue}
                 setItems={setFromInstantItems}
                 placeholder="Coin"
-                textStyle={{ color: theme.primary, fontWeight: "bold" }}
+                textStyle={{ color: theme.primary, fontWeight: "bold", fontSize: 12, }}
               />
               <Text
                 style={[styles.balanceText, { color: theme.text }]}
@@ -337,7 +337,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
                 setOpen={setToInstantOpen}
                 setValue={setToInstantValue}
                 setItems={setToInstantItems}
-                textStyle={{ color: theme.primary, fontWeight: "bold" }}
+                textStyle={{ color: theme.primary, fontWeight: "bold", fontSize: 12,  }}
                 placeholder="Coin"
                 placeholderStyle={{
                   color: theme.primary,
@@ -402,7 +402,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
                   color: theme.primary,
                   fontWeight: "bold",
                 }}
-                textStyle={{ color: theme.primary, fontWeight: "bold" }}
+                textStyle={{ color: theme.primary, fontWeight: "bold", fontSize: 12,  }}
               />
               <Text
                 style={[styles.balanceText, { color: theme.text }]}
@@ -447,7 +447,7 @@ export default function SwapCryptoScreen({ navigation, route }) {
                   color: theme.primary,
                   fontWeight: "bold",
                 }}
-                textStyle={{ color: theme.primary, fontWeight: "bold" }}
+                textStyle={{ color: theme.primary, fontWeight: "bold", fontSize: 12, }}
               />
               <Text
                 style={[styles.balanceText, { color: theme.text }]}

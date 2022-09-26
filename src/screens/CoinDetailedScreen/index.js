@@ -22,6 +22,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const filterDaysArray = [
   { filterDay: "1", filterText: "24h" },
   { filterDay: "7", filterText: "7d" },

@@ -8,10 +8,24 @@ import {
     TextInput,
   } from "react-native";
 
+  import * as Strings from "../strings/strings";
+
 export const cryptoDropDownArray = [
     {
-        label: "BTC",
+        label: Strings.ngnt,
         value: 0,
+        icon: () => (
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/5922/5922004.png",
+            }}
+            style={styles.iconStyle}
+          />
+        ),
+      },
+      {
+        label: Strings.btc,
+        value: 1,
         icon: () => (
           <Image
             source={{
@@ -22,8 +36,8 @@ export const cryptoDropDownArray = [
         ),
       },
       {
-        label: "ETH",
-        value: 1,
+        label: Strings.eth,
+        value: 2,
         icon: () => (
           <Image
             source={{
@@ -34,12 +48,36 @@ export const cryptoDropDownArray = [
         ),
       },
       {
-        label: "ETH",
-        value: 2,
+        label: Strings.bnb,
+        value: 3,
         icon: () => (
           <Image
             source={{
-              uri: "https://cdn-icons-png.flaticon.com/512/4125/4125334.png",
+              uri: "https://cdn-icons-png.flaticon.com/512/6675/6675721.png",
+            }}
+            style={styles.iconStyle}
+          />
+        ),
+      },
+      {
+        label: Strings.ltc,
+        value: 4,
+        icon: () => (
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/825/825463.png",
+            }}
+            style={styles.iconStyle}
+          />
+        ),
+      },
+      {
+        label: Strings.usdt,
+        value: 5,
+        icon: () => (
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/825/825508.png",
             }}
             style={styles.iconStyle}
           />
