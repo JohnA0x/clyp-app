@@ -40,7 +40,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSelector, useDispatch } from "react-redux";
 import P2PScreen from "../screens/P2PScreen";
-import DedicatedSend from "../screens/DedicatedSendScreen";
+import DedicatedSend from "../screens/DedicatedQRSendScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
