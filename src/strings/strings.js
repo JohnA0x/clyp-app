@@ -70,6 +70,10 @@ export const fund = "Fund Your Wallet";
 
 export const inputAmount = "Input Amount";
 
+export const nft = "NFT"
+
+export const comingSoon = "Coming Soon"
+
 export const recharge = "Recharge";
 export const bill = "Bill Pay";
 export const transfer = "Transfer";

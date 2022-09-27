@@ -40,6 +40,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSelector, useDispatch } from "react-redux";
 import P2PScreen from "../screens/P2PScreen";
+import NFTScreen from "../screens/NFTScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -116,6 +117,7 @@ function ClypHubStackScreen() {
       <HubStack.Screen name={Strings.bill} component={BillPayScreen} />
       <HubStack.Screen name={Strings.savings} component={SavingsScreen} />
       <HubStack.Screen name={Strings.News} component={NewsScreen} />
+      <HubStack.Screen name={Strings.nft} component={NFTScreen} />
     </HubStack.Navigator>
   );
 }

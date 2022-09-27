@@ -45,7 +45,8 @@ export default function ClypHub({navigation}) {
 
       <View style={styles.optionsContainer}>
         <View style={styles.rowContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => navigation.navigate(Strings.nft)}>
             <NFTSVG
               width={Values.clyphubsvgwidth}
               height={Values.clyphubsvgheight}

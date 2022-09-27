@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.clyppay",
-      "buildNumber": "3.1"
+      "buildNumber": "3.2"
     },
     "android": {
       "package": "com.clyppay",
